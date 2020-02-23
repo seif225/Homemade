@@ -1,15 +1,11 @@
 package com.example.graduiation.ui.Data;
-
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-
 import com.example.graduiation.ui.intro.IntroActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,14 +19,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.util.UUID;
-
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
 public class FirebaseQueryHelper {
     private FirebaseAuth mAuth;
     private static final String TAG = "FirebaseQueryHelper";
@@ -173,19 +166,15 @@ public class FirebaseQueryHelper {
                     @Override
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                         int progress = (int) ((100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount());
-                        pd.setMessage(progress + "%");
+                        pd.setMessage(progress + "%" +" uploaded");
                     }
                 })
                 .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                                            @Override
                                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-
                                                pd.dismiss();
-
                                                if (task.isSuccessful()) {
                                                    // path = task.getResult().getStorage().getPath();
-
-
                                                } else {
                                                    Log.d("Failure:", "upload Failed " + task.getException().getLocalizedMessage());
                                                    Toast.makeText(context, "Uplaod Failed :( " + task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
@@ -206,28 +195,21 @@ public class FirebaseQueryHelper {
                                 uploadFoodDataToRealTimeDataBase(model, context);
                             }
                         });
-
-
                     }
                 });
-
-
     }
-
     private void uploadFoodDataToRealTimeDataBase(FoodModel model, Context context) {
         FOOD_REF.child(model.getCookId()).child(model.getId()).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(context, "your meal has been added successfully", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "onComplete: "+"fone" );
-
+                    Log.e(TAG, "onComplete: "+"done" );
                 } else {
                     Toast.makeText(context, "Error occurred", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "onComplete: "+"ERROOOOOOOOOR" );
                 }
             }
         });
-
     }
 }
