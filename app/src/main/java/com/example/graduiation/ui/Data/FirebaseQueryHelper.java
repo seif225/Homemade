@@ -21,7 +21,7 @@ public class FirebaseQueryHelper {
     }
 
     public void SignUp(String email, String password, String confirmPassword, ProgressDialog
-            pB) throws IllegalArgumentException {
+            pB, String phoneNum, String name) throws IllegalArgumentException {
         pB.setTitle("Please Wait");
         pB.show();
 
@@ -39,7 +39,10 @@ public class FirebaseQueryHelper {
             throw new IllegalArgumentException("1");
         } else if (!password.equals(confirmPassword)) {
             throw new IllegalArgumentException("2");
-
+        } else if (phoneNum.isEmpty()) {
+            throw new IllegalArgumentException("3");
+        } else if (name.isEmpty()) {
+            throw new IllegalArgumentException("4");
         }
         pB.dismiss();
     }
