@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/profileBackground"
+    android:fitsSystemWindows="true"
+    tools:context=".ui.Profile.ProfileActivity">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:src="@drawable/foods"
+            android:id="@+id/coverProfile"
+            android:layout_width="match_parent"
+            android:layout_height="00dp"
+           android:background="@drawable/foods"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profileImage"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginStart="24dp"
+            android:background="@drawable/profile_round"
+            app:layout_constraintBottom_toBottomOf="@id/coverProfile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/coverProfile" />
+
+        <TextView
+
+            android:id="@+id/tvUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NAME HERE"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintStart_toStartOf="@+id/profileImage"
+            app:layout_constraintTop_toBottomOf="@id/profileImage" />
+
+        <TextView
+            android:id="@+id/tvBio"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BIO HERE"
+            app:layout_constraintStart_toStartOf="@id/tvUserName"
+            app:layout_constraintTop_toBottomOf="@id/tvUserName" />
+
+        <TextView
+            android:id="@+id/tvFollowers"
+            app:layout_constraintHorizontal_weight="1"
+            android:drawableStart="@drawable/ic_person_outline_black_24dp"
+            android:drawablePadding="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/tvUserName"
+            app:layout_constraintTop_toBottomOf="@id/tvBio"
+            android:textSize="16sp"
+            android:text="718 Followers"
+            android:padding="8dp"
+            />
+        <TextView
+            android:id="@+id/tvFollowing"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/tvFollowers"
+            app:layout_constraintStart_toEndOf="@id/tvFollowers"
+            android:text="555 Following"
+            android:padding="8dp"
+            android:textSize="16sp"
+            android:drawableStart="@drawable/ic_person_outline_black_24dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/tvFollowers"
+            />
+        <TextView
+            android:id="@+id/tvMeals"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/tvFollowing"
+            app:layout_constraintStart_toEndOf="@id/tvFollowing"
+            android:padding="8dp"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/tvFollowing"
+            android:text="88 orders "/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tvFollowers"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/border"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
