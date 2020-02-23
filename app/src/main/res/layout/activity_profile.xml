@@ -12,10 +12,9 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:src="@drawable/foods"
             android:id="@+id/coverProfile"
             android:layout_width="match_parent"
-            android:layout_height="00dp"
+            android:layout_height="200dp"
            android:background="@drawable/foods"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +24,7 @@
             android:id="@+id/profileImage"
             android:layout_width="96dp"
             android:layout_height="96dp"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="8dp"
             android:background="@drawable/profile_round"
             app:layout_constraintBottom_toBottomOf="@id/coverProfile"
             app:layout_constraintStart_toStartOf="parent"
@@ -79,6 +78,8 @@
             app:layout_constraintBottom_toBottomOf="@id/tvFollowers"
             />
         <TextView
+            android:drawablePadding="6dp"
+            android:drawableStart="@drawable/mumz"
             android:id="@+id/tvMeals"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
