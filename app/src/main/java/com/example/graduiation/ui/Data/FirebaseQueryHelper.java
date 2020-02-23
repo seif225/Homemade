@@ -16,12 +16,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.IllegalFormatException;
 
 public class FirebaseQueryHelper {
-    FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
     private static final String TAG = "FirebaseQueryHelper";
+    private static final DatabaseReference USER_REF = FirebaseDatabase.getInstance().getReference().child("Users");
 
     public FirebaseQueryHelper() {
         mAuth = FirebaseAuth.getInstance();
@@ -53,10 +56,29 @@ public class FirebaseQueryHelper {
                     (new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            pB.dismiss();
+                            if (task.isSuccessful()) {
+                                pB.dismiss();
+                                sendUsersDataToDatabase(name, email, password, phoneNum);
+                            } else {
+                                pB.dismiss();
+
+                            }
                         }
                     });
         }
+
+    }
+
+    private void sendUsersDataToDatabase(String name, String email, String password, String phoneNum) {
+
+        BuyerModel model = new BuyerModel();
+        String id = mAuth.getUid();
+        model.setId(id);
+        model.setName(name);
+        model.setPhone(phoneNum);
+        model.setEmail(email);
+        model.setPassword(password);
+        USER_REF.child(id).setValue(model);
 
     }
 

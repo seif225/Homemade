@@ -1,11 +1,27 @@
 package com.example.graduiation.ui.Data;
 
 public class UserParentModel {
-    private String name , id , phone , image , rate , following , subType ;
+    private String name, id, phone, image, rate, following, subType, email, password;
     private WalletModel wallet;
 
-    UserParentModel(){
+    UserParentModel() {
 
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public void setPhone(String phone) {
@@ -40,9 +56,6 @@ public class UserParentModel {
         this.id = id;
     }
 
-    public void setPhine(String phine) {
-        this.phone = phine;
-    }
 
     public void setImage(String image) {
         this.image = image;
