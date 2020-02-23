@@ -1,11 +1,14 @@
 package com.example.graduiation.ui.Data;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
+
 import com.example.graduiation.ui.intro.IntroActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -19,11 +22,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
 import java.util.UUID;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
 public class FirebaseQueryHelper {
     private FirebaseAuth mAuth;
     private static final String TAG = "FirebaseQueryHelper";
@@ -150,6 +156,58 @@ public class FirebaseQueryHelper {
 
     }
 
+
+    //this methods uploads the users profile picture and updates his JSON tree on the database
+    public void uploadUserPic(Uri uri, String uId, ProgressDialog pd, Context context, UserParentModel userParentModel) {
+
+        pd.setCancelable(false);
+        pd.setTitle("please wait .. ");
+        pd.show();
+        final String imageName = uId + ".jpg";
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Users").child(imageName);
+
+        storageReference.putFile(uri)
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+
+
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        int progress = (int) ((100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount());
+                        pd.setMessage(progress + "%" + " uploaded");
+                    }
+                })
+                .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                           @Override
+                                           public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                               pd.dismiss();
+                                               if (task.isSuccessful()) {
+                                                   // path = task.getResult().getStorage().getPath();
+                                               } else {
+                                                   Log.d("Failure:", "upload Failed " + task.getException().getLocalizedMessage());
+                                                   Toast.makeText(context, "Uplaod Failed :( " + task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                               }
+                                           }
+                                       }
+
+                )
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                Log.e("PhotoUploadFirebaseQueryHelper", uri + "");
+                                String link = uri.toString();
+                                userParentModel.setImage(link);
+                                USER_REF.child(uId).setValue(userParentModel);
+
+                            }
+                        });
+                    }
+                });
+    }
+
+
     public void uploadFoodDataToFirebase(FoodModel model, Context context, Uri photo, ProgressDialog pd) {
 
         pd.setCancelable(false);
@@ -166,7 +224,7 @@ public class FirebaseQueryHelper {
                     @Override
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                         int progress = (int) ((100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount());
-                        pd.setMessage(progress + "%" +" uploaded");
+                        pd.setMessage(progress + "%" + " uploaded");
                     }
                 })
                 .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -198,16 +256,17 @@ public class FirebaseQueryHelper {
                     }
                 });
     }
+
     private void uploadFoodDataToRealTimeDataBase(FoodModel model, Context context) {
         FOOD_REF.child(model.getCookId()).child(model.getId()).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(context, "your meal has been added successfully", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "onComplete: "+"done" );
+                    Log.e(TAG, "onComplete: " + "done");
                 } else {
                     Toast.makeText(context, "Error occurred", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "onComplete: "+"ERROOOOOOOOOR" );
+                    Log.e(TAG, "onComplete: " + "ERROOOOOOOOOR");
                 }
             }
         });

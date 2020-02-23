@@ -10,11 +10,11 @@ import androidx.lifecycle.ViewModel;
 import com.example.graduiation.ui.Data.FirebaseQueryHelper;
 import com.example.graduiation.ui.Data.FoodModel;
 
-public class AddMealViewModel extends ViewModel {
+ class AddMealViewModel extends ViewModel {
 
-    FirebaseQueryHelper firebaseQueryHelper = new FirebaseQueryHelper();
+    private FirebaseQueryHelper firebaseQueryHelper = new FirebaseQueryHelper();
 
-    public void uploadFoodData(FoodModel model, Context context, Uri photo, ProgressDialog pd) {
+     void uploadFoodData(FoodModel model, Context context, Uri photo, ProgressDialog pd) {
         firebaseQueryHelper.uploadFoodDataToFirebase(model, context, photo, pd);
     }
 }
