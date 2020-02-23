@@ -25,11 +25,9 @@ public class FirebaseQueryHelper {
 
     public FirebaseQueryHelper() {
         mAuth = FirebaseAuth.getInstance();
-
     }
 
-    public void SignUp(String email, String password, String confirmPassword, ProgressDialog
-            pB, String phoneNum, String name) throws IllegalArgumentException {
+    public void SignUp(String email, String password, String confirmPassword, ProgressDialog pB, String phoneNum, String name) throws IllegalArgumentException {
         pB.setTitle("Please Wait");
         pB.show();
         if (password.length() < 6) {
@@ -40,7 +38,7 @@ public class FirebaseQueryHelper {
             Log.i(TAG, "SignUp: " + "2");
             pB.dismiss();
             throw new IllegalArgumentException("2");
-        } else if (phoneNum.length()<11) {
+        } else if (phoneNum.length() < 11) {
             Log.i(TAG, "SignUp: " + "3");
             pB.dismiss();
             throw new IllegalArgumentException("3");
@@ -52,18 +50,16 @@ public class FirebaseQueryHelper {
         } else {
             Log.i(TAG, "SignUp: " + "1");
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener
-
                     (new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             pB.dismiss();
-
-
                         }
                     });
         }
 
     }
+
     public void SignIn(String email, String password, Context context, ProgressDialog progressDialog) {
         progressDialog.setTitle("Please wait");
         progressDialog.setMessage("Signing you in");
@@ -79,8 +75,11 @@ public class FirebaseQueryHelper {
 
                     if (task.isSuccessful()) {
                         SendUserToIntro(context);
-                    }else {
-                        Toast.makeText(context, "Error "+ task.getException(), Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    } else {
+                        Toast.makeText(context, "Error " + task.getException(), Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+
                     }
                 }
             });
