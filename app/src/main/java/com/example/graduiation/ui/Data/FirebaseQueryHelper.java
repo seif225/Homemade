@@ -21,6 +21,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.IllegalFormatException;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class FirebaseQueryHelper {
     private FirebaseAuth mAuth;
     private static final String TAG = "FirebaseQueryHelper";
@@ -70,7 +75,6 @@ public class FirebaseQueryHelper {
     }
 
     private void sendUsersDataToDatabase(String name, String email, String password, String phoneNum) {
-
         BuyerModel model = new BuyerModel();
         String id = mAuth.getUid();
         model.setId(id);
@@ -78,7 +82,31 @@ public class FirebaseQueryHelper {
         model.setPhone(phoneNum);
         model.setEmail(email);
         model.setPassword(password);
-        USER_REF.child(id).setValue(model);
+        io.reactivex.Observable<BuyerModel> observable = Observable.just(model);
+        Observer observer = new Observer() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Object o) {
+                USER_REF.child(id).setValue(o);
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+
+        observable.subscribeOn(Schedulers.io()).observeOn(Schedulers.computation()).subscribe(observer);
 
     }
 
