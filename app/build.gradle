@@ -41,29 +41,21 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
     //liveData and ViewModel
     def lifecycle_version = "2.1.0"
-
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-
     //Firebaselo
-
     implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'com.google.firebase:firebase-database:16.1.0'
     implementation 'com.google.firebase:firebase-auth:16.1.0'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     implementation 'com.google.firebase:firebase-storage:16.1.0'
-
-
     //Circle Image & Picasso
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.5.+'
     implementation 'com.hbb20:ccp:2.2.6'
-
     //slider library
     implementation 'com.github.smarteist:autoimageslider:1.1.0'
-
-
     //glide
     // implementation 'com.github.bumptech.glide:glide:4.7.1'
     //awesome buttons
@@ -72,12 +64,13 @@ dependencies {
     implementation 'com.beardedhen:androidbootstrap:2.3.0'
     implementation 'com.github.flepsik:progress-ring-view:1.2.1'
     implementation 'com.android.support:multidex:1.0.3'
-
     //algolia instant search
     implementation 'com.algolia:algoliasearch-android:3.+'
-
 //Reactive X
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-
     implementation 'io.reactivex.rxjava2:rxjava:2.x.x'
+//RxFirebase lib
+    implementation 'com.github.FrangSierra:RxFirebase:1.5.6'
+
+
 }

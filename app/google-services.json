@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "807413325323",
+    "firebase_url": "https://hommade-f3ecc.firebaseio.com",
+    "project_id": "hommade-f3ecc",
+    "storage_bucket": "hommade-f3ecc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:807413325323:android:245d99739d197118f8310e",
+        "android_client_info": {
+          "package_name": "com.example.graduiation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "807413325323-g0cbb8p7gvkbptrigmc4fuq5tfnmv246.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.graduiation",
+            "certificate_hash": "f9eb70eba89147b9ea5628127da4f719707b1562"
+          }
+        },
+        {
+          "client_id": "807413325323-hrrpphc2jp485kvu6cdg6kbpsig94547.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQ3-bKaIf8Cs8wMSFm-9an9PHWPOxe_Ac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "807413325323-hrrpphc2jp485kvu6cdg6kbpsig94547.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
