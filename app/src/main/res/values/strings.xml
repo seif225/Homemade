@@ -16,5 +16,16 @@
 
     <string name="login_email_hint">Email</string>
     <string name="login_password_hint">Password</string>
+    <string-array name="cat_arrays">
+        <item>cooked</item>
+        <item>half cooked</item>
+        <item>dessert</item>
+        <item>fast food</item>
+        <item>pasta</item>
+        <item>soups</item>
+        <item>salads</item>
+        <item>sides</item>
+        <item>diet</item>
+    </string-array>
 
 </resources>

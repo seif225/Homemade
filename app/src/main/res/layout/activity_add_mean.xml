@@ -14,65 +14,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+
+
         <TextView
-            android:id="@+id/tv_publisher"
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:paddingStart="6dp"
-            android:text="Publisher"
+            android:padding="6dp"
+            android:text="Title"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/et_publisher"
+            android:id="@+id/et_mealName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="publisher name"
-            app:layout_constraintStart_toStartOf="@id/tv_publisher"
-            app:layout_constraintTop_toBottomOf="@id/tv_publisher" />
-
-        <TextView
-            android:id="@+id/tv_authorName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:padding="6dp"
-            android:text="Author name"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/tv_publisher"
-            app:layout_constraintTop_toBottomOf="@id/et_publisher" />
-
-        <EditText
-            android:id="@+id/et_AuthorName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Author name"
-            app:layout_constraintStart_toStartOf="@id/tv_publisher"
-            app:layout_constraintTop_toBottomOf="@id/tv_authorName" />
-
-        <TextView
-            android:id="@+id/tv_bookName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:padding="6dp"
-            android:text="Book Title"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/tv_publisher"
-            app:layout_constraintTop_toBottomOf="@id/et_AuthorName" />
-
-        <EditText
-            android:id="@+id/et_bookName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Book Title"
-            app:layout_constraintStart_toStartOf="@id/tv_publisher"
-            app:layout_constraintTop_toBottomOf="@id/tv_bookName" />
+            android:hint="Title"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
         <TextView
             android:id="@+id/tv_bookPrice"
@@ -83,29 +45,61 @@
             android:text="Book Price"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/tv_publisher"
-            app:layout_constraintTop_toBottomOf="@id/et_bookName" />
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@id/et_mealName" />
 
         <EditText
             android:id="@+id/et_bookPrice"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Book Price"
+            android:hint="Price"
             android:inputType="number"
-            app:layout_constraintStart_toStartOf="@id/tv_publisher"
-            app:layout_constraintTop_toBottomOf="@id/tv_bookPrice" />
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_bookPrice"
+            app:layout_constraintTop_toTopOf="@+id/tv_bookPrice" />
+
+        <EditText
+            android:id="@+id/et_min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="min"
+            android:layout_margin="8dp"
+            android:inputType="number"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_min"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/tv_min"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerGenre" />
+
+
+        <EditText
+            android:id="@+id/et_max"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="max"
+
+            app:layout_constraintVertical_bias="0"
+            android:layout_margin="8dp"
+            android:inputType="number"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_min"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/tv_max"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerGenre" />
 
 
         <TextView
-            android:id="@+id/tv_bookGenre"
+            android:id="@+id/tv_meal_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:padding="6dp"
-            android:text="Book Genre"
+            android:text="meal category"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/tv_publisher"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
             app:layout_constraintTop_toBottomOf="@id/et_bookPrice" />
 
 
@@ -114,33 +108,55 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:entries="@array/book_arrays"
-            android:prompt="@string/book_prompt"
-            app:layout_constraintStart_toStartOf="@id/tv_publisher"
-            app:layout_constraintTop_toBottomOf="@id/tv_bookGenre" />
+            android:entries="@array/cat_arrays"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_meal_category"
+            app:layout_constraintStart_toEndOf="@+id/tv_meal_category"
+            app:layout_constraintTop_toTopOf="@+id/tv_meal_category" />
 
         <TextView
-            android:id="@+id/tv_bookPhoto"
+            android:id="@+id/tv_mealPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Book Photo"
+            android:text="meal Photo"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/tv_publisher"
-            app:layout_constraintTop_toBottomOf="@id/spinnerGenre" />
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@+id/et_min" />
+
+        <TextView
+            android:id="@+id/tv_min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="min"
+            android:textSize="18sp"
+            android:layout_margin="16dp"
+            android:textColor="#000000"
+            app:layout_constraintStart_toStartOf="@+id/tv_mealPhoto"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerGenre" />
+
+        <TextView
+            android:id="@+id/tv_max"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="max"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_mealPhoto"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerGenre" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_bookPhoto"
             android:layout_width="88dp"
             android:layout_height="88dp"
             android:layout_marginTop="8dp"
-            android:src="@drawable/placeholder"
+            android:src="@drawable/img1"
             app:civ_border_color="@color/colorAccent"
             app:civ_border_width="3dp"
-            app:layout_constraintStart_toStartOf="@id/tv_bookPhoto"
-            app:layout_constraintTop_toBottomOf="@id/tv_bookPhoto"
+            app:layout_constraintStart_toStartOf="@id/tv_mealPhoto"
+            app:layout_constraintTop_toBottomOf="@id/tv_mealPhoto"
             app:layout_constraintVertical_bias="0.0" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -151,10 +167,11 @@
             android:src="@drawable/ic_camera_alt_black_24dp"
             app:layout_constraintBottom_toBottomOf="@+id/img_bookPhoto"
             app:layout_constraintEnd_toEndOf="@+id/img_bookPhoto"
-            app:layout_constraintHorizontal_bias="0.68"
+            app:layout_constraintHorizontal_bias="1"
             app:layout_constraintStart_toStartOf="@+id/img_bookPhoto"
             app:layout_constraintTop_toTopOf="@+id/img_bookPhoto"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="1.0"
+            />
 
 
         <TextView
@@ -162,17 +179,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Book Description"
+            android:text="Meal Description"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/tv_publisher"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
             app:layout_constraintTop_toBottomOf="@id/img_bookPhoto" />
 
         <EditText
             android:id="@+id/et_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Book Description"
+            android:hint="Meal Description"
             android:padding="8dp"
             app:layout_constraintTop_toBottomOf="@id/tv_Description" />
 
