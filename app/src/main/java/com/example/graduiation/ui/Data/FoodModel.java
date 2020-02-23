@@ -7,7 +7,7 @@ public class FoodModel {
     private String min , max ;
     private HashMap<Object , Object> reviewsMap , picsMap , ratingMap;
 
-    FoodModel(){}
+    public FoodModel(){}
 
     public void setTitle(String title) {
         this.title = title;

@@ -70,9 +70,10 @@ public class RegisterActivity extends AppCompatActivity {
                     viewModel.Authenticate(mail, pw1, pw2, pd, phone, name);
                 } catch (IllegalArgumentException ex) {
                     Log.i(TAG, "onClick: " + ex.getMessage());
-                    handleException(ex.getMessage());
+                    handleException(""+ex.getMessage());
                 }
                 finally {
+                   //TODO(2):fix this bug where the user is automatically send to login activity even if an error has occurr    ed during registering
                     sendUserToLogin();
                 }
 

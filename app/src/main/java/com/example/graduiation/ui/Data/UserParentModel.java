@@ -1,11 +1,19 @@
 package com.example.graduiation.ui.Data;
 
 public class UserParentModel {
-    private String name, id, phone, image, rate, following, subType, email, password;
+    private String name, id, phone, image, rate, following, subType, email, password , membership;
     private WalletModel wallet;
 
     UserParentModel() {
 
+    }
+
+    public void setMembership(String membership) {
+        this.membership = membership;
+    }
+
+    public String getMembership() {
+        return membership;
     }
 
     public String getEmail() {

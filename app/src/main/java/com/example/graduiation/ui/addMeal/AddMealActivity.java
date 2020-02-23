@@ -1,15 +1,30 @@
 package com.example.graduiation.ui.addMeal;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.graduiation.R;
+import com.example.graduiation.ui.Data.FoodModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,15 +67,82 @@ public class AddMealActivity extends AppCompatActivity {
     Button btnDone;
     @BindView(R.id.logout_button)
     Button logoutButton;
+    Uri photo;
+    AddMealViewModel viewModel;
+    private static final String TAG = "AddMealActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_mean);
         ButterKnife.bind(this);
-
-
-
+        viewModel = ViewModelProviders.of(this).get(AddMealViewModel.class);
+        ProgressDialog pd = new ProgressDialog(this);
+        btnUploadBookPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickPhoto();
+            }
+        });
+        btnDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String title = etMealName.getText().toString();
+                String price = tvBookPrice.getText().toString();
+                String category = spinnerGenre.getSelectedItem().toString();
+                String min = etMin.getText().toString();
+                String max = etMax.getText().toString();
+                String des = etDescription.getText().toString();
+                String foodId = UUID.randomUUID().toString();
+                String userId = FirebaseAuth.getInstance().getUid();
+                //Log.e(TAG, "onClick: " + category);
+                if (title.isEmpty()) {
+                    etMealName.requestFocus();
+                    etMealName.setError("you can't leave this field empty");
+                } else if (price.isEmpty()) {
+                    etBookPrice.requestFocus();
+                    etBookPrice.setError("you can't leave this field empty");
+                } else if (category.isEmpty()) {
+                    Toast.makeText(AddMealActivity.this, "you should choose a category", Toast.LENGTH_SHORT).show();
+                } else if (min.isEmpty()) {
+                    etMin.requestFocus();
+                    etMin.setError("you can't leave this field empty");
+                } else if (max.isEmpty()) {
+                    etMax.requestFocus();
+                    etMax.setError("you can't leave this field empty");
+                } else if (des.isEmpty()) {
+                    etDescription.requestFocus();
+                    etDescription.setError("you can't leave this field empty");
+                } else {
+                    FoodModel model = new FoodModel();
+                    model.setTitle(title);
+                    model.setPrice(price);
+                    model.setCategory(category);
+                    model.setMin(min);
+                    model.setMax(max);
+                    model.setId(foodId);
+                    model.setCookId(userId);
+                    viewModel.uploadFoodData(model, getBaseContext(), photo, pd);
+                }
+            }
+        });
+    }
+    private void pickPhoto() {
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .start(this);
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                photo = result.getUri();
+                Picasso.get().load(photo).into(imgBookPhoto);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+                Toast.makeText(this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.graduiation.R;
+import com.example.graduiation.ui.addMeal.AddMealActivity;
 import com.example.graduiation.ui.login.LoginActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -78,9 +79,17 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         if (mAuth.getCurrentUser() == null) {
             sendUserToLogin();
+        }else if (mAuth.getCurrentUser().getUid().equals("7zOFRqGEuwcyL9h7IuBRW9OWdDn1")){
+            sendUserToAddMeal();
         }
 
 
+    }
+
+    private void sendUserToAddMeal() {
+        Intent i = new Intent(this, AddMealActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 
     private void sendUserToLogin() {
