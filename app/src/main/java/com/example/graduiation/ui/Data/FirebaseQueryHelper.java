@@ -41,7 +41,8 @@ public class FirebaseQueryHelper {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    public void SignUp(String email, String password, String confirmPassword, ProgressDialog pB, String phoneNum, String name) throws IllegalArgumentException {
+    public void SignUp(String email, String password, String confirmPassword, ProgressDialog pB,
+                       String phoneNum, String name) throws IllegalArgumentException {
         pB.setTitle("Please Wait");
         pB.show();
         if (password.length() < 6) {
@@ -84,7 +85,8 @@ public class FirebaseQueryHelper {
         return uploadUserDataDisposable;
     }
 
-    private void sendUsersDataToDatabase(String name, String email, String password, String phoneNum) {
+    private void sendUsersDataToDatabase(String name, String email, String password,
+                                         String phoneNum) {
         BuyerModel model = new BuyerModel();
         String id = mAuth.getUid();
         if (id != null) {
@@ -116,13 +118,15 @@ public class FirebaseQueryHelper {
                 }
             };
 
-            observable.subscribeOn(Schedulers.io()).observeOn(Schedulers.computation()).subscribe(observer);
+            observable.subscribeOn(Schedulers.io()).observeOn(Schedulers.computation()).
+                    subscribe(observer);
         } else {
             //TODO(1): Handle this Exception if the user id is null
         }
     }
 
-    public void SignIn(String email, String password, Context context, ProgressDialog progressDialog) {
+    public void SignIn(String email, String password, Context context,
+                       ProgressDialog progressDialog) {
         progressDialog.setTitle("Please wait");
         progressDialog.setMessage("Signing you in");
         progressDialog.show();
@@ -131,20 +135,22 @@ public class FirebaseQueryHelper {
         } else if (password.isEmpty()) {
             Toast.makeText(context, "Enter a valid password", Toast.LENGTH_SHORT).show();
         } else {
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener
+                    (new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
 
-                    if (task.isSuccessful()) {
-                        SendUserToIntro(context);
-                        progressDialog.dismiss();
-                    } else {
-                        Toast.makeText(context, "Error " + task.getException(), Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
+                            if (task.isSuccessful()) {
+                                SendUserToIntro(context);
+                                progressDialog.dismiss();
+                            } else {
+                                Toast.makeText(context, "Error " + task.getException(),
+                                        Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
 
-                    }
-                }
-            });
+                            }
+                        }
+                    });
         }
 
     }
@@ -158,13 +164,15 @@ public class FirebaseQueryHelper {
 
 
     //this methods uploads the users profile picture and updates his JSON tree on the database
-    public void uploadUserPic(Uri uri, String uId, ProgressDialog pd, Context context, UserParentModel userParentModel) {
+    public void uploadUserPic(Uri uri, String uId, ProgressDialog pd, Context context,
+                              UserParentModel userParentModel) {
 
         pd.setCancelable(false);
         pd.setTitle("please wait .. ");
         pd.show();
         final String imageName = uId + ".jpg";
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Users").child(imageName);
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference()
+                .child("Users").child(imageName);
 
         storageReference.putFile(uri)
                 .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
