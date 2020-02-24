@@ -45,13 +45,13 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        pastry = root.findViewById(R.id.pastryImg);
+        /*pastry = root.findViewById(R.id.pastryImg);
         pastry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 changeFragment();
             }
-        });
+        });*/
 
         return root;
     }
