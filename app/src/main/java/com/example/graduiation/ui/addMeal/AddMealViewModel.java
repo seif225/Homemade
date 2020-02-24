@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.graduiation.ui.Data.FirebaseQueryHelper;
 import com.example.graduiation.ui.Data.FoodModel;
 
- class AddMealViewModel extends ViewModel {
+ public class AddMealViewModel extends ViewModel {
 
     private FirebaseQueryHelper firebaseQueryHelper = new FirebaseQueryHelper();
 

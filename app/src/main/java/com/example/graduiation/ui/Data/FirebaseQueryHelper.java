@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.graduiation.ui.intro.IntroActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,14 +16,19 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import io.reactivex.Observable;
@@ -40,6 +46,58 @@ public class FirebaseQueryHelper {
     public FirebaseQueryHelper() {
         mAuth = FirebaseAuth.getInstance();
     }
+
+    public void getListOfFoodAndUsers(MutableLiveData<ArrayList<FoodModel>> foodArrayListMutableLiveData, ArrayList<String> cookIds) {
+
+        ArrayList<FoodModel> foodModelArrayList = new ArrayList<>();
+
+        Observable<ArrayList<FoodModel>> observable = Observable.just(foodModelArrayList);
+        Observer<ArrayList<FoodModel>> observer = new Observer<ArrayList<FoodModel>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(ArrayList<FoodModel> foodModels) {
+
+                FOOD_REF.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        FoodModel foodModel;
+                        for (DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()) {
+                            for (DataSnapshot dataSnapshot1: dataSnapshot2.getChildren()){
+                                foodModel = dataSnapshot1.getValue(FoodModel.class);
+                                foodModelArrayList.add(foodModel);
+                                cookIds.add(dataSnapshot1.child("cookId").getValue().toString());
+                            }
+                            foodArrayListMutableLiveData.setValue(foodModelArrayList);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+
+        observable.subscribeOn(Schedulers.io()).observeOn(Schedulers.computation()).subscribe(observer);
+
+    }
+
 
     public void SignUp(String email, String password, String confirmPassword, ProgressDialog pB,
                        String phoneNum, String name) throws IllegalArgumentException {
@@ -263,6 +321,8 @@ public class FirebaseQueryHelper {
                         });
                     }
                 });
+
+
     }
 
     private void uploadFoodDataToRealTimeDataBase(FoodModel model, Context context) {
@@ -278,5 +338,54 @@ public class FirebaseQueryHelper {
                 }
             }
         });
+    }
+
+    public void getUsersData(MutableLiveData<ArrayList<UserParentModel>> usersLiveData, ArrayList<String> cookIds) {
+
+        Observable<ArrayList<String>> observable = Observable.just(cookIds);
+        Observer<ArrayList<String>> observer = new Observer<ArrayList<String>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(ArrayList<String> strings) {
+
+                USER_REF.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        ArrayList<UserParentModel> users = new ArrayList<>();
+                        if (strings.size() > 0) {
+                            for (String s : strings) {
+                                Log.e(TAG, "onDataChange: " + s + " " + strings.get(0) + " " + strings);
+                                if (dataSnapshot.child(s).exists())
+                                    users.add(dataSnapshot.child(s).getValue(UserParentModel.class));
+
+                            }
+                        }
+                        usersLiveData.setValue(users);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+
+        observable.subscribeOn(Schedulers.io()).observeOn(Schedulers.computation()).subscribe(observer);
     }
 }

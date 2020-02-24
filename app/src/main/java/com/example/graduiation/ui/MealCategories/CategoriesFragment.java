@@ -1,99 +1,66 @@
 package com.example.graduiation.ui.MealCategories;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.graduiation.R;
+import com.example.graduiation.ui.Data.FoodModel;
+import com.example.graduiation.ui.Data.UserParentModel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CategoriesFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CategoriesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
+import butterknife.BindView;
+
+
 public class CategoriesFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
-
-    public CategoriesFragment() {
-    }
-
-
-
-
-
-
-
-
-
-
-    public static CategoriesFragment newInstance(String param1, String param2) {
-        CategoriesFragment fragment = new CategoriesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    private static final String TAG = "CategoriesFragment";
+    RecyclerView recyclerView;
+    private CatrgoryViewModel viewModel;
+    private RecyclerViewAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_categories, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_categories, container, false);
+        recyclerView = view.findViewById(R.id.recyclerView);
+        viewModel = ViewModelProviders.of(this).get(CatrgoryViewModel.class);
+        viewModel.getFoodModelMutableLiveData().observe(this, new Observer<ArrayList<FoodModel>>() {
+            @Override
+            public void onChanged(ArrayList<FoodModel> foodModels) {
+
+                if (foodModels != null) {
+
+                    viewModel.getUsersLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<UserParentModel>>() {
+                        @Override
+                        public void onChanged(ArrayList<UserParentModel> userParentModels) {
+                           // Log.e(TAG, "onChanged: "+userParentModels.get(0).getName()+"" );
+                            adapter = new RecyclerViewAdapter(userParentModels, getActivity());
+                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()
+                                    , RecyclerView.HORIZONTAL,
+                                    false);
+                            recyclerView.setLayoutManager(linearLayoutManager);
+                            recyclerView.setAdapter(adapter);
+                        }
+                    });
+
+                }
+
+            }
+        });
+
+
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
-    }
 }
