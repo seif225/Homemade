@@ -12,7 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.MealCategories.CategoriesActivity"></activity>
         <activity android:name=".ui.Profile.ProfileActivity" />
         <activity android:name=".ui.addMeal.AddMealActivity" />
         <activity android:name=".ui.register.RegisterActivity" />
