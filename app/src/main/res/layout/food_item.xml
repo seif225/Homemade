@@ -4,11 +4,10 @@
     xmlns:gl="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"
     android:layout_marginTop="16dp"
-    >
+    android:layout_marginEnd="16dp"
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -26,26 +25,28 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:minHeight="100dp"
-
             android:padding="10dp"
             gl:end_color="@color/gradientOrange"
             gl:start_color="@color/gradientLightYellow">
 
             <TextView
-                android:id="@+id/textViewSub2Title"
-                style="@style/viewParent.headerText.HomeCardTitle"
-                android:text="Physics" />
+
+                android:id="@+id/textView_Description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description" />
 
             <TextView
-                style="@style/viewParent.headerText.homeCardContent"
-                android:layout_below="@id/textViewSub2Title"
-                android:text="Study nature, love nature,\nclose to nature" />
-
+                android:id="@+id/textView_Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textView_Description"
+                android:text="Name" />
             <ImageView
-                style="@style/homeCardImage"
-                android:maxHeight="90dp"
-                android:src="@drawable/home_ic_physics" />
-
+                android:id="@+id/imageView_foodImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxHeight="90dp" />
         </net.colindodd.gradientlayout.GradientRelativeLayout>
     </androidx.cardview.widget.CardView>
 

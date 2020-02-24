@@ -45,6 +45,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         if(userParentModel.getImage()!=null)Picasso.get().load(userParentModel.getImage()).into(holder.imgStory);
         if(userParentModel.getName()!=null)holder.tvName.setText(userParentModel.getName());
 
+
     }
 
     @Override
