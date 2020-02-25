@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Data.UserParentModel;
+import com.example.graduiation.ui.MyApplication;
 import com.example.graduiation.ui.Profile.ProfileViewModel;
 import com.example.graduiation.ui.addMeal.AddMealActivity;
 import com.example.graduiation.ui.login.LoginActivity;
@@ -55,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (!FirebaseApp.getApps(this).isEmpty())
-            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+        FirebaseApp.initializeApp(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -82,31 +83,33 @@ public class MainActivity extends AppCompatActivity {
         navUserMail = navigationHeader.findViewById(R.id.nav_user_mail);
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        viewModel.getUserParentModel(FirebaseAuth.getInstance().getUid()).observe(this, new Observer<UserParentModel>() {
-            @Override
-            public void onChanged(UserParentModel userParentModel) {
-                if (userParentModel != null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            viewModel.getUserParentModel(FirebaseAuth.getInstance().getUid()).observe(this, new Observer<UserParentModel>() {
+                @Override
+                public void onChanged(UserParentModel userParentModel) {
+                    if (userParentModel != null) {
 
-                    navUserName.setText(userParentModel.getName());
-                    navUserMail.setText(userParentModel.getEmail());
+                        navUserName.setText(userParentModel.getName());
+                        navUserMail.setText(userParentModel.getEmail());
 
-                    Picasso.get().load(userParentModel.getImage()).networkPolicy(NetworkPolicy.OFFLINE).into(navuseRImage, new Callback() {
-                        @Override
-                        public void onSuccess() {
+                        Picasso.get().load(userParentModel.getImage()).networkPolicy(NetworkPolicy.OFFLINE).into(navuseRImage, new Callback() {
+                            @Override
+                            public void onSuccess() {
 
-                        }
+                            }
 
-                        @Override
-                        public void onError(Exception e) {
-                            Picasso.get().load(userParentModel.getImage()).into(navuseRImage);
+                            @Override
+                            public void onError(Exception e) {
+                                Picasso.get().load(userParentModel.getImage()).into(navuseRImage);
 
-                        }
-                    });
+                            }
+                        });
 
 
+                    }
                 }
-            }
-        });
+            });
+        }
 
     }
 

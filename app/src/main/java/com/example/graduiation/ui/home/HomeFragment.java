@@ -103,7 +103,6 @@ public class HomeFragment extends Fragment {
         // and add the transaction to the back stack
         transaction.replace(R.id.nav_host_fragment, newFragment);
         transaction.addToBackStack(null);
-
         // Commit the transaction
         transaction.commit();
     }

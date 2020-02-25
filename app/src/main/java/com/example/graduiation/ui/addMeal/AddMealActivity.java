@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Data.FoodModel;
+import com.example.graduiation.ui.login.LoginActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
@@ -74,6 +75,14 @@ public class AddMealActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_meal);
         ButterKnife.bind(this);
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                sendUserToLogin();
+            }
+        });
         viewModel = ViewModelProviders.of(this).get(AddMealViewModel.class);
         ProgressDialog pd = new ProgressDialog(this);
         btnUploadBookPhoto.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +135,15 @@ public class AddMealActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void sendUserToLogin() {
+        Intent i = new Intent(this, LoginActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+
+
+    }
+
     private void pickPhoto() {
         CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
