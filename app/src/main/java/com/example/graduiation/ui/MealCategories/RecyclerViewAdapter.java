@@ -1,6 +1,7 @@
 package com.example.graduiation.ui.MealCategories;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Data.UserParentModel;
+import com.example.graduiation.ui.StoryDetails.StoryDetailsActivity;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -26,6 +28,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private List<UserParentModel> userParentModelList;
     private Context context;
     private static final String TAG = "RecyclerViewAdapter";
+    private String category;
 
     @NonNull
     @Override
@@ -35,15 +38,29 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return new ViewHolder(view);
     }
 
-    public RecyclerViewAdapter(List<UserParentModel> userParentModels, Context context) {
+    public RecyclerViewAdapter(List<UserParentModel> userParentModels, Context context, String category) {
         this.userParentModelList = userParentModels;
         this.context = context;
+        this.category = category;
+
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
         UserParentModel userParentModel = userParentModelList.get(position);
         Log.e(TAG, "onBindViewHolder: " + userParentModel.getId());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, StoryDetailsActivity.class);
+                i.putExtra("uid", userParentModel.getId());
+                i.putExtra("category", category);
+                context.startActivity(i);
+
+            }
+        });
+
+
         if (userParentModel.getImage() != null) {
             Picasso.get().load(userParentModel.getImage())
                     .networkPolicy(NetworkPolicy.OFFLINE).into(holder.imgStory, new Callback() {

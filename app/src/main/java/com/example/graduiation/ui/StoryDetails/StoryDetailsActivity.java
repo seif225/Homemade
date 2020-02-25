@@ -4,19 +4,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.graduiation.R;
 
 public class StoryDetailsActivity extends AppCompatActivity {
 
-
+    private static final String TAG = "StoryDetailsActivity";
     private StoryDetailsViewModel viewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story_details);
+
         String uid = getIntent().getStringExtra("uid");
         String category = getIntent().getStringExtra("category");
+        Log.e(TAG, "onCreate: "+uid + " " + category );
 
         if(uid!=null && category!=null){
             viewModel = ViewModelProviders.of(this).get(StoryDetailsViewModel.class);

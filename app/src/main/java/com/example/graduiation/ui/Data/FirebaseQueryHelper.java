@@ -58,6 +58,59 @@ public class FirebaseQueryHelper {
 
     }
 
+    public static void getListOfFood(MutableLiveData<ArrayList<FoodModel>> listMutableLiveData, String uid, String category) {
+        Observable<String> observable = Observable.just(uid);
+        Observer<String> observer = new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(String s) {
+                FOOD_REF.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        ArrayList<FoodModel> list = new ArrayList<>();
+
+                        for (DataSnapshot datasnapshot1 : dataSnapshot.getChildren()) {
+                            for (DataSnapshot dataSnapshot2 : datasnapshot1.getChildren()) {
+                                FoodModel foodModel = dataSnapshot2.getValue(FoodModel.class);
+                                if (foodModel.getCategory().equals(category)) {
+
+                                    list.add(foodModel);
+
+                                }
+
+                            }
+                        }
+
+                        listMutableLiveData.setValue(list);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+        observable.observeOn(Schedulers.io()).observeOn(Schedulers.computation()).subscribe(observer);
+
+    }
+
     public void getListOfFoodAndUsers(MutableLiveData<ArrayList<FoodModel>> foodArrayListMutableLiveData, HashSet<String> cookIds, String category) {
 
         ArrayList<FoodModel> foodModelArrayList = new ArrayList<>();
@@ -443,6 +496,48 @@ public class FirebaseQueryHelper {
 
         observable.observeOn(Schedulers.io()).observeOn(Schedulers.computation()).subscribe(observer);
 
+
+    }
+
+    public void getSingleUserData(MutableLiveData<UserParentModel> userParentModelMutableLiveData, String uid) {
+
+        Observable<String> observable = Observable.just(uid);
+        Observer<String> observer = new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(String s) {
+
+                USER_REF.child(s).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        userParentModelMutableLiveData.setValue(dataSnapshot.getValue(UserParentModel.class));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+
+        observable.subscribeOn(Schedulers.io()).observeOn(Schedulers.computation()).subscribe(observer);
 
     }
 }

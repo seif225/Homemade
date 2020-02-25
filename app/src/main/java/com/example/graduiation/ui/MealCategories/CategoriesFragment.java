@@ -66,7 +66,7 @@ public class CategoriesFragment extends Fragment {
                             // Log.e(TAG, "onChanged: "+userParentModels.get(0).getName()+"" );
                             if(userParentModels.size()>0){
                                 border.setVisibility(View.VISIBLE);
-                            adapter = new RecyclerViewAdapter(userParentModels, getActivity());
+                            adapter = new RecyclerViewAdapter(userParentModels, getActivity(),category);
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()
                                     , RecyclerView.HORIZONTAL,
                                     false);
