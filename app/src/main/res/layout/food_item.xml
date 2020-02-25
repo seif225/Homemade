@@ -23,46 +23,54 @@
             android:id="@+id/parent"
             android:layout_width="match_parent"
             android:layout_height="133dp"
-            android:minHeight="100dp"
-            >
-
-            <TextView
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                    app:layout_constraintTop_toTopOf="@id/parent"
-                app:layout_constraintStart_toStartOf="@id/parent"
-                app:layout_constraintEnd_toEndOf="@id/parent"
-                app:layout_constraintBottom_toBottomOf="@id/parent"
-                android:id="@+id/vert_line1"
-                />
+            android:minHeight="100dp">
 
             <ImageView
+                android:id="@+id/fa_bookmark"
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:elevation="10dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_bookmark_black_24dp"
+                app:layout_constraintEnd_toEndOf="@id/hover"
+                app:layout_constraintHorizontal_bias="0.9"
+                app:layout_constraintStart_toEndOf="@+id/vert_line1"
+                app:layout_constraintTop_toTopOf="@id/hover" />
+
+            <TextView
+                android:id="@+id/vert_line1"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="@id/parent"
+                app:layout_constraintEnd_toEndOf="@id/parent"
+                app:layout_constraintStart_toStartOf="@id/parent"
+                app:layout_constraintTop_toTopOf="@id/parent" />
+
+            <ImageView
+                android:id="@+id/food_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_launcher_background"
-                android:id="@+id/food_image"
                 android:scaleType="fitXY"
-                />
+                android:src="@drawable/ic_launcher_background" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/hover"
-                    android:background="#33000000"
-                    />
+            <TextView
+                android:id="@+id/hover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#33000000" />
 
             <TextView
                 android:id="@+id/textView_Name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Name"
                 android:layout_margin="8dp"
+                android:maxLines="1"
+                android:text="Name"
                 android:textColor="#fefefe"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:maxLines="1"
-                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintEnd_toStartOf="@id/vert_line1"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/food_image"
                 app:layout_constraintTop_toTopOf="@id/food_image" />
 
@@ -71,14 +79,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="Description"
                 android:maxLines="2"
+                android:text="Description"
                 android:textColor="#fefefe"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintHorizontal_bias="0"
-
                 app:layout_constraintEnd_toStartOf="@+id/vert_line1"
+
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/food_image"
                 app:layout_constraintTop_toBottomOf="@id/textView_Name" />
 
@@ -87,13 +95,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:elevation="11dp"
                 android:text="price"
+
                 android:textColor="#3DE66F"
                 android:textSize="18sp"
 
-                app:layout_constraintBottom_toBottomOf="@+id/food_image"
-                app:layout_constraintEnd_toEndOf="parent"
-                 />
+                app:layout_constraintBottom_toBottomOf="@id/fa_bookmark"
+                app:layout_constraintEnd_toEndOf="@id/fa_bookmark"
+                app:layout_constraintStart_toStartOf="@+id/fa_bookmark"
+                app:layout_constraintTop_toTopOf="@id/fa_bookmark" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
