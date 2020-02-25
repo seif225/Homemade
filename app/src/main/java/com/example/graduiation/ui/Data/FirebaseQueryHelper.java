@@ -72,19 +72,12 @@ public class FirebaseQueryHelper {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         ArrayList<FoodModel> list = new ArrayList<>();
-
                         for (DataSnapshot datasnapshot1 : dataSnapshot.getChildren()) {
-                            for (DataSnapshot dataSnapshot2 : datasnapshot1.getChildren()) {
-                                FoodModel foodModel = dataSnapshot2.getValue(FoodModel.class);
+                                FoodModel foodModel = datasnapshot1.getValue(FoodModel.class);
                                 if (foodModel.getCategory().equals(category)) {
-
                                     list.add(foodModel);
-
-                                }
-
                             }
                         }
-
                         listMutableLiveData.setValue(list);
                     }
 
