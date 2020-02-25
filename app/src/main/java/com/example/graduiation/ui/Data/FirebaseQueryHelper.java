@@ -1,5 +1,6 @@
 package com.example.graduiation.ui.Data;
 
+import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -8,12 +9,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.graduiation.ui.MyApplication;
 import com.example.graduiation.ui.intro.IntroActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -46,6 +50,7 @@ public class FirebaseQueryHelper {
     private Disposable uploadUserDataDisposable;
 
     public FirebaseQueryHelper() {
+
 
         mAuth = FirebaseAuth.getInstance();
         USER_REF.keepSynced(true);

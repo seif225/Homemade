@@ -19,20 +19,20 @@ public class CatrgoryViewModel extends ViewModel {
     private MutableLiveData<ArrayList<UserParentModel>> usersLiveData = new MutableLiveData<>();
     private MutableLiveData<ArrayList<FoodModel>> foodModelMutableLiveData = new MutableLiveData<>();
     private FirebaseQueryHelper firebaseQueryHelper = new FirebaseQueryHelper();
-    private HashSet<String> cookIds = new HashSet<String>() ;
-
+    private HashSet<String> cookIds = new HashSet<String>();
+    String category;
     private static final String TAG = "CatrgoryViewModel";
 
     public MutableLiveData<ArrayList<FoodModel>> getFoodModelMutableLiveData(String category) {
-        firebaseQueryHelper.getListOfFoodAndUsers(foodModelMutableLiveData, cookIds,category);
+        if (this.category == null) this.category = category;
+        firebaseQueryHelper.getListOfFoodAndUsers(foodModelMutableLiveData, cookIds, this.category);
         return foodModelMutableLiveData;
     }
 
 
-
     public MutableLiveData<ArrayList<UserParentModel>> getUsersLiveData() {
         Log.e(TAG, "getUsersLiveData: " + cookIds.size());
-       // if (cookIds.size() > 0) Log.e(TAG, "getUsersLiveData: " + cookIds.get(0));
+        // if (cookIds.size() > 0) Log.e(TAG, "getUsersLiveData: " + cookIds.get(0));
         firebaseQueryHelper.getUsersData(usersLiveData, cookIds);
         return usersLiveData;
     }
