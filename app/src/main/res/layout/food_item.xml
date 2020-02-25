@@ -5,14 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp"
-    android:layout_marginTop="16dp"
+    android:layout_marginTop="8dp"
     android:layout_marginEnd="16dp"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         app:cardCornerRadius="15dp"
         app:cardPreventCornerOverlap="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,33 +20,59 @@
 
         app:layout_constraintTop_toTopOf="parent">
 
-        <net.colindodd.gradientlayout.GradientRelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/parent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="130dp"
             android:minHeight="100dp"
-            android:padding="10dp"
-            gl:end_color="@color/gradientOrange"
-            gl:start_color="@color/gradientLightYellow">
+            >
 
-            <TextView
-
-                android:id="@+id/textView_Description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Description" />
-
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_launcher_background"
+                android:id="@+id/food_image"
+                android:scaleType="fitXY"
+                />
             <TextView
                 android:id="@+id/textView_Name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/textView_Description"
-                android:text="Name" />
-            <ImageView
-                android:id="@+id/imageView_foodImage"
+                android:text="Name"
+                android:layout_margin="8dp"
+                android:textColor="#fefefe"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/food_image"
+                app:layout_constraintTop_toTopOf="@id/food_image" />
+
+            <TextView
+                android:layout_margin="8dp"
+                android:id="@+id/textView_Description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxHeight="90dp" />
-        </net.colindodd.gradientlayout.GradientRelativeLayout>
+                android:text="Description"
+                app:layout_constraintStart_toStartOf="@id/food_image"
+                android:textColor="#fefefe"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/textView_Name" />
+
+            <TextView
+                android:id="@+id/textView_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="price"
+                android:textColor="#3DE66F"
+                android:textSize="18sp"
+
+                app:layout_constraintBottom_toBottomOf="@+id/food_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                 />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
 </LinearLayout>

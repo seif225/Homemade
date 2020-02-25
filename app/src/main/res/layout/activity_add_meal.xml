@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:padding="6dp"
-            android:text="Book Price"
+            android:text="meal Price"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/tv_title"

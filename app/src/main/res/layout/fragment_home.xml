@@ -1,35 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:gl="http://schemas.android.com/tools"
     android:id="@+id/mainConstraint"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp">
 
 
-    <ImageButton
-        android:id="@+id/pastryImg"
+    <TextView
+        android:id="@+id/intro"
         android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:background="@mipmap/ic_launcher"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/line"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/semiCookedImg"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:background="@mipmap/ic_launcher"
-
-        app:layout_constraintBottom_toBottomOf="@+id/pastryImg"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="check our main food categories :)"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
-        app:layout_constraintStart_toEndOf="@+id/line"
-        app:layout_constraintTop_toTopOf="@+id/pastryImg"
-        app:layout_constraintVertical_bias="0" />
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@+id/well_cooked_layout"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/line"
@@ -40,30 +31,220 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/fullyCookedImg"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:background="@mipmap/ic_launcher"
-
+    <TextView
+        android:id="@+id/hor_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        app:layout_constraintEnd_toEndOf="@+id/pastryImg"
-        app:layout_constraintStart_toStartOf="@+id/pastryImg"
-        app:layout_constraintTop_toBottomOf="@+id/pastryImg"
-        app:layout_constraintVertical_bias="0.05" />
-
-    <ImageButton
-        android:id="@+id/dessertsCookedImg"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:background="@mipmap/ic_launcher"
+    <TextView
+        android:id="@+id/hor_line2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4" />
 
-        app:layout_constraintEnd_toEndOf="@+id/semiCookedImg"
-        app:layout_constraintStart_toStartOf="@+id/semiCookedImg"
-        app:layout_constraintTop_toBottomOf="@+id/semiCookedImg"
-        app:layout_constraintVertical_bias="0.05" />
+    <TextView
+        android:id="@+id/hor_line3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.6"
+
+        />
+
+    <!--if the second one is used as model for recyclerView, refer:
+    https://appsnipp.com/gradient-layout-for-dynamic-gradients-in-android-without-drawable-library/
+    -->
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="15dp"
+        app:cardPreventCornerOverlap="true"
+        app:layout_constraintBottom_toTopOf="@id/hor_line2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/line"
+        app:layout_constraintTop_toTopOf="@+id/well_cooked_layout"
+        app:layout_constraintVertical_bias="0.05">
+
+        <net.colindodd.gradientlayout.GradientRelativeLayout
+            xmlns:gl="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="100dp"
+            android:padding="10dp"
+
+            gl:end_color="@color/gradientOrange"
+            gl:orientation="TOP_BOTTOM"
+            gl:start_color="@color/gradientLightYellow">
+
+            <TextView
+                android:id="@+id/tv_meal_category_semi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="semi-cooked"
+                android:textColor="#fefefe"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_meal_category_semi"
+                android:text="homemade semi-cooked food"
+                android:textColor="#fefefe"
+                android:textSize="14sp" />
+
+        </net.colindodd.gradientlayout.GradientRelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="15dp"
+        app:cardPreventCornerOverlap="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/line"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/hor_line3"
+        app:layout_constraintVertical_bias="0.05">
+
+        <net.colindodd.gradientlayout.GradientRelativeLayout
+            xmlns:gl="http://schemas.android.com/apk/res-auto"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="100dp"
+
+            android:padding="10dp"
+            gl:end_color="@color/gradientViolet"
+            gl:orientation="TOP_BOTTOM"
+            gl:start_color="@color/gradientOrange">
+
+            <TextView
+                android:id="@+id/tv_meal_category_pastry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="pastry"
+                android:textColor="#fefefe"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_meal_category_pastry"
+                android:text="homemade pastry food"
+                android:textColor="#fefefe"
+                android:textSize="14sp" />
+
+        </net.colindodd.gradientlayout.GradientRelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="15dp"
+        app:cardPreventCornerOverlap="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/line"
+        app:layout_constraintTop_toBottomOf="@id/hor_line2"
+        app:layout_constraintVertical_bias="0.05">
+
+        <net.colindodd.gradientlayout.GradientRelativeLayout
+            xmlns:gl="http://schemas.android.com/apk/res-auto"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="100dp"
+            android:padding="10dp"
+            gl:end_color="@color/gradientLightBlue"
+            gl:orientation="TOP_BOTTOM"
+            gl:start_color="@color/gradientViolet">
+
+            <TextView
+                android:id="@+id/tv_meal_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="dessert"
+                android:textColor="#fefefe"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_meal_category"
+                android:text="homemade dessert"
+                android:textColor="#fefefe"
+                android:textSize="14sp" />
+
+        </net.colindodd.gradientlayout.GradientRelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/well_cooked_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:layout_marginTop="24dp"
+        app:cardCornerRadius="15dp"
+
+        app:cardPreventCornerOverlap="true"
+        app:layout_constraintBottom_toTopOf="@id/hor_line3"
+        app:layout_constraintEnd_toStartOf="@id/line"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/intro">
+
+        <net.colindodd.gradientlayout.GradientRelativeLayout
+            xmlns:gl="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="100dp"
+            android:padding="10dp"
+            gl:end_color="@color/gradientLightBlue"
+            gl:orientation="TOP_BOTTOM"
+            gl:start_color="@color/gradientLightGreen">
+
+            <TextView
+                android:id="@+id/tv_meal_category_cooked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="well cooked"
+                android:textColor="#fefefe"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_meal_category_cooked"
+                android:text="homemade well cooked food "
+                android:textColor="#fefefe"
+                android:textSize="14sp" />
+        </net.colindodd.gradientlayout.GradientRelativeLayout>
+    </androidx.cardview.widget.CardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

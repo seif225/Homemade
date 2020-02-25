@@ -86,7 +86,7 @@ public class AddMealActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String title = etMealName.getText().toString();
-                String price = tvBookPrice.getText().toString();
+                String price = etBookPrice.getText().toString();
                 String category = spinnerGenre.getSelectedItem().toString();
                 String min = etMin.getText().toString();
                 String max = etMax.getText().toString();
@@ -120,6 +120,7 @@ public class AddMealActivity extends AppCompatActivity {
                     model.setMax(max);
                     model.setId(foodId);
                     model.setCookId(userId);
+                    model.setDescribtion(des);
                     viewModel.uploadFoodData(model, getBaseContext(), photo, pd);
                 }
             }

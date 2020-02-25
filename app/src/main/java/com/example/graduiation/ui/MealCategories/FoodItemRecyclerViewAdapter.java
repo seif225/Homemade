@@ -1,6 +1,7 @@
 package com.example.graduiation.ui.MealCategories;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,18 +9,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduiation.R;
-import com.example.graduiation.ui.Data.BuyerModel;
+import com.example.graduiation.ui.Data.FoodModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
         <FoodItemRecyclerViewAdapter.ViewHolder> {
-    private List<BuyerModel> buyerModelList;
+    private List<FoodModel> foodModelList;
     private Context context;
-
+    private static final String TAG = "FoodItemRecyclerViewAda";
     @NonNull
     @Override
     public FoodItemRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
@@ -29,23 +32,28 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
         return new ViewHolder(view);
     }
 
-    public FoodItemRecyclerViewAdapter(List<BuyerModel> buyerModels, Context context) {
-        this.buyerModelList = buyerModels;
+    public FoodItemRecyclerViewAdapter(List<FoodModel> buyerModels, Context context) {
+        this.foodModelList = buyerModels;
         this.context = context;
     }
 
     @Override
     public void onBindViewHolder(@NonNull FoodItemRecyclerViewAdapter.ViewHolder holder, int position) {
-        BuyerModel buyerModel = buyerModelList.get(position);
+        FoodModel foodModel = foodModelList.get(position);
+        if(foodModel.getDescribtion()!= null) holder.textView_Description.setText(foodModel.getDescribtion());
+        if(foodModel.getTitle()!= null) holder.textView_Name.setText(foodModel.getTitle());
+        if(foodModel.getDescribtion()!= null) Log.e(TAG, "onBindViewHolder:FOOD " + foodModel.getDescribtion());;
+        if(foodModel.getThumbnail()!= null) Picasso.get().load(foodModel.getThumbnail()).into(holder.imageView_foodImage);
+        if(foodModel.getPrice()!= null) holder.price_tv.setText(foodModel.getPrice()+"$");
 
     }
 
     @Override
     public int getItemCount() {
-        if (buyerModelList == null) {
+        if (foodModelList == null) {
             return 0;
         } else {
-            return buyerModelList.size();
+            return foodModelList.size();
         }
     }
 
@@ -53,12 +61,16 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
         TextView textView_Description;
         TextView textView_Name;
         ImageView imageView_foodImage;
+        TextView price_tv;
+        ConstraintLayout constraintLayout;
         public ViewHolder(@NonNull View itemView) {
 
             super(itemView);
-            TextView textView_Description = itemView.findViewById(R.id.textView_Description);
-            TextView textView_Name = itemView.findViewById(R.id.textView_Name);
-            ImageView imageView_foodImage = itemView.findViewById(R.id.imageView_foodImage);
+            textView_Description = itemView.findViewById(R.id.textView_Description);
+            textView_Name = itemView.findViewById(R.id.textView_Name);
+            constraintLayout = itemView.findViewById(R.id.parent);
+            imageView_foodImage = itemView.findViewById(R.id.food_image);
+            price_tv = itemView.findViewById(R.id.textView_price);
         }
     }
 }

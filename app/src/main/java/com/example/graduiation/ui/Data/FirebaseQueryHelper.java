@@ -69,6 +69,7 @@ public class FirebaseQueryHelper {
                             for (DataSnapshot dataSnapshot1: dataSnapshot2.getChildren()){
                                 foodModel = dataSnapshot1.getValue(FoodModel.class);
                                 foodModelArrayList.add(foodModel);
+                                //Log.e(TAG, "onDataChange: "+dataSnapshot1 );
                                 cookIds.add(dataSnapshot1.child("cookId").getValue().toString());
                             }
                             foodArrayListMutableLiveData.setValue(foodModelArrayList);
