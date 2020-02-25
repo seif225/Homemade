@@ -4,18 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:elevation="0dp"
+    android:background="#B3FFFFFF"
+
     tools:context=".ui.main.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:elevation="0dp"
+        android:background="#B3FFFFFF"
+
         android:theme="@style/AppTheme.PopupOverlay">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
+            app:elevation="0dp"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="#B3FFFFFF"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>

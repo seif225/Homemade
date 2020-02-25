@@ -4,14 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.graduiation.R;
+import com.example.graduiation.ui.Data.UserParentModel;
+import com.example.graduiation.ui.Profile.ProfileViewModel;
 import com.example.graduiation.ui.addMeal.AddMealActivity;
 import com.example.graduiation.ui.login.LoginActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -21,6 +27,9 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -28,12 +37,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.TextView;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private FirebaseAuth mAuth;
     private static final String TAG = "MainActivity";
+    private View navigationHeader;
+    private CircleImageView navuseRImage;
+    private TextView navUserName, navUserMail;
+    private MainViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +63,51 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
+                R.id.nav_home, R.id.nav_profile, R.id.nav_slideshow,
                 R.id.nav_tools, R.id.nav_share, R.id.nav_send)
                 .setDrawerLayout(drawer)
                 .build();
+
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+
+        navigationHeader = navigationView.getHeaderView(0);
+        navuseRImage = navigationHeader.findViewById(R.id.imageView);
+        navUserName = navigationHeader.findViewById(R.id.user_name);
+        navUserMail = navigationHeader.findViewById(R.id.nav_user_mail);
+
+        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel.getUserParentModel(FirebaseAuth.getInstance().getUid()).observe(this, new Observer<UserParentModel>() {
+            @Override
+            public void onChanged(UserParentModel userParentModel) {
+                if (userParentModel != null) {
+
+                    navUserName.setText(userParentModel.getName());
+                    navUserMail.setText(userParentModel.getEmail());
+
+                    Picasso.get().load(userParentModel.getImage()).networkPolicy(NetworkPolicy.OFFLINE).into(navuseRImage, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Picasso.get().load(userParentModel.getImage()).into(navuseRImage);
+
+                        }
+                    });
+
+
+                }
+            }
+        });
+
     }
 
     @Override
@@ -64,6 +115,17 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId() == R.id.action_logout) {
+            FirebaseAuth.getInstance().signOut();
+            sendUserToLogin();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

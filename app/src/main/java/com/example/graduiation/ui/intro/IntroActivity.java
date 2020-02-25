@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.example.graduiation.ui.main.MainActivity;
 import com.example.graduiation.R;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +26,12 @@ import java.util.List;
 public class IntroActivity extends AppCompatActivity {
 
     private ViewPager screenPager;
-    IntroViewPagerAdapter introViewPagerAdapter ;
+    IntroViewPagerAdapter introViewPagerAdapter;
     TabLayout tabIndicator;
     Button btnNext;
-    int position = 0 ;
+    int position = 0;
     Button btnGetStarted;
-    Animation btnAnim ;
+    Animation btnAnim;
     TextView tvSkip;
 
 
@@ -48,10 +50,13 @@ public class IntroActivity extends AppCompatActivity {
 
         if (restorePrefData()) {
 
-            Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class );
+            Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(mainActivity);
             finish();
 
+
+        }
+        else {
 
         }
 
@@ -65,22 +70,22 @@ public class IntroActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btn_next);
         btnGetStarted = findViewById(R.id.btn_get_started);
         tabIndicator = findViewById(R.id.tab_indicator);
-        btnAnim = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.button_animation);
+        btnAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.button_animation);
         tvSkip = findViewById(R.id.tv_skip);
 
         // fill list screen
 
         final List<ScreenItem> mList = new ArrayList<>();
         mList.add(new ScreenItem("Fresh Food",
-                "Fresh food , made with love ",R.drawable.img1));
+                "Fresh food , made with love ", R.drawable.img1));
         mList.add(new ScreenItem("Fast Delivery",
-                "food delivery sare3 fash5 ",R.drawable.img2));
+                "food delivery sare3 fash5 ", R.drawable.img2));
         mList.add(new ScreenItem("Easy Payment",
-                "visa card payment w kda , wala3 yaba ",R.drawable.img3));
+                "visa card payment w kda , wala3 yaba ", R.drawable.img3));
 
         // setup viewpager
-        screenPager =findViewById(R.id.screen_viewpager);
-        introViewPagerAdapter = new IntroViewPagerAdapter(this,mList);
+        screenPager = findViewById(R.id.screen_viewpager);
+        introViewPagerAdapter = new IntroViewPagerAdapter(this, mList);
         screenPager.setAdapter(introViewPagerAdapter);
 
         // setup tablayout with viewpager
@@ -102,7 +107,7 @@ public class IntroActivity extends AppCompatActivity {
 
                 }
 
-                if (position == mList.size()-1) { // when we rech to the last screen
+                if (position == mList.size() - 1) { // when we rech to the last screen
 
                     // TODO : show the GETSTARTED Button and hide the indicator and the next button
 
@@ -112,20 +117,21 @@ public class IntroActivity extends AppCompatActivity {
                 }
 
 
-
             }
         });
         // tablayout add change listener
         tabIndicator.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if (tab.getPosition() == mList.size()-1) {
+                if (tab.getPosition() == mList.size() - 1) {
                     loaddLastScreen();
                 }
             }
+
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
             }
+
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
@@ -137,7 +143,7 @@ public class IntroActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //open main activity
-                Intent mainActivity = new Intent(getApplicationContext(),MainActivity.class);
+                Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(mainActivity);
                 // also we need to save a boolean value to storage so next time when the user run the app
                 // we could know that he is already checked the intro screen activity
@@ -156,15 +162,15 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private boolean restorePrefData() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs",MODE_PRIVATE);
-        Boolean isIntroActivityOpnendBefore = pref.getBoolean("isIntroOpnend",false);
-        return  isIntroActivityOpnendBefore;
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs", MODE_PRIVATE);
+        Boolean isIntroActivityOpnendBefore = pref.getBoolean("isIntroOpnend", false);
+        return isIntroActivityOpnendBefore;
     }
 
     private void savePrefsData() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs",MODE_PRIVATE);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("myPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean("isIntroOpnend",true);
+        editor.putBoolean("isIntroOpnend", true);
         editor.commit();
     }
 
@@ -178,7 +184,6 @@ public class IntroActivity extends AppCompatActivity {
         // TODO : ADD an animation the getstarted button
         // setup animation
         btnGetStarted.setAnimation(btnAnim);
-
 
 
     }

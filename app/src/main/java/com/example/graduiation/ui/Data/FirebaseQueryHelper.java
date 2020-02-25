@@ -397,4 +397,47 @@ public class FirebaseQueryHelper {
 
         observable.subscribeOn(Schedulers.io()).observeOn(Schedulers.computation()).subscribe(observer);
     }
+
+    public void addUserToMutableLiveData(String id, MutableLiveData<UserParentModel> userParentModel) {
+
+        Observable<String> observable = Observable.just(id);
+        Observer<String> observer = new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(String s) {
+                USER_REF.child(s).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Log.e(TAG, "onDataChange: " + dataSnapshot);
+                        userParentModel.setValue(dataSnapshot.getValue(UserParentModel.class));
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+
+        observable.observeOn(Schedulers.io()).observeOn(Schedulers.computation()).subscribe(observer);
+
+
+    }
 }
