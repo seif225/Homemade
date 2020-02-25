@@ -68,6 +68,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
+        android:id="@+id/semi_card"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
@@ -86,7 +87,6 @@
             android:layout_height="match_parent"
             android:minHeight="100dp"
             android:padding="10dp"
-
             gl:end_color="@color/gradientOrange"
             gl:orientation="TOP_BOTTOM"
             gl:start_color="@color/gradientLightYellow">
@@ -119,6 +119,7 @@
         android:layout_marginBottom="8dp"
         app:cardCornerRadius="15dp"
         app:cardPreventCornerOverlap="true"
+        android:id="@+id/pastry_card"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/line"
         app:layout_constraintStart_toStartOf="parent"
@@ -127,11 +128,9 @@
 
         <net.colindodd.gradientlayout.GradientRelativeLayout
             xmlns:gl="http://schemas.android.com/apk/res-auto"
-
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:minHeight="100dp"
-
             android:padding="10dp"
             gl:end_color="@color/gradientViolet"
             gl:orientation="TOP_BOTTOM"
@@ -164,6 +163,7 @@
         android:layout_margin="8dp"
         android:layout_marginTop="16dp"
         app:cardCornerRadius="15dp"
+        android:id="@+id/dessert_card"
         app:cardPreventCornerOverlap="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

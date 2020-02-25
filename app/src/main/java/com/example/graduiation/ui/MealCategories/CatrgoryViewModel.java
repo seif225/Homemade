@@ -20,8 +20,8 @@ public class CatrgoryViewModel extends ViewModel {
     private ArrayList<String> cookIds = new ArrayList<>();
     private static final String TAG = "CatrgoryViewModel";
 
-    public MutableLiveData<ArrayList<FoodModel>> getFoodModelMutableLiveData() {
-        firebaseQueryHelper.getListOfFoodAndUsers(foodModelMutableLiveData, cookIds);
+    public MutableLiveData<ArrayList<FoodModel>> getFoodModelMutableLiveData(String category) {
+        firebaseQueryHelper.getListOfFoodAndUsers(foodModelMutableLiveData, cookIds,category);
         return foodModelMutableLiveData;
     }
 

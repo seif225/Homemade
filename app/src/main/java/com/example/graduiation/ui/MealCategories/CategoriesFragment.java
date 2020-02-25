@@ -28,6 +28,11 @@ public class CategoriesFragment extends Fragment {
     RecyclerView foodRecyclerView;
     private RecyclerViewAdapter adapter;
     private FoodItemRecyclerViewAdapter foodAdapter;
+    private String category;
+
+    public CategoriesFragment(String s) {
+        category=s;
+    }
 
 
     @Override
@@ -39,7 +44,7 @@ public class CategoriesFragment extends Fragment {
         foodRecyclerView = view.findViewById(R.id.food_recyclerView);
 
         viewModel = ViewModelProviders.of(this).get(CatrgoryViewModel.class);
-        viewModel.getFoodModelMutableLiveData().observe(this, new Observer<ArrayList<FoodModel>>() {
+        viewModel.getFoodModelMutableLiveData(category).observe(this, new Observer<ArrayList<FoodModel>>() {
             @Override
             public void onChanged(ArrayList<FoodModel> foodModels) {
 

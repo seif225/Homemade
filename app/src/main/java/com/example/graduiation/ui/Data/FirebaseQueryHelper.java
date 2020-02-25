@@ -47,7 +47,7 @@ public class FirebaseQueryHelper {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    public void getListOfFoodAndUsers(MutableLiveData<ArrayList<FoodModel>> foodArrayListMutableLiveData, ArrayList<String> cookIds) {
+    public void getListOfFoodAndUsers(MutableLiveData<ArrayList<FoodModel>> foodArrayListMutableLiveData, ArrayList<String> cookIds, String category) {
 
         ArrayList<FoodModel> foodModelArrayList = new ArrayList<>();
 
@@ -66,11 +66,13 @@ public class FirebaseQueryHelper {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         FoodModel foodModel;
                         for (DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()) {
-                            for (DataSnapshot dataSnapshot1: dataSnapshot2.getChildren()){
+                            for (DataSnapshot dataSnapshot1 : dataSnapshot2.getChildren()) {
                                 foodModel = dataSnapshot1.getValue(FoodModel.class);
-                                foodModelArrayList.add(foodModel);
-                                //Log.e(TAG, "onDataChange: "+dataSnapshot1 );
-                                cookIds.add(dataSnapshot1.child("cookId").getValue().toString());
+                                if (foodModel.getCategory().equals(category)) {
+                                    foodModelArrayList.add(foodModel);
+                                    //Log.e(TAG, "onDataChange: "+dataSnapshot1 );
+                                    cookIds.add(dataSnapshot1.child("cookId").getValue().toString());
+                                }
                             }
                             foodArrayListMutableLiveData.setValue(foodModelArrayList);
                         }

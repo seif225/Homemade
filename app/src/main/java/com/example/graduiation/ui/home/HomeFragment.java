@@ -1,5 +1,6 @@
 package com.example.graduiation.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,9 +29,13 @@ public class HomeFragment extends Fragment {
 
 
     private HomeViewModel homeViewModel;
-    ImageButton pastry ;
+
     private static final String TAG = "HomeFragment";
-     CardView layout;
+    private CardView cooked;
+    private CardView semiCooked;
+    private CardView pastry;
+    private CardView dessert;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
@@ -38,12 +43,42 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
 
-        layout = root.findViewById(R.id.well_cooked_layout);
+        cooked = root.findViewById(R.id.well_cooked_layout);
 
-        layout.setOnClickListener(new View.OnClickListener() {
+        cooked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeFragment();
+                changeFragment("cooked");
+            }
+        });
+
+
+        semiCooked = root.findViewById(R.id.semi_card);
+
+        semiCooked.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeFragment("semi-cooked");
+            }
+        });
+
+
+        pastry = root.findViewById(R.id.pastry_card);
+
+        pastry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeFragment("pastry");
+            }
+        });
+
+
+        dessert = root.findViewById(R.id.dessert_card);
+
+        dessert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeFragment("dessert");
             }
         });
 
@@ -58,10 +93,10 @@ public class HomeFragment extends Fragment {
     }
 
 
-    public void changeFragment() {
+    public void changeFragment(String s) {
         Log.e(TAG, "changeFragment: Clicked ! ");
         // Create new fragment and transaction
-        Fragment newFragment = new CategoriesFragment();
+        Fragment newFragment = new CategoriesFragment(s);
         // consider using Java coding conventions (upper first char class names!!!)
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
