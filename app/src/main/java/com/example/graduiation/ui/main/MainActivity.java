@@ -9,6 +9,7 @@ import com.example.graduiation.ui.login.LoginActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.navigation.NavController;
@@ -32,16 +33,18 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private FirebaseAuth mAuth;
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (!FirebaseApp.getApps(this).isEmpty())FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        if (!FirebaseApp.getApps(this).isEmpty())
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mAuth= FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -75,10 +78,11 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         if (mAuth.getCurrentUser() == null) {
             sendUserToLogin();
-        }else if (mAuth.getCurrentUser().getUid().equals("7zOFRqGEuwcyL9h7IuBRW9OWdDn1")){
+        } else if (mAuth.getCurrentUser().getUid().equals("7zOFRqGEuwcyL9h7IuBRW9OWdDn1")) {
             sendUserToAddMeal();
         }
 
+        Log.e(TAG, "onStart: "+ mAuth.getUid() );
 
     }
 

@@ -29,6 +29,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.UUID;
 
 import io.reactivex.Observable;
@@ -39,15 +40,20 @@ import io.reactivex.schedulers.Schedulers;
 public class FirebaseQueryHelper {
     private FirebaseAuth mAuth;
     private static final String TAG = "FirebaseQueryHelper";
-    private static final DatabaseReference USER_REF = FirebaseDatabase.getInstance().getReference().child("Users");
-    private static final DatabaseReference FOOD_REF = FirebaseDatabase.getInstance().getReference().child("Food");
+    private static final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    private static final DatabaseReference USER_REF = mDatabase.getReference().child("Users");
+    private static final DatabaseReference FOOD_REF = mDatabase.getReference().child("Food");
     private Disposable uploadUserDataDisposable;
 
     public FirebaseQueryHelper() {
+
         mAuth = FirebaseAuth.getInstance();
+        USER_REF.keepSynced(true);
+        FOOD_REF.keepSynced(true);
+
     }
 
-    public void getListOfFoodAndUsers(MutableLiveData<ArrayList<FoodModel>> foodArrayListMutableLiveData, ArrayList<String> cookIds, String category) {
+    public void getListOfFoodAndUsers(MutableLiveData<ArrayList<FoodModel>> foodArrayListMutableLiveData, HashSet<String> cookIds, String category) {
 
         ArrayList<FoodModel> foodModelArrayList = new ArrayList<>();
 
@@ -149,7 +155,7 @@ public class FirebaseQueryHelper {
 
     private void sendUsersDataToDatabase(String name, String email, String password,
                                          String phoneNum) {
-        BuyerModel model = new BuyerModel();
+        UserParentModel model = new UserParentModel();
         String id = mAuth.getUid();
         if (id != null) {
             model.setId(id);
@@ -157,7 +163,7 @@ public class FirebaseQueryHelper {
             model.setPhone(phoneNum);
             model.setEmail(email);
             model.setPassword(password);
-            io.reactivex.Observable<BuyerModel> observable = Observable.just(model);
+            io.reactivex.Observable<UserParentModel> observable = Observable.just(model);
             Observer observer = new Observer() {
                 @Override
                 public void onSubscribe(Disposable d) {
@@ -344,25 +350,25 @@ public class FirebaseQueryHelper {
         });
     }
 
-    public void getUsersData(MutableLiveData<ArrayList<UserParentModel>> usersLiveData, ArrayList<String> cookIds) {
+    public void getUsersData(MutableLiveData<ArrayList<UserParentModel>> usersLiveData, HashSet<String> cookIds) {
+        ArrayList<UserParentModel> users = new ArrayList<>();
 
-        Observable<ArrayList<String>> observable = Observable.just(cookIds);
-        Observer<ArrayList<String>> observer = new Observer<ArrayList<String>>() {
+        Observable<HashSet<String>> observable = Observable.just(cookIds);
+        Observer<HashSet<String>> observer = new Observer<HashSet<String>>() {
             @Override
             public void onSubscribe(Disposable d) {
 
             }
 
             @Override
-            public void onNext(ArrayList<String> strings) {
-
+            public void onNext(HashSet<String> strings) {
                 USER_REF.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        ArrayList<UserParentModel> users = new ArrayList<>();
+
                         if (strings.size() > 0) {
                             for (String s : strings) {
-                                Log.e(TAG, "onDataChange: " + s + " " + strings.get(0) + " " + strings);
+
                                 if (dataSnapshot.child(s).exists())
                                     users.add(dataSnapshot.child(s).getValue(UserParentModel.class));
 
@@ -376,7 +382,6 @@ public class FirebaseQueryHelper {
 
                     }
                 });
-
             }
 
             @Override

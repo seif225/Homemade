@@ -42,13 +42,12 @@ public class HomeFragment extends Fragment {
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-
         cooked = root.findViewById(R.id.well_cooked_layout);
 
         cooked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeFragment("cooked");
+                changeFragment("well-cooked");
             }
         });
 
@@ -68,7 +67,7 @@ public class HomeFragment extends Fragment {
         pastry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeFragment("pastry");
+                changeFragment("Pastry");
             }
         });
 
