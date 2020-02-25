@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Data.FoodModel;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -43,7 +45,21 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
         if(foodModel.getDescribtion()!= null) holder.textView_Description.setText(foodModel.getDescribtion());
         if(foodModel.getTitle()!= null) holder.textView_Name.setText(foodModel.getTitle());
         if(foodModel.getDescribtion()!= null) Log.e(TAG, "onBindViewHolder:FOOD " + foodModel.getDescribtion());;
-        if(foodModel.getThumbnail()!= null) Picasso.get().load(foodModel.getThumbnail()).into(holder.imageView_foodImage);
+        if(foodModel.getThumbnail()!= null) {Picasso.get().load(foodModel.getThumbnail())
+                .networkPolicy(NetworkPolicy.OFFLINE).into(holder.imageView_foodImage, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                    Picasso.get().load(foodModel.getThumbnail()).into(holder.imageView_foodImage);
+
+                    }
+                });
+
+        }
         if(foodModel.getPrice()!= null) holder.price_tv.setText(foodModel.getPrice()+"$");
 
     }

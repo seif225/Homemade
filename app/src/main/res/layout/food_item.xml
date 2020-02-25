@@ -9,6 +9,8 @@
     android:layout_marginEnd="16dp"
     android:orientation="vertical">
 
+
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,6 +29,16 @@
             android:minHeight="100dp"
             >
 
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                    app:layout_constraintTop_toTopOf="@id/parent"
+                app:layout_constraintStart_toStartOf="@id/parent"
+                app:layout_constraintEnd_toEndOf="@id/parent"
+                app:layout_constraintBottom_toBottomOf="@id/parent"
+                android:id="@+id/vert_line1"
+                />
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -36,26 +48,33 @@
                 />
             <TextView
                 android:id="@+id/textView_Name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Name"
                 android:layout_margin="8dp"
                 android:textColor="#fefefe"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:maxLines="1"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintEnd_toStartOf="@id/vert_line1"
                 app:layout_constraintStart_toStartOf="@id/food_image"
                 app:layout_constraintTop_toTopOf="@id/food_image" />
 
             <TextView
-                android:layout_margin="8dp"
                 android:id="@+id/textView_Description"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:text="Description"
-                app:layout_constraintStart_toStartOf="@id/food_image"
+                android:maxLines="2"
                 android:textColor="#fefefe"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                app:layout_constraintHorizontal_bias="0"
+
+                app:layout_constraintEnd_toStartOf="@+id/vert_line1"
+                app:layout_constraintStart_toStartOf="@id/food_image"
                 app:layout_constraintTop_toBottomOf="@id/textView_Name" />
 
             <TextView
