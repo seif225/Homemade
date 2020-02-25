@@ -29,11 +29,13 @@
             android:id="@+id/tvDesserts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
+            android:layout_marginTop="16dp"
+
+            android:layout_marginStart="18dp"
             android:textStyle="bold"
             android:textColor="#000000"
             android:text="Desserts"
-            android:textSize="16sp"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@id/border"
             app:layout_constraintTop_toBottomOf="@id/border" />
 
@@ -42,7 +44,8 @@
         android:id="@+id/food_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+app:layout_constraintVertical_bias="0"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvDesserts" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
