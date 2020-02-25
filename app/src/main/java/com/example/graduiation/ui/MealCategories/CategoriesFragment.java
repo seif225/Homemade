@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -29,9 +30,11 @@ public class CategoriesFragment extends Fragment {
     private RecyclerViewAdapter adapter;
     private FoodItemRecyclerViewAdapter foodAdapter;
     private String category;
+    private TextView categoryTv;
+    private TextView border;
 
     public CategoriesFragment(String s) {
-        category=s;
+        category = s;
     }
 
 
@@ -42,44 +45,40 @@ public class CategoriesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_categories, container, false);
         recyclerView = view.findViewById(R.id.recyclerView);
         foodRecyclerView = view.findViewById(R.id.food_recyclerView);
-
+        categoryTv = view.findViewById(R.id.tv_category);
+        categoryTv.setText(category);
+        border = view.findViewById(R.id.border);
         viewModel = ViewModelProviders.of(this).get(CatrgoryViewModel.class);
         viewModel.getFoodModelMutableLiveData(category).observe(this, new Observer<ArrayList<FoodModel>>() {
             @Override
             public void onChanged(ArrayList<FoodModel> foodModels) {
-
-
-
                 if (foodModels != null) {
-
-                    Log.e(TAG, "onChanged:fooooood "+ foodModels.get(0).getTitle() );
+                    //Log.e(TAG, "onChanged:fooooood "+ foodModels.get(0).getTitle() );
                     foodAdapter = new FoodItemRecyclerViewAdapter(foodModels, getActivity());
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()
                             , RecyclerView.VERTICAL,
                             false);
                     foodRecyclerView.setLayoutManager(linearLayoutManager);
                     foodRecyclerView.setAdapter(foodAdapter);
-
-
-
                     viewModel.getUsersLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<UserParentModel>>() {
                         @Override
                         public void onChanged(ArrayList<UserParentModel> userParentModels) {
-                           // Log.e(TAG, "onChanged: "+userParentModels.get(0).getName()+"" );
+                            // Log.e(TAG, "onChanged: "+userParentModels.get(0).getName()+"" );
+                            if(userParentModels.size()>0){
+                                border.setVisibility(View.VISIBLE);
                             adapter = new RecyclerViewAdapter(userParentModels, getActivity());
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()
                                     , RecyclerView.HORIZONTAL,
                                     false);
                             recyclerView.setLayoutManager(linearLayoutManager);
                             recyclerView.setAdapter(adapter);
+
+                            }
                         }
                     });
-
                 }
-
             }
         });
-
 
         return view;
     }

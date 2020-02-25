@@ -68,6 +68,7 @@ public class FirebaseQueryHelper {
                         for (DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()) {
                             for (DataSnapshot dataSnapshot1 : dataSnapshot2.getChildren()) {
                                 foodModel = dataSnapshot1.getValue(FoodModel.class);
+                                assert foodModel != null;
                                 if (foodModel.getCategory().equals(category)) {
                                     foodModelArrayList.add(foodModel);
                                     //Log.e(TAG, "onDataChange: "+dataSnapshot1 );
