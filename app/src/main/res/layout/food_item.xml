@@ -4,12 +4,10 @@
     xmlns:gl="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
+    android:layout_marginStart="18dp"
     android:layout_marginTop="8dp"
-    android:layout_marginEnd="16dp"
+    android:layout_marginEnd="18dp"
     android:orientation="vertical">
-
-
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -19,13 +17,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/parent"
             android:layout_width="match_parent"
-            android:layout_height="130dp"
+            android:layout_height="133dp"
             android:minHeight="100dp"
             >
 
@@ -46,6 +43,14 @@
                 android:id="@+id/food_image"
                 android:scaleType="fitXY"
                 />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/hover"
+                    android:background="#33000000"
+                    />
+
             <TextView
                 android:id="@+id/textView_Name"
                 android:layout_width="0dp"

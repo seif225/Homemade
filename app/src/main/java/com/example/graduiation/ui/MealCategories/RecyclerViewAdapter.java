@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Data.UserParentModel;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -41,9 +43,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
         UserParentModel userParentModel = userParentModelList.get(position);
-        Log.e(TAG, "onBindViewHolder: "+userParentModel.getId());
-        if(userParentModel.getImage()!=null)Picasso.get().load(userParentModel.getImage()).into(holder.imgStory);
-        if(userParentModel.getName()!=null)holder.tvName.setText(userParentModel.getName());
+        Log.e(TAG, "onBindViewHolder: " + userParentModel.getId());
+        if (userParentModel.getImage() != null) {
+            Picasso.get().load(userParentModel.getImage())
+                    .networkPolicy(NetworkPolicy.OFFLINE).into(holder.imgStory, new Callback() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    Picasso.get().load(userParentModel.getImage()).into(holder.imgStory);
+                }
+            });
+
+        }
+        if (userParentModel.getName() != null) holder.tvName.setText(userParentModel.getName());
 
 
     }

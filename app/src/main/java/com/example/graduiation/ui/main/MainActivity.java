@@ -78,11 +78,12 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         if (mAuth.getCurrentUser() == null) {
             sendUserToLogin();
-        } else if (mAuth.getCurrentUser().getUid().equals("7zOFRqGEuwcyL9h7IuBRW9OWdDn1")) {
+        } else if (mAuth.getCurrentUser().getUid().equals("7zOFRqGEuwcyL9h7IuBRW9OWdDn1")
+                || mAuth.getCurrentUser().getUid().equals("a10286zJHwaaq0zAPW26XX6uITB2")) {
             sendUserToAddMeal();
         }
 
-        Log.e(TAG, "onStart: "+ mAuth.getUid() );
+        Log.e(TAG, "onStart: " + mAuth.getUid());
 
     }
 
