@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Data.UserParentModel;
+import com.example.graduiation.ui.addMeal.AddMealActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
@@ -25,12 +28,22 @@ public class ProfileFragment extends Fragment {
     private ProfileViewModel viewModel;
     private CircleImageView userProfilePicture;
     private TextView userName;
-
+    private FloatingActionButton fab;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_profile, container, false);
         userProfilePicture = root.findViewById(R.id.profileImage);
         userName = root.findViewById(R.id.tvUserName);
+        fab =root.findViewById(R.id.profiel_fab);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                sendUserToAddMealActivity();
+            }
+        });
+
 
         viewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
         viewModel.getUserParentModel(FirebaseAuth.getInstance().getUid()).observe(this, new Observer<UserParentModel>() {
@@ -58,5 +71,11 @@ public class ProfileFragment extends Fragment {
 
 
         return root;
+    }
+
+    private void sendUserToAddMealActivity() {
+
+    Intent i = new Intent(getActivity(), AddMealActivity.class);
+    getActivity().startActivity(i);
     }
 }
