@@ -89,6 +89,8 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
 
         String uid = getIntent().getStringExtra("uid");
         String category = getIntent().getStringExtra("category");
+        String userName=getIntent().getStringExtra("userName");
+        collapsingToolbar.setTitle(userName + "");
 
         appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -136,9 +138,9 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
                                 });
 
 
-                        toolbar.setTitle(userParentModel.getName());
                         tvUserName.setText(userParentModel.getName() + "");
-                        if(userParentModel.getBio()!=null)tvBio.setText(userParentModel.getBio() + "");
+                        if (userParentModel.getBio() != null)
+                            tvBio.setText(userParentModel.getBio() + "");
                         else tvBio.setVisibility(View.GONE);
                         textView.setText(userParentModel.getName() + "'s " + category + " menu");
 
