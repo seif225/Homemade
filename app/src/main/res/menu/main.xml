@@ -14,4 +14,10 @@
         android:title="@string/logout"
        
         app:showAsAction="always|withText" />
+
+    <item
+        android:id="@+id/test_button"
+        android:orderInCategory="100"
+        android:title="test method"
+        app:showAsAction="always|withText" />
 </menu>

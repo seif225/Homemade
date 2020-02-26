@@ -11,6 +11,7 @@ import com.example.graduiation.ui.MyApplication;
 import com.example.graduiation.ui.Profile.ProfileViewModel;
 import com.example.graduiation.ui.addMeal.AddMealActivity;
 import com.example.graduiation.ui.login.LoginActivity;
+import com.example.graduiation.ui.profileTEST.ProfileTesting;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -141,7 +142,19 @@ public class MainActivity extends AppCompatActivity {
             sendUserToLogin();
         }
 
+        if (item.getItemId() == R.id.test_button) {
+
+            sendUserToTestingProfile();
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void sendUserToTestingProfile() {
+        Intent i = new Intent(this, ProfileTesting.class);
+        startActivity(i);
+
+
     }
 
     @Override

@@ -10,18 +10,151 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:fitsSystemWindows="true">
+        android:layout_height="320dp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             android:fitsSystemWindows="true"
+            app:contentScrim="@android:color/transparent"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleTextAppearance="@style/TransparentText"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:statusBarScrim="@android:color/transparent"
-            app:contentScrim="@android:color/transparent">
+            app:toolbarId="@+id/toolbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mainConstraint"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:elevation="15dp"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+
+
+                <TextView
+                    android:id="@+id/tvUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:elevation="5dp"
+                    android:text="NAME HERE"
+                    android:textSize="20sp"
+                    android:textStyle="bold|italic"
+                    app:layout_collapseMode="pin"
+                    app:layout_constraintEnd_toEndOf="@id/ring"
+                    app:layout_constraintStart_toStartOf="@+id/ring"
+                    app:layout_constraintTop_toBottomOf="@id/ring" />
+
+                <TextView
+                    android:id="@+id/tvBio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="5dp"
+                    android:text="BIO HERE"
+                    android:textSize="18sp"
+                    app:layout_collapseMode="pin"
+
+                    app:layout_constraintEnd_toEndOf="@+id/tvUserName"
+                    app:layout_constraintStart_toStartOf="@id/tvUserName"
+                    app:layout_constraintTop_toBottomOf="@id/tvUserName" />
+
+
+                <LinearLayout
+                    android:id="@+id/linear_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="8dp"
+                    android:orientation="horizontal"
+                    app:layout_collapseMode="pin"
+                    android:padding="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/tvBio"
+                    app:layout_constraintStart_toStartOf="@id/tvBio"
+                    app:layout_constraintTop_toBottomOf="@id/tvBio"
+                    app:layout_constraintVertical_bias="0.1">
+
+
+                    <TextView
+                        android:id="@+id/tvFollowers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_person_outline_black_24dp"
+                        android:drawablePadding="8dp"
+                        android:elevation="8dp"
+                        android:padding="4dp"
+                        android:text="18 Followers"
+
+                        android:textSize="16sp"
+                        app:layout_collapseMode="pin"
+                        app:layout_constraintHorizontal_weight="1" />
+
+
+                    <TextView
+                        android:id="@+id/tvMeals"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_restaurant_black_24dp"
+                        android:drawablePadding="6dp"
+                        android:elevation="8dp"
+                        android:padding="4dp"
+                        android:text="88 orders "
+                        android:textSize="16sp"
+                        app:layout_collapseMode="pin" />
+                </LinearLayout>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/ring"
+                    android:layout_width="115dp"
+                    android:layout_height="115dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/btn_gradient_style"
+                    android:elevation="3dp"
+                    android:shadowColor="@android:color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.3"
+
+                    />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="107dp"
+                    android:layout_height="107dp"
+                    android:background="@drawable/white_back_ground"
+                    android:elevation="3dp"
+                    app:layout_constraintBottom_toBottomOf="@id/ring"
+                    app:layout_constraintEnd_toEndOf="@id/ring"
+                    app:layout_constraintStart_toStartOf="@id/ring"
+                    app:layout_constraintTop_toTopOf="@id/ring" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_image_details"
+                    android:layout_width="105dp"
+                    android:layout_height="105dp"
+                    android:elevation="3dp"
+
+                    android:src="@drawable/profile_round"
+                    app:layout_constraintBottom_toBottomOf="@id/ring"
+                    app:layout_constraintEnd_toEndOf="@id/ring"
+                    app:layout_constraintStart_toStartOf="@id/ring"
+                    app:layout_constraintTop_toTopOf="@id/ring" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/title_background" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
                 android:id="@+id/backdrop"
@@ -30,24 +163,17 @@
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
                 android:src="@color/gradient_start_color"
-                app:layout_collapseMode="parallax" />
+                app:layout_collapseMode="parallax"
 
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="@drawable/title_background"
                 />
+
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="parallax"
+                app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-
 
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>

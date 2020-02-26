@@ -55,6 +55,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 i.putExtra("category", category);
                 context.startActivity(i);
 
+
             }
         });
 

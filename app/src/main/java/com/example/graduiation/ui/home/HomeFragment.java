@@ -27,14 +27,13 @@ import butterknife.OnClick;
 
 public class HomeFragment extends Fragment {
 
-
     private HomeViewModel homeViewModel;
-
     private static final String TAG = "HomeFragment";
     private CardView cooked;
     private CardView semiCooked;
     private CardView pastry;
     private CardView dessert;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
