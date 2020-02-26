@@ -91,6 +91,9 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
         String category = getIntent().getStringExtra("category");
         String userName=getIntent().getStringExtra("userName");
         collapsingToolbar.setTitle(userName + "");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -100,6 +103,13 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
             }
         });
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                onBackPressed();
+            }
+        });
 
         Log.e(TAG, "onCreate: " + uid + " " + category);
 
