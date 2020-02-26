@@ -2,12 +2,10 @@ package com.example.graduiation.ui.MealCategories;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Data.UserParentModel;
-import com.example.graduiation.ui.StoryDetails.StoryDetailsActivity;
+import com.example.graduiation.ui.StoryDetails.StoryDetailsActivity2;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -52,7 +50,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, StoryDetailsActivity.class);
+                Intent i = new Intent(context, StoryDetailsActivity2.class);
                 i.putExtra("uid", userParentModel.getId());
                 i.putExtra("category", category);
                 context.startActivity(i);

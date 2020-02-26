@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     android:background="#00FFFFFF"
     app:elevation="0dp"
-
-
     tools:context=".ui.main.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
