@@ -47,6 +47,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
         UserParentModel userParentModel = userParentModelList.get(position);
         Log.e(TAG, "onBindViewHolder: " + userParentModel.getId());
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +55,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 i.putExtra("uid", userParentModel.getId());
                 i.putExtra("category", category);
                 i.putExtra("userName", userParentModel.getName());
-
                 context.startActivity(i);
 
 

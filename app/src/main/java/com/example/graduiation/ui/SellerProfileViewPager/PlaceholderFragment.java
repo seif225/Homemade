@@ -21,20 +21,21 @@ import com.example.graduiation.ui.MealCategories.FoodItemRecyclerViewAdapter;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlaceholderFragment extends Fragment {
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
 
+    private static final String ARG_SECTION_NUMBER = "section_number";
+    private PageViewModel viewModel;
 
     public static PlaceholderFragment newInstance(int index, String category, ArrayList<FoodModel> foodModels) {
         PlaceholderFragment fragment = new PlaceholderFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("category",category);
-        bundle.putSerializable("ARRAYLIST",foodModels);
+        bundle.putString("category", category);
+        bundle.putSerializable("ARRAYLIST", foodModels);
         bundle.putInt(ARG_SECTION_NUMBER, index);
         fragment.setArguments(bundle);
-
 
 
         return fragment;
@@ -43,7 +44,8 @@ public class PlaceholderFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        viewModel = ViewModelProviders.of(getActivity()).get(PageViewModel.class);
+        viewModel.setmList((ArrayList<FoodModel>) getArguments().getSerializable("ARRAYLIST"));
 
     }
 
@@ -54,14 +56,26 @@ public class PlaceholderFragment extends Fragment {
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+
         View root = inflater.inflate(R.layout.fragment_main, container, false);
+
         recycler = root.findViewById(R.id.fragment_main_recyclerView);
-        FoodItemRecyclerViewAdapter foodAdapter = new FoodItemRecyclerViewAdapter((ArrayList<FoodModel>)getArguments().getSerializable("ARRAYLIST"), getContext());
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext()
-                , RecyclerView.VERTICAL,
-                false);
-        recycler.setLayoutManager(linearLayoutManager);
-        recycler.setAdapter(foodAdapter);
+
+
+                FoodItemRecyclerViewAdapter foodAdapter = new FoodItemRecyclerViewAdapter(
+                        (ArrayList<FoodModel>) getArguments().getSerializable("ARRAYLIST")
+                        , getContext());
+
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext()
+                        , RecyclerView.VERTICAL,
+                        false);
+
+                recycler.setLayoutManager(linearLayoutManager);
+
+                recycler.setAdapter(foodAdapter);
+
+
+
 
         return root;
     }

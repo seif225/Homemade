@@ -1,13 +1,41 @@
 package com.example.graduiation.ui.Data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.HashMap;
 
-public class FoodModel {
+public class FoodModel implements Parcelable {
     private String title , describtion ,  id , category , cookId , price , orderCount , thumbnail ;
     private String min , max ;
     private HashMap<Object , Object> reviewsMap , picsMap , ratingMap;
 
     public FoodModel(){}
+
+    protected FoodModel(Parcel in) {
+        title = in.readString();
+        describtion = in.readString();
+        id = in.readString();
+        category = in.readString();
+        cookId = in.readString();
+        price = in.readString();
+        orderCount = in.readString();
+        thumbnail = in.readString();
+        min = in.readString();
+        max = in.readString();
+    }
+
+    public static final Creator<FoodModel> CREATOR = new Creator<FoodModel>() {
+        @Override
+        public FoodModel createFromParcel(Parcel in) {
+            return new FoodModel(in);
+        }
+
+        @Override
+        public FoodModel[] newArray(int size) {
+            return new FoodModel[size];
+        }
+    };
 
     public void setTitle(String title) {
         this.title = title;
@@ -111,5 +139,24 @@ public class FoodModel {
 
     public HashMap<Object, Object> getRatingMap() {
         return ratingMap;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(describtion);
+        dest.writeString(id);
+        dest.writeString(category);
+        dest.writeString(cookId);
+        dest.writeString(price);
+        dest.writeString(orderCount);
+        dest.writeString(thumbnail);
+        dest.writeString(min);
+        dest.writeString(max);
     }
 }

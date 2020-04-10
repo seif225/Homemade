@@ -94,15 +94,9 @@ public class HomeFragment extends Fragment {
     public void changeFragment(String s) {
         Log.e(TAG, "changeFragment: Clicked ! ");
         // Create new fragment and transaction
-        Fragment newFragment = new CategoriesFragment(s);
+        Intent i = new Intent (getContext() , CategoriesFragment.class);
+        i.putExtra("category",s);
         // consider using Java coding conventions (upper first char class names!!!)
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack
-        transaction.replace(R.id.nav_host_fragment, newFragment);
-        transaction.addToBackStack(null);
-        // Commit the transaction
-        transaction.commit();
+        startActivity(i);
     }
 }

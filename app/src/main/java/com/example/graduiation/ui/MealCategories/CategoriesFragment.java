@@ -1,86 +1,85 @@
 package com.example.graduiation.ui.MealCategories;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Data.FoodModel;
 import com.example.graduiation.ui.Data.UserParentModel;
-
 import java.util.ArrayList;
 
-import butterknife.BindView;
+public class CategoriesFragment extends AppCompatActivity {
 
-
-public class CategoriesFragment extends Fragment {
     private static final String TAG = "CategoriesFragment";
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private CatrgoryViewModel viewModel;
-    RecyclerView foodRecyclerView;
+    private RecyclerView foodRecyclerView;
     private RecyclerViewAdapter adapter;
     private FoodItemRecyclerViewAdapter foodAdapter;
     private String category;
     private TextView categoryTv;
     private TextView border;
 
-    public CategoriesFragment(String s) {
-        category = s;
-    }
-
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_categories);
+        Intent i = getIntent();
+        category = i.getStringExtra("category");
+        Log.e(TAG, "onCreate: current category is " + category);
 
-        View view = inflater.inflate(R.layout.fragment_categories, container, false);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        foodRecyclerView = view.findViewById(R.id.food_recyclerView);
-        categoryTv = view.findViewById(R.id.tv_category);
+        recyclerView = findViewById(R.id.recyclerView);
+        foodRecyclerView = findViewById(R.id.food_recyclerView);
+        categoryTv = findViewById(R.id.tv_category);
         categoryTv.setText(category);
-        border = view.findViewById(R.id.border);
+        border = findViewById(R.id.border);
         viewModel = ViewModelProviders.of(this).get(CatrgoryViewModel.class);
         viewModel.getFoodModelMutableLiveData(category).observe(this, new Observer<ArrayList<FoodModel>>() {
             @Override
             public void onChanged(ArrayList<FoodModel> foodModels) {
                 if (foodModels != null) {
                     //Log.e(TAG, "onChanged:fooooood "+ foodModels.get(0).getTitle() );
-                    foodAdapter = new FoodItemRecyclerViewAdapter(foodModels, getActivity());
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()
+                    foodAdapter = new FoodItemRecyclerViewAdapter(foodModels, CategoriesFragment.this);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(CategoriesFragment.this
                             , RecyclerView.VERTICAL,
                             false);
                     foodRecyclerView.setLayoutManager(linearLayoutManager);
                     foodRecyclerView.setAdapter(foodAdapter);
-                    viewModel.getUsersLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<UserParentModel>>() {
+                    //foodRecyclerView.setVerticalScrollBarEnabled(true);
+                    recyclerView.setNestedScrollingEnabled(false);
+                    viewModel.getUsersLiveData().observe(CategoriesFragment.this, new Observer<ArrayList<UserParentModel>>() {
                         @Override
                         public void onChanged(ArrayList<UserParentModel> userParentModels) {
                             // Log.e(TAG, "onChanged: "+userParentModels.get(0).getName()+"" );
-                            if(userParentModels.size()>0){
+                            if (userParentModels.size() > 0) {
                                 border.setVisibility(View.VISIBLE);
-                            adapter = new RecyclerViewAdapter(userParentModels, getActivity(),category);
-                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()
-                                    , RecyclerView.HORIZONTAL,
-                                    false);
-                            recyclerView.setLayoutManager(linearLayoutManager);
-                            recyclerView.setAdapter(adapter);
-
+                                adapter = new RecyclerViewAdapter(userParentModels, CategoriesFragment.this, category);
+                                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext()
+                                        , RecyclerView.HORIZONTAL,
+                                        false);
+                                recyclerView.setLayoutManager(linearLayoutManager);
+                                recyclerView.setHorizontalScrollBarEnabled(true);
+                                recyclerView.setAdapter(adapter);
                             }
                         }
                     });
                 }
             }
         });
-
-        return view;
     }
 
 
