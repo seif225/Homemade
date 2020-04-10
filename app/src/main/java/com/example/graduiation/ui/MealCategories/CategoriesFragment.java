@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -33,6 +34,11 @@ public class CategoriesFragment extends AppCompatActivity {
     private TextView categoryTv;
     private TextView border;
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +47,11 @@ public class CategoriesFragment extends AppCompatActivity {
         Intent i = getIntent();
         category = i.getStringExtra("category");
         Log.e(TAG, "onCreate: current category is " + category);
+
+
+       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
         recyclerView = findViewById(R.id.recyclerView);
         foodRecyclerView = findViewById(R.id.food_recyclerView);

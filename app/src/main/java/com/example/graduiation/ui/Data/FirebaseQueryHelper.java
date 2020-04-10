@@ -263,7 +263,7 @@ public class FirebaseQueryHelper {
                                 SendUserToIntro(context);
                                 progressDialog.dismiss();
                             } else {
-                                Toast.makeText(context, "Error " + task.getException(),
+                                Toast.makeText(context, "Error " +task.getResult(),
                                         Toast.LENGTH_SHORT).show();
                                 progressDialog.dismiss();
 
@@ -475,7 +475,7 @@ public class FirebaseQueryHelper {
                         UserParentModel model = new UserParentModel();
                         model.setEmail(dataSnapshot.child("email").getValue().toString());
                         model.setId(dataSnapshot.child("id").getValue().toString());
-                        model.setImage(dataSnapshot.child("image").getValue().toString());
+                        if(dataSnapshot.hasChild("image"))  model.setImage(dataSnapshot.child("image").getValue().toString());
                         model.setName(dataSnapshot.child("name").getValue().toString());
                         model.setPhone(dataSnapshot.child("phone").getValue().toString());
                         userParentModel.setValue(model);
