@@ -73,10 +73,10 @@ public class FirebaseQueryHelper {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         ArrayList<FoodModel> list = new ArrayList<>();
                         for (DataSnapshot datasnapshot1 : dataSnapshot.getChildren()) {
-                                FoodModel foodModel = datasnapshot1.getValue(FoodModel.class);
-                                if (foodModel.getCategory().equals(category)) {
-                                    list.add(foodModel);
-                            }
+                            FoodModel foodModel = datasnapshot1.getValue(FoodModel.class);
+                            /*if (foodModel.getCategory().equals(category)) {*/
+                            list.add(foodModel);
+                            /*}*/
                         }
                         listMutableLiveData.setValue(list);
                     }
@@ -420,8 +420,16 @@ public class FirebaseQueryHelper {
                         if (strings.size() > 0) {
                             for (String s : strings) {
 
-                                if (dataSnapshot.child(s).exists())
-                                    users.add(dataSnapshot.child(s).getValue(UserParentModel.class));
+                                if (dataSnapshot.child(s).exists()) {
+                                    UserParentModel model = new UserParentModel();
+                                    model.setEmail(dataSnapshot.child(s).child("email").getValue().toString());
+                                    model.setId(dataSnapshot.child(s).child("id").getValue().toString());
+                                    if (dataSnapshot.child(s).hasChild("image"))
+                                        model.setImage(dataSnapshot.child(s).child("image").getValue().toString() + "");
+                                    model.setName(dataSnapshot.child(s).child("name").getValue().toString());
+                                    model.setPhone(dataSnapshot.child(s).child("phone").getValue().toString());
+                                    users.add(model);
+                                }
 
                             }
                         }
@@ -464,7 +472,13 @@ public class FirebaseQueryHelper {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Log.e(TAG, "onDataChange: " + dataSnapshot);
-                        userParentModel.setValue(dataSnapshot.getValue(UserParentModel.class));
+                        UserParentModel model = new UserParentModel();
+                        model.setEmail(dataSnapshot.child("email").getValue().toString());
+                        model.setId(dataSnapshot.child("id").getValue().toString());
+                        model.setImage(dataSnapshot.child("image").getValue().toString());
+                        model.setName(dataSnapshot.child("name").getValue().toString());
+                        model.setPhone(dataSnapshot.child("phone").getValue().toString());
+                        userParentModel.setValue(model);
 
                     }
 
@@ -507,7 +521,16 @@ public class FirebaseQueryHelper {
                 USER_REF.child(s).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        userParentModelMutableLiveData.setValue(dataSnapshot.getValue(UserParentModel.class));
+                        UserParentModel model = new UserParentModel();
+                        model.setEmail(dataSnapshot.child("email").getValue().toString());
+                        model.setId(dataSnapshot.child("id").getValue().toString());
+                        if (dataSnapshot.hasChild("image"))
+                            model.setImage(dataSnapshot.child("image").getValue().toString());
+                        model.setName(dataSnapshot.child("name").getValue().toString());
+                        model.setPhone(dataSnapshot.child("phone").getValue().toString());
+                        if (dataSnapshot.hasChild("bio"))
+                            model.setBio(dataSnapshot.child("bio").getValue().toString());
+                        userParentModelMutableLiveData.setValue(model);
                     }
 
                     @Override
@@ -515,8 +538,6 @@ public class FirebaseQueryHelper {
 
                     }
                 });
-
-
             }
 
             @Override
@@ -532,5 +553,54 @@ public class FirebaseQueryHelper {
 
         observable.subscribeOn(Schedulers.io()).observeOn(Schedulers.computation()).subscribe(observer);
 
+    }
+
+
+    public void isFollowed(String myId, String userId, MutableLiveData<Boolean> mutableFlag) {
+
+        USER_REF.child(myId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.hasChild("following")) {
+                    if (dataSnapshot.child("following").hasChild(userId)) {
+                        Log.e(TAG, "onDataChange: " + " \n \n \n the flag should be true here  \n \n \n ");
+                        mutableFlag.setValue(true);
+
+                    } else {
+                        Log.e(TAG, "flag: " + "false");
+
+                        mutableFlag.setValue(false);
+
+                    }
+                    Log.e(TAG, "onDataChange: " + "if the user has following list check");
+                } else {
+                    Log.e(TAG, "flag: " + "false");
+                    USER_REF.child(myId).child("following").child("createFollowingList").setValue("true");
+                    mutableFlag.setValue(false);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+
+    }
+
+    public void follow(String myId, String userId) {
+        Log.e(TAG, "follow: " + userId + myId);
+        USER_REF.child(myId).child("following").child(userId).setValue("true");
+        USER_REF.child(userId).child("follower").child(myId).setValue("true");
+
+
+    }
+
+    public void unFollow(String myId, String userId) {
+        Log.e(TAG, "unfollow:               " + userId + myId);
+        USER_REF.child(myId).child("following").child(userId).removeValue();
+        USER_REF.child(userId).child("follower").child(myId).removeValue();
     }
 }

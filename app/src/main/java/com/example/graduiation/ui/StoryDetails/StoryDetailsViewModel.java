@@ -15,11 +15,12 @@ public class StoryDetailsViewModel extends ViewModel {
     private FirebaseQueryHelper firebaseQueryHelper;
     private MutableLiveData<UserParentModel> userParentModelMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<ArrayList<FoodModel>> listMutableLiveData= new MutableLiveData<>();
-
+    private MutableLiveData<Boolean> mutableFlag=new MutableLiveData<>();
     public void setCategoryAndId(String uid, String category) {
         this.uid = uid;
         this.category = category;
         firebaseQueryHelper = new FirebaseQueryHelper();
+
     }
 
     public MutableLiveData<ArrayList<FoodModel>> getListMutableLiveData() {
@@ -32,6 +33,18 @@ public class StoryDetailsViewModel extends ViewModel {
         return userParentModelMutableLiveData;
     }
 
+    public MutableLiveData<Boolean> isFollowed(String myId , String userId ){
+         firebaseQueryHelper.isFollowed(myId,userId,mutableFlag);
+        return mutableFlag;
+    }
+
+    public void follow(String myId , String userId ){
+        firebaseQueryHelper.follow( myId ,  userId );
+    }
+
+    public void unFollow(String myId , String userId ){
+        firebaseQueryHelper.unFollow( myId ,  userId );
+    }
 
 
 }
