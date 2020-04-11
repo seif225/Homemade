@@ -28,6 +28,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 
 import io.reactivex.Observable;
@@ -605,5 +606,49 @@ public class FirebaseQueryHelperRepository {
         Log.e(TAG, "unfollow:               " + userId + myId);
         USER_REF.child(myId).child("following").child(userId).removeValue();
         USER_REF.child(userId).child("follower").child(myId).removeValue();
+    }
+
+    public void addItemToCart(Context context, String uid, FoodModel model) {
+
+        USER_REF.child(uid).child("cart").child(model.getId()).setValue(model);
+        USER_REF.child(uid).child("cart").child(model.getId()).child("quantity").setValue("1");
+        Toast.makeText(context, "this item has been  added to cart", Toast.LENGTH_SHORT).show();
+
+
+    }
+
+
+
+    public void getCartItems(String uid, MutableLiveData<List<FoodModel>> listMutableLiveData) {
+
+        ArrayList<FoodModel> listOfFoodModel  = new ArrayList<>();
+        USER_REF.child(uid).child("cart").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    FoodModel foodModel = new FoodModel();
+                    foodModel.setCategory(dataSnapshot1.child("category").toString());
+                    foodModel.setCookId(dataSnapshot1.child("cookId").getValue().toString());
+                    foodModel.setDescribtion(dataSnapshot1.child("describtion").getValue().toString());
+                    foodModel.setId(dataSnapshot1.child("id").getValue().toString());
+                    foodModel.setMax(dataSnapshot1.child("max").getValue().toString());
+                    foodModel.setMin(dataSnapshot1.child("min").getValue().toString());
+                    foodModel.setPrice(dataSnapshot1.child("price").getValue().toString());
+                    foodModel.setThumbnail(dataSnapshot1.child("thumbnail").getValue().toString());
+                    foodModel.setTitle(dataSnapshot1.child("title").getValue().toString());
+                    listOfFoodModel.add(foodModel);
+                }
+
+                listMutableLiveData.setValue(listOfFoodModel);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 }

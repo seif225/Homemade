@@ -14,11 +14,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.graduiation.ui.Adapters.IntroViewPagerAdapter;
 import com.example.graduiation.ui.main.MainActivity;
 import com.example.graduiation.R;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;

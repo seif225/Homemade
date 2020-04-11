@@ -2,22 +2,19 @@ package com.example.graduiation.ui.MealCategories;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.graduiation.R;
+import com.example.graduiation.ui.Adapters.FoodItemRecyclerViewAdapter;
+import com.example.graduiation.ui.Adapters.RecyclerViewAdapter;
 import com.example.graduiation.ui.Data.FoodModel;
 import com.example.graduiation.ui.Data.UserParentModel;
 import java.util.ArrayList;

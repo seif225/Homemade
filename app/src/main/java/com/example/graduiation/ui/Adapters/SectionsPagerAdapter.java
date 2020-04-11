@@ -1,4 +1,4 @@
-package com.example.graduiation.ui.SellerProfileViewPager;
+package com.example.graduiation.ui.Adapters;
 
 import android.content.Context;
 
@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.graduiation.ui.Data.FoodModel;
+import com.example.graduiation.ui.SellerProfileViewPager.PlaceholderFragment;
 
 import java.util.ArrayList;
 import java.util.HashSet;

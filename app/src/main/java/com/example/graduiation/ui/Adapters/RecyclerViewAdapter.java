@@ -1,4 +1,4 @@
-package com.example.graduiation.ui.MealCategories;
+package com.example.graduiation.ui.Adapters;
 
 import android.content.Context;
 import android.content.Intent;

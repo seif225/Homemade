@@ -12,12 +12,12 @@
         android:id="@+id/action_logout"
         android:orderInCategory="100"
         android:title="@string/logout"
-       
         app:showAsAction="always|withText" />
 
     <item
-        android:id="@+id/test_button"
+        android:id="@+id/cart_button"
         android:orderInCategory="100"
-        android:title="test method"
-        app:showAsAction="always|withText" />
+        android:title="cart"
+        android:icon="@drawable/ic_shopping_cart_black_24dp"
+        app:showAsAction="always" />
 </menu>

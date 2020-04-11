@@ -1,4 +1,4 @@
-package com.example.graduiation.ui.intro;
+package com.example.graduiation.ui.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.example.graduiation.R;
+import com.example.graduiation.ui.intro.ScreenItem;
 
 import java.util.List;
 

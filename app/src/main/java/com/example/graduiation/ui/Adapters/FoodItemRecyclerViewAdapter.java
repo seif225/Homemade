@@ -1,4 +1,4 @@
-package com.example.graduiation.ui.MealCategories;
+package com.example.graduiation.ui.Adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -14,7 +14,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduiation.R;
+import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
 import com.example.graduiation.ui.Data.FoodModel;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -23,6 +25,7 @@ import java.util.List;
 
 public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
         <FoodItemRecyclerViewAdapter.ViewHolder> {
+
     private List<FoodModel> foodModelList;
     private Context context;
     private static final String TAG = "FoodItemRecyclerViewAda";
@@ -43,6 +46,9 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
 
     @Override
     public void onBindViewHolder(@NonNull FoodItemRecyclerViewAdapter.ViewHolder holder, int position) {
+
+
+
         FoodModel foodModel = foodModelList.get(position);
         if(foodModel.getDescribtion()!= null) holder.textView_Description.setText(foodModel.getDescribtion());
         if(foodModel.getTitle()!= null) holder.textView_Name.setText(foodModel.getTitle());
@@ -67,9 +73,19 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
         holder.addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirebaseQueryHelperRepository.getInstance().addItemToCart(
+                        context
+                        ,FirebaseAuth.getInstance().getUid()
+                        ,foodModel
+                );
+
 
             }
         });
+
+        if(foodModel.getCookId().equals(FirebaseAuth.getInstance().getUid())) {
+            holder.addToCartButton.setVisibility(View.GONE);
+        }
 
     }
 

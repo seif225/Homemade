@@ -7,13 +7,10 @@ import android.os.Bundle;
 
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Data.UserParentModel;
-import com.example.graduiation.ui.MyApplication;
-import com.example.graduiation.ui.Profile.ProfileViewModel;
+import com.example.graduiation.ui.UserCart.UserCartActivity;
 import com.example.graduiation.ui.addMeal.AddMealActivity;
 import com.example.graduiation.ui.login.LoginActivity;
 import com.example.graduiation.ui.profileTEST.ProfileTesting;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.util.Log;
 import android.view.MenuItem;
@@ -30,7 +27,6 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -142,12 +138,17 @@ public class MainActivity extends AppCompatActivity {
             sendUserToLogin();
         }
 
-        if (item.getItemId() == R.id.test_button) {
+        if (item.getItemId() == R.id.cart_button) {
 
-            sendUserToTestingProfile();
+            sendUserToCart();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void sendUserToCart() {
+        Intent i = new Intent(this, UserCartActivity.class);
+        startActivity(i);
     }
 
     private void sendUserToTestingProfile() {
