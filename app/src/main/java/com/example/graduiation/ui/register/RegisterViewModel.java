@@ -4,11 +4,11 @@ import android.app.ProgressDialog;
 
 import androidx.lifecycle.ViewModel;
 
-import com.example.graduiation.ui.Data.FirebaseQueryHelper;
+import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
 
 public class RegisterViewModel extends ViewModel {
 
-    private FirebaseQueryHelper firebaseQueryHelper = new FirebaseQueryHelper();
+    FirebaseQueryHelperRepository firebaseQueryHelper = FirebaseQueryHelperRepository.getInstance();
 
     public void Authenticate(String mail, String password, String password2, ProgressDialog pd, String phone, String name) throws IllegalArgumentException {
 

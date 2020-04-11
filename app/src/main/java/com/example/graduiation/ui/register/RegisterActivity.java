@@ -18,7 +18,8 @@ import com.example.graduiation.R;
 import com.example.graduiation.ui.login.LoginActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
-import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
+
+import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

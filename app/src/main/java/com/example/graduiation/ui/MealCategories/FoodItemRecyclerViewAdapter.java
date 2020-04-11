@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
     private List<FoodModel> foodModelList;
     private Context context;
     private static final String TAG = "FoodItemRecyclerViewAda";
+
     @NonNull
     @Override
     public FoodItemRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
@@ -62,6 +64,13 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
         }
         if(foodModel.getPrice()!= null) holder.price_tv.setText(foodModel.getPrice()+"$");
 
+        holder.addToCartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 
     @Override
@@ -79,6 +88,7 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
         ImageView imageView_foodImage;
         TextView price_tv;
         ConstraintLayout constraintLayout;
+        Button addToCartButton;
         public ViewHolder(@NonNull View itemView) {
 
             super(itemView);
@@ -87,6 +97,7 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
             constraintLayout = itemView.findViewById(R.id.parent);
             imageView_foodImage = itemView.findViewById(R.id.food_image);
             price_tv = itemView.findViewById(R.id.textView_price);
+            addToCartButton=itemView.findViewById(R.id.add_to_cart_button);
         }
     }
 }

@@ -108,7 +108,7 @@
                             android:inputType="textPassword"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+                    <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
                         android:id="@+id/cirRegisterButton"
                         style="@style/loginButton"
                         app:spinning_bar_width="4dp"

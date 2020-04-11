@@ -5,20 +5,18 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.graduiation.ui.Data.FirebaseQueryHelper;
+import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
 import com.example.graduiation.ui.Data.FoodModel;
 import com.example.graduiation.ui.Data.UserParentModel;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 
 public class CatrgoryViewModel extends ViewModel {
 
     private MutableLiveData<ArrayList<UserParentModel>> usersLiveData = new MutableLiveData<>();
     private MutableLiveData<ArrayList<FoodModel>> foodModelMutableLiveData = new MutableLiveData<>();
-    private FirebaseQueryHelper firebaseQueryHelper = new FirebaseQueryHelper();
+    FirebaseQueryHelperRepository firebaseQueryHelper = FirebaseQueryHelperRepository.getInstance();
     private HashSet<String> cookIds = new HashSet<String>();
     String category;
     private static final String TAG = "CatrgoryViewModel";

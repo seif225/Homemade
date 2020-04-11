@@ -1,6 +1,5 @@
 package com.example.graduiation.ui.Data;
 
-import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,15 +8,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.graduiation.ui.MyApplication;
 import com.example.graduiation.ui.intro.IntroActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -25,13 +21,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.UUID;
@@ -41,15 +35,23 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class FirebaseQueryHelper {
+public class FirebaseQueryHelperRepository {
     private FirebaseAuth mAuth;
     private static final String TAG = "FirebaseQueryHelper";
     private static final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     private static final DatabaseReference USER_REF = mDatabase.getReference().child("Users");
     private static final DatabaseReference FOOD_REF = mDatabase.getReference().child("Food");
     private Disposable uploadUserDataDisposable;
+    private static FirebaseQueryHelperRepository Instance;
 
-    public FirebaseQueryHelper() {
+    public static FirebaseQueryHelperRepository getInstance() {
+        if (Instance == null) {
+            Instance = new FirebaseQueryHelperRepository();
+        }
+        return Instance;
+    }
+
+    private FirebaseQueryHelperRepository() {
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -263,7 +265,7 @@ public class FirebaseQueryHelper {
                                 SendUserToIntro(context);
                                 progressDialog.dismiss();
                             } else {
-                                Toast.makeText(context, "Error " +task.getResult(),
+                                Toast.makeText(context, "Error " + task.getResult(),
                                         Toast.LENGTH_SHORT).show();
                                 progressDialog.dismiss();
 
@@ -475,7 +477,8 @@ public class FirebaseQueryHelper {
                         UserParentModel model = new UserParentModel();
                         model.setEmail(dataSnapshot.child("email").getValue().toString());
                         model.setId(dataSnapshot.child("id").getValue().toString());
-                        if(dataSnapshot.hasChild("image"))  model.setImage(dataSnapshot.child("image").getValue().toString());
+                        if (dataSnapshot.hasChild("image"))
+                            model.setImage(dataSnapshot.child("image").getValue().toString());
                         model.setName(dataSnapshot.child("name").getValue().toString());
                         model.setPhone(dataSnapshot.child("phone").getValue().toString());
                         userParentModel.setValue(model);

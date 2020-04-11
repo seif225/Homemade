@@ -76,5 +76,8 @@ dependencies {
 
     implementation 'net.colindodd:gradientlayout:1.2'
 
+    implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'
+    implementation 'br.com.simplepass:loading-button-android:2.2.0'
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
 
 }

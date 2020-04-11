@@ -20,7 +20,8 @@ import com.example.graduiation.ui.main.MainActivity;
 import com.example.graduiation.ui.register.RegisterActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
-import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
+
+import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
