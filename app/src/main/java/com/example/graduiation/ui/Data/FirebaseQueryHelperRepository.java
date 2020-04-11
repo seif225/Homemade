@@ -47,8 +47,7 @@ public class FirebaseQueryHelperRepository {
 
     public static FirebaseQueryHelperRepository getInstance() {
         if (Instance == null) {
-            Instance = new FirebaseQueryHelperRepository();
-        }
+            Instance = new FirebaseQueryHelperRepository(); }
         return Instance;
     }
 
@@ -104,6 +103,11 @@ public class FirebaseQueryHelperRepository {
             }
         };
         observable.observeOn(Schedulers.io()).observeOn(Schedulers.computation()).subscribe(observer);
+
+    }
+
+    public static void deleteItemFromCart(String uid, String id) {
+        USER_REF.child(uid).child("cart").child(id).removeValue();
 
     }
 

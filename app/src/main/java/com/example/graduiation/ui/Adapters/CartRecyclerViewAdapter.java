@@ -89,6 +89,22 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<CartRecyclerVi
         });
 
 
+         holder.deleteItemButton.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 FirebaseQueryHelperRepository.deleteItemFromCart(FirebaseAuth.getInstance().getUid(),foodModel.getId());
+                 removeItem(position);
+             }
+         });
+
+
+    }
+
+    private void removeItem(int position) {
+
+        foodModelList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, foodModelList.size());
 
     }
 
@@ -103,6 +119,7 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<CartRecyclerVi
         TextView price_tv;
         ConstraintLayout constraintLayout;
         ElegantNumberButton elegantNumberButton;
+        Button deleteItemButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -113,7 +130,7 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<CartRecyclerVi
             imageView_foodImage = itemView.findViewById(R.id.food_image);
             price_tv = itemView.findViewById(R.id.textView_price);
             elegantNumberButton=itemView.findViewById(R.id.elegant_button);
-
+            deleteItemButton=itemView.findViewById(R.id.delete_item_button);
         }
     }
 }

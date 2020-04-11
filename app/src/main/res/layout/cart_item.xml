@@ -83,19 +83,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="60dp"
-            android:layout_marginEnd="60dp"
             android:elevation="8dp"
             android:gravity="center"
             android:text="Add to cart"
             android:textSize="24sp"
             app:backGroundColor="@color/gradientLightGreen"
             app:initialNumber="1"
-
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/card_image_container"
-            app:layout_constraintStart_toStartOf="@id/vert_line2"
+            app:layout_constraintEnd_toEndOf="@+id/textView_price"
+            app:layout_constraintStart_toEndOf="@+id/vert_line2"
+            app:layout_constraintStart_toStartOf="@+id/price_dummy_text"
             app:layout_constraintTop_toBottomOf="@+id/price_dummy_text"
             app:textSize="8sp" />
 
@@ -126,6 +123,17 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/textView_Name"
             app:layout_constraintTop_toBottomOf="@+id/textView_Name" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="delete item"
+            android:layout_margin="8dp"
+            android:id="@+id/delete_item_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/elegant_button"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
