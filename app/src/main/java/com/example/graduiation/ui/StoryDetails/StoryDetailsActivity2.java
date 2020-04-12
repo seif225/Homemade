@@ -201,15 +201,21 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
                                         Picasso.get().load(userParentModel.getImage()).into(profilePicture);
                                     }
                                 });
-
-                        tvUserName.setText(userParentModel.getName() + "");
-                        if (userParentModel.getBio() != null)
-                            tvBio.setText(userParentModel.getBio() + "");
-                        else
-                            tvBio.setVisibility(View.GONE);
-                        textView.setText(userParentModel.getName() + "'s " + category + " menu");
-
                     }
+                    tvUserName.setText(userParentModel.getName() + "");
+                    if (userParentModel.getBio() != null)
+                        tvBio.setText(userParentModel.getBio() + "");
+                    else
+                        tvBio.setVisibility(View.GONE);
+                    textView.setText(userParentModel.getName() + "'s " + category + " menu");
+                    viewModel.getFollowersCount(userParentModel.getId()).observe(StoryDetailsActivity2.this, new Observer<Integer>() {
+                        @Override
+                        public void onChanged(Integer integer) {
+                            if (integer == 1) tvFollowers.setText(integer + " Follower");
+                            else tvFollowers.setText(integer + " Followers");
+                        }
+                    });
+
 
                 }
             });
@@ -275,7 +281,7 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
     private void setUnfollowedState() {
         followButton.setBackgroundResource(R.drawable.unfollow_button_shape);
         followButton.setText("Unfollow");
-        ((Button)followButton).setTextColor(Color.parseColor("#FF0000"));
+        ((Button) followButton).setTextColor(Color.parseColor("#FF0000"));
 
     }
 
@@ -284,6 +290,6 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
 
         followButton.setBackgroundResource(R.drawable.follow_button_shape);
         followButton.setText("Follow");
-        ((Button)followButton).setTextColor(Color.parseColor("#3C8F00"));
+        ((Button) followButton).setTextColor(Color.parseColor("#3C8F00"));
     }
 }

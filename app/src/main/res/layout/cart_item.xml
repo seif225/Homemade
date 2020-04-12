@@ -125,15 +125,15 @@
             app:layout_constraintTop_toBottomOf="@+id/textView_Name" />
 
         <Button
+            android:id="@+id/delete_item_button"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:text="delete item"
             android:layout_margin="8dp"
-            android:id="@+id/delete_item_button"
+            android:text="delete item"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/elegant_button"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView_Name" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

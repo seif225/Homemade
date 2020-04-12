@@ -78,7 +78,7 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<CartRecyclerVi
 
         //holder.elegantNumberButton.setBackgroundDrawable(Drawable.);
         holder.elegantNumberButton.setNumber("1");
-        holder.elegantNumberButton.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_gradient_style));
+        //holder.elegantNumberButton.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_gradient_style));
         holder.elegantNumberButton.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
             @Override
             public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
@@ -101,7 +101,6 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<CartRecyclerVi
     }
 
     private void removeItem(int position) {
-
         foodModelList.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, foodModelList.size());

@@ -52,13 +52,11 @@ public class FirebaseQueryHelperRepository {
     }
 
     private FirebaseQueryHelperRepository() {
-
-
         mAuth = FirebaseAuth.getInstance();
         USER_REF.keepSynced(true);
         FOOD_REF.keepSynced(true);
-
     }
+
 
     public static void getListOfFood(MutableLiveData<ArrayList<FoodModel>> listMutableLiveData, String uid, String category) {
         Observable<String> observable = Observable.just(uid);
@@ -645,6 +643,27 @@ public class FirebaseQueryHelperRepository {
                 }
 
                 listMutableLiveData.setValue(listOfFoodModel);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+    public void getNumberOfFollowers(MutableLiveData<Integer> numberOfFollowers, String id) {
+        USER_REF.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild("follower")){
+
+                    numberOfFollowers.setValue((int)dataSnapshot.child("follower").getChildrenCount());
+                }
+
+
             }
 
             @Override

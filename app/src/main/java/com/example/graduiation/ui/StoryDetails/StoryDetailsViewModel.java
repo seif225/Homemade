@@ -16,6 +16,8 @@ public class StoryDetailsViewModel extends ViewModel {
     private MutableLiveData<UserParentModel> userParentModelMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<ArrayList<FoodModel>> listMutableLiveData= new MutableLiveData<>();
     private MutableLiveData<Boolean> mutableFlag=new MutableLiveData<>();
+    private MutableLiveData<Integer> numberOfFollowers = new MutableLiveData<>();
+
     public void setCategoryAndId(String uid, String category) {
         this.uid = uid;
         this.category = category;
@@ -47,4 +49,9 @@ public class StoryDetailsViewModel extends ViewModel {
     }
 
 
+    public MutableLiveData<Integer> getFollowersCount(String id) {
+    firebaseQueryHelper.getNumberOfFollowers(numberOfFollowers,id);
+
+    return numberOfFollowers;
+    }
 }

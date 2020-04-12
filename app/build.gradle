@@ -76,8 +76,19 @@ dependencies {
 
     implementation 'net.colindodd:gradientlayout:1.2'
 
-    implementation'com.cepheuen.elegant-number-button:lib:1.0.2'
+    implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'
     implementation 'br.com.simplepass:loading-button-android:2.2.0'
     implementation "androidx.recyclerview:recyclerview:1.1.0"
+
+
+    //maps and places
+    //location services
+    implementation 'com.google.android.gms:play-services-plus:17.0.0'
+    implementation "com.google.android.gms:play-services-location:17.0.0"
+    implementation 'com.google.android.libraries.places:places:2.2.0'
+    //this dependency for the place picker ! ---- > *IMPORTANT*
+    implementation 'com.google.android.gms:play-services-places:17.0.0'
+    implementation 'br.com.simplepass:loading-button-android:2.2.0'
+    implementation 'com.google.maps.android:android-maps-utils:1.0.2'
 
 }

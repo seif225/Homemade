@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.graduiation.R;
+import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
 
 public class GalleryFragment extends Fragment {
 
@@ -28,6 +29,8 @@ public class GalleryFragment extends Fragment {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
+
+
             }
         });
         return root;
