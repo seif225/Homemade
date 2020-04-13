@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,6 +38,8 @@ public class UserCartActivity extends AppCompatActivity {
     Button pickLocationButton;
     private static final int PLACE_PICKER_REQUEST = 111;
     private static final String TAG = "UserCartActivity";
+    @BindView(R.id.total_price_tv)
+    TextView totalPriceTv;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -63,11 +66,21 @@ public class UserCartActivity extends AppCompatActivity {
         viewModel.getCartItems(FirebaseAuth.getInstance().getUid()).observe(this, new Observer<List<FoodModel>>() {
             @Override
             public void onChanged(List<FoodModel> foodModels) {
-                cartRecyclerViewAdapter = new CartRecyclerViewAdapter(foodModels, getBaseContext());
+                cartRecyclerViewAdapter = new CartRecyclerViewAdapter(foodModels, getBaseContext(), viewModel);
                 cartRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
                 cartRecyclerView.setAdapter(cartRecyclerViewAdapter);
             }
 
+        });
+
+
+        viewModel.getTotalPrice().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+
+                totalPriceTv.setText("Total price is : " + integer);
+
+            }
         });
 
         pickLocationButton.setOnClickListener(new View.OnClickListener() {

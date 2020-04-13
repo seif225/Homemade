@@ -13,12 +13,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
 import com.example.graduiation.ui.Data.FoodModel;
+import com.example.graduiation.ui.UserCart.UserCartViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
@@ -31,11 +33,12 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<CartRecyclerVi
     private List<FoodModel> foodModelList;
     private Context context;
     private static final String TAG = "CartRecyclerViewAdapter";
-
-
-    public CartRecyclerViewAdapter(List<FoodModel> buyerModels, Context context) {
+    private int overAllPrice = 0;
+    private UserCartViewModel viewModel;
+    public CartRecyclerViewAdapter(List<FoodModel> buyerModels, Context context, UserCartViewModel viewModel) {
         this.foodModelList = buyerModels;
         this.context = context;
+        this.viewModel=viewModel;
     }
 
 
@@ -73,18 +76,30 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<CartRecyclerVi
             });
 
         }
-        if(foodModel.getPrice()!= null) holder.price_tv.setText(foodModel.getPrice()+"$");
+        if(foodModel.getPrice()!= null){
+            holder.price_tv.setText(foodModel.getPrice()+"$");
+            overAllPrice = overAllPrice + Integer.parseInt(foodModel.getPrice());
+            viewModel.getTotalPrice().setValue(overAllPrice);
+
+
+        };
 
 
         //holder.elegantNumberButton.setBackgroundDrawable(Drawable.);
         holder.elegantNumberButton.setNumber("1");
         //holder.elegantNumberButton.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_gradient_style));
+
         holder.elegantNumberButton.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
             @Override
             public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
                int price = Integer.parseInt(foodModel.getPrice());
                int total = newValue*price;
                holder.price_tv.setText(total+"$");
+                overAllPrice = overAllPrice - (oldValue*price);
+                overAllPrice = overAllPrice + (newValue*price);
+
+                viewModel.getTotalPrice().setValue(overAllPrice);
+               //TODO : update total textView
             }
         });
 
@@ -94,6 +109,10 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<CartRecyclerVi
              public void onClick(View v) {
                  FirebaseQueryHelperRepository.deleteItemFromCart(FirebaseAuth.getInstance().getUid(),foodModel.getId());
                  removeItem(position);
+                 int removeValue = Integer.parseInt(foodModel.getPrice()) * Integer.parseInt(holder.elegantNumberButton.getNumber());
+                 overAllPrice = overAllPrice - removeValue;
+                 viewModel.getTotalPrice().setValue(overAllPrice);
+
              }
          });
 

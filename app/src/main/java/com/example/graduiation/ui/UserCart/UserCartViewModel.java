@@ -14,8 +14,13 @@ public class UserCartViewModel extends ViewModel {
 
     MutableLiveData<List<FoodModel>> listMutableLiveData = new MutableLiveData<>();
     FirebaseQueryHelperRepository firebaseQueryHelperRepository = FirebaseQueryHelperRepository.getInstance();
+    MutableLiveData<Integer> totalPrice = new MutableLiveData<>();
     public MutableLiveData <List<FoodModel>>getCartItems(String uid) {
         firebaseQueryHelperRepository.getCartItems(uid , listMutableLiveData);
         return listMutableLiveData;
+    }
+
+    public MutableLiveData<Integer> getTotalPrice() {
+        return totalPrice;
     }
 }
