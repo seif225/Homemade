@@ -7,15 +7,16 @@ import com.example.graduiation.ui.Data.CartItemModel;
 import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
 import com.example.graduiation.ui.Data.FoodModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserCartViewModel extends ViewModel {
 
 
-    MutableLiveData<List<FoodModel>> listMutableLiveData = new MutableLiveData<>();
-    FirebaseQueryHelperRepository firebaseQueryHelperRepository = FirebaseQueryHelperRepository.getInstance();
-    MutableLiveData<Integer> totalPrice = new MutableLiveData<>();
-    public MutableLiveData <List<FoodModel>>getCartItems(String uid) {
+    private MutableLiveData<ArrayList<FoodModel>> listMutableLiveData = new MutableLiveData<>();
+    private FirebaseQueryHelperRepository firebaseQueryHelperRepository = FirebaseQueryHelperRepository.getInstance();
+    private MutableLiveData<Integer> totalPrice = new MutableLiveData<>();
+    public MutableLiveData <ArrayList<FoodModel>>getCartItems(String uid) {
         firebaseQueryHelperRepository.getCartItems(uid , listMutableLiveData);
         return listMutableLiveData;
     }

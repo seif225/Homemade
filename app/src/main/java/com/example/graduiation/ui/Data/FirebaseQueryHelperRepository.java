@@ -27,6 +27,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
@@ -621,7 +622,7 @@ public class FirebaseQueryHelperRepository {
 
 
 
-    public void getCartItems(String uid, MutableLiveData<List<FoodModel>> listMutableLiveData) {
+    public void getCartItems(String uid, MutableLiveData<ArrayList<FoodModel>> listMutableLiveData) {
 
         ArrayList<FoodModel> listOfFoodModel  = new ArrayList<>();
         USER_REF.child(uid).child("cart").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -630,7 +631,7 @@ public class FirebaseQueryHelperRepository {
 
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     FoodModel foodModel = new FoodModel();
-                    foodModel.setCategory(dataSnapshot1.child("category").toString());
+                    foodModel.setCategory(dataSnapshot1.child("category").getValue().toString());
                     foodModel.setCookId(dataSnapshot1.child("cookId").getValue().toString());
                     foodModel.setDescribtion(dataSnapshot1.child("describtion").getValue().toString());
                     foodModel.setId(dataSnapshot1.child("id").getValue().toString());
@@ -675,4 +676,20 @@ public class FirebaseQueryHelperRepository {
 
 
     }
+
+    public void addCartToOrders(HashMap<String, OrderModel> orderModelHashSet,String orderId) {
+        //remove order from cart
+        USER_REF.child(FirebaseAuth.getInstance().getUid()).child("cart").removeValue();
+        // add the order in the buyer's database
+        USER_REF.child(FirebaseAuth.getInstance().getUid()).child("ordersSent").child(orderId).setValue(orderModelHashSet);
+        //add the order in each seller database
+        for (String s:orderModelHashSet.keySet()) {
+            USER_REF.child(s).child("ordersReceived").child(orderId).setValue(orderModelHashSet.get(s));
+        }
+
+
+
+    }
+
+
 }

@@ -102,7 +102,7 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<CartRecyclerVi
         ;
 
 
-        holder.elegantNumberButton.setNumber("1");
+        holder.elegantNumberButton.setNumber(foodModel.getQuantity());
 
         holder.elegantNumberButton.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
             @Override
@@ -134,7 +134,6 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<CartRecyclerVi
         FoodModel foodModel = foodModelList.get(position);
         overAllPrice = overAllPrice - (Integer.parseInt(foodModel.getPrice()) * Integer.parseInt(foodModel.getQuantity()));
         viewModel.getTotalPrice().setValue(overAllPrice);
-
         foodModelList.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, foodModelList.size());

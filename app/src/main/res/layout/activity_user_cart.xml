@@ -13,7 +13,6 @@
         android:id="@+id/cart_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/address"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,16 +39,19 @@
         android:layout_margin="16dp"
         app:layout_constraintBottom_toTopOf="@+id/pick_location_button" />
 
-
     <Button
         android:id="@+id/pick_location_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:textAllCaps="false"
         android:background="@drawable/btn_gradient_style"
         android:text="pick location"
+        android:textSize="20sp"
+        android:textStyle="normal"
         android:textColor="#fefefe"
         app:layout_constraintBottom_toTopOf="@+id/circular_send_request_button"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +63,6 @@
         style="@style/loginButton"
         android:layout_width="0dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/btn_gradient_style"
         android:text="Send Request"
@@ -69,8 +70,8 @@
         android:textSize="20sp"
         android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/pick_location_button"
+        app:layout_constraintStart_toStartOf="@+id/pick_location_button"
         app:spinning_bar_color="#FFF"
         app:spinning_bar_padding="6dp"
         app:spinning_bar_width="4dp" />
