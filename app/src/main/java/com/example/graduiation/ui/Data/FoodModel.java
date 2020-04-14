@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.util.HashMap;
 
 public class FoodModel implements Parcelable {
-    private String title , describtion ,  id , category , cookId , price , orderCount , thumbnail ;
+    private String title , describtion ,  id , category , cookId , price , orderCount , thumbnail, quantity ;
     private String min , max ;
     private HashMap<Object , Object> reviewsMap , picsMap , ratingMap;
 
@@ -23,6 +23,14 @@ public class FoodModel implements Parcelable {
         thumbnail = in.readString();
         min = in.readString();
         max = in.readString();
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getQuantity() {
+        return quantity;
     }
 
     public static final Creator<FoodModel> CREATOR = new Creator<FoodModel>() {

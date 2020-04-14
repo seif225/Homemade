@@ -40,6 +40,9 @@ public class UserCartActivity extends AppCompatActivity {
     private static final String TAG = "UserCartActivity";
     @BindView(R.id.total_price_tv)
     TextView totalPriceTv;
+    @BindView(R.id.address)
+    TextView address;
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -47,8 +50,10 @@ public class UserCartActivity extends AppCompatActivity {
 
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
-                String address = data.getStringExtra("address");
+                String addressStr = data.getStringExtra("address");
                 Log.e(TAG, "onActivityResult: " + address);
+                if(addressStr!=null) address.setText(addressStr);
+
             }
 
 

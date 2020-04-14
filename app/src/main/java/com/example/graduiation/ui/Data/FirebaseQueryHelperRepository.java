@@ -639,6 +639,7 @@ public class FirebaseQueryHelperRepository {
                     foodModel.setPrice(dataSnapshot1.child("price").getValue().toString());
                     foodModel.setThumbnail(dataSnapshot1.child("thumbnail").getValue().toString());
                     foodModel.setTitle(dataSnapshot1.child("title").getValue().toString());
+                    foodModel.setQuantity(dataSnapshot1.child("quantity").getValue().toString());
                     listOfFoodModel.add(foodModel);
                 }
 
