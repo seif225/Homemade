@@ -43,12 +43,25 @@ dependencies {
     def lifecycle_version = "2.1.0"
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+
+
     //Firebaselo
-    implementation 'com.google.firebase:firebase-core:16.0.8'
+
+    implementation 'com.google.firebase:firebase-auth:19.3.0'
+    implementation 'com.google.firebase:firebase-messaging:20.1.5'
+    implementation 'com.google.firebase:firebase-storage:19.1.1'
+    implementation 'com.google.firebase:firebase-database:19.2.1'
+
+
+
+    /*implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'com.google.firebase:firebase-database:16.1.0'
     implementation 'com.google.firebase:firebase-auth:16.1.0'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     implementation 'com.google.firebase:firebase-storage:16.1.0'
+    implementation 'com.google.firebase:firebase-messaging:16.1.0'*/
+
+
     //Circle Image & Picasso
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
@@ -100,6 +113,7 @@ dependencies {
 
     // optional - RxJava2 support
     implementation "androidx.work:work-rxjava2:$work_version"
+
 
 
 }

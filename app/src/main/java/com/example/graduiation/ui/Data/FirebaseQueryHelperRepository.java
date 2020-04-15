@@ -40,9 +40,9 @@ import io.reactivex.schedulers.Schedulers;
 public class FirebaseQueryHelperRepository {
     private FirebaseAuth mAuth;
     private static final String TAG = "FirebaseQueryHelper";
-    private static final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-    private static final DatabaseReference USER_REF = mDatabase.getReference().child("Users");
-    private static final DatabaseReference FOOD_REF = mDatabase.getReference().child("Food");
+   // private static final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    private static final DatabaseReference USER_REF = FirebaseDatabase.getInstance().getReference().child("Users");
+    private static final DatabaseReference FOOD_REF = FirebaseDatabase.getInstance().getReference().child("Food");
     private Disposable uploadUserDataDisposable;
     private static FirebaseQueryHelperRepository Instance;
 
@@ -465,7 +465,28 @@ public class FirebaseQueryHelperRepository {
 
     public void addUserToMutableLiveData(String id, MutableLiveData<UserParentModel> userParentModel) {
 
-        Observable<String> observable = Observable.just(id);
+        USER_REF.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.e(TAG, "onDataChange: " + dataSnapshot);
+                UserParentModel model = new UserParentModel();
+                model.setEmail(dataSnapshot.child("email").getValue().toString());
+                model.setId(dataSnapshot.child("id").getValue().toString());
+                if (dataSnapshot.hasChild("image"))
+                    model.setImage(dataSnapshot.child("image").getValue().toString());
+                model.setName(dataSnapshot.child("name").getValue().toString());
+                model.setPhone(dataSnapshot.child("phone").getValue().toString());
+                userParentModel.setValue(model);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+      /*  Observable<String> observable = Observable.just(id);
         Observer<String> observer = new Observer<String>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -474,26 +495,9 @@ public class FirebaseQueryHelperRepository {
 
             @Override
             public void onNext(String s) {
-                USER_REF.child(s).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Log.e(TAG, "onDataChange: " + dataSnapshot);
-                        UserParentModel model = new UserParentModel();
-                        model.setEmail(dataSnapshot.child("email").getValue().toString());
-                        model.setId(dataSnapshot.child("id").getValue().toString());
-                        if (dataSnapshot.hasChild("image"))
-                            model.setImage(dataSnapshot.child("image").getValue().toString());
-                        model.setName(dataSnapshot.child("name").getValue().toString());
-                        model.setPhone(dataSnapshot.child("phone").getValue().toString());
-                        userParentModel.setValue(model);
 
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
 
             }
 
@@ -508,7 +512,7 @@ public class FirebaseQueryHelperRepository {
             }
         };
 
-        observable.observeOn(Schedulers.io()).observeOn(Schedulers.computation()).subscribe(observer);
+        observable.observeOn(Schedulers.io()).observeOn(Schedulers.computation()).subscribe(observer);*/
 
 
     }

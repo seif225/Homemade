@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
 
     <application
         android:name=".ui.MyApplication"
@@ -17,6 +19,14 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ui.PlacePickerActivity.PlacePickerActivity"></activity>
         <activity android:name=".ui.UserCart.UserCartActivity" />
+
+        <service android:name=".ui.Services.MyFirebaseMessagingService" >
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+
+        </service>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/Api_key" />
