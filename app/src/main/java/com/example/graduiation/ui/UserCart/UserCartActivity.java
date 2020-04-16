@@ -3,6 +3,7 @@ package com.example.graduiation.ui.UserCart;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -152,10 +153,13 @@ public class UserCartActivity extends AppCompatActivity {
 
                 Gson gson = new Gson();
                 String json = gson.toJson(orderModel);
+                SharedPreferences sharedPref = getSharedPreferences("userData",Context.MODE_PRIVATE);
+                String name = sharedPref.getString("name", "No name defined");
 
                 Data data = new Data.Builder()
                         .putString("data", "dummy text ")
                         .putString("order",json)
+                        .putString("name",name)
                         .build();
 
                 OneTimeWorkRequest uploadWorkRequest = new OneTimeWorkRequest.Builder(UploadOrderWorker.class)

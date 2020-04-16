@@ -1,6 +1,8 @@
 package com.example.graduiation.ui.main;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Data.UserParentModel;
 import com.example.graduiation.ui.UserCart.UserCartActivity;
+import com.example.graduiation.ui.WorkManagers.UploadUserTokenWorkManagerToFirebase;
 import com.example.graduiation.ui.addMeal.AddMealActivity;
 import com.example.graduiation.ui.login.LoginActivity;
 import com.example.graduiation.ui.profileTEST.ProfileTesting;
@@ -35,6 +38,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import android.view.Menu;
 import android.view.Window;
@@ -175,6 +180,36 @@ public class MainActivity extends AppCompatActivity {
             sendUserToAddMeal();
         }*/
 
+
+
+        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(UploadUserTokenWorkManagerToFirebase.class).build();
+        WorkManager.getInstance(MainActivity.this).enqueue(oneTimeWorkRequest);
+
+        viewModel.getUserParentModel(mAuth.getUid()).observe(this, new Observer<UserParentModel>() {
+            @Override
+            public void onChanged(UserParentModel userParentModel) {
+                Log.e(TAG, "onChanged: " +userParentModel.getToken() );
+                Log.e(TAG, "onChanged: " +userParentModel.getId() );
+                Log.e(TAG, "onChanged: " +userParentModel.getName() );
+                if(userParentModel.getName()!=null && userParentModel.getId()!=null && userParentModel.getToken()!=null){
+
+                    SharedPreferences sharedPreferences=getSharedPreferences("userData", Context.MODE_PRIVATE);
+
+
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                    editor.putString("id", userParentModel.getId());
+                    editor.putString("token", userParentModel.getToken());
+                    editor.putString("name", userParentModel.getName());
+                    editor.apply();
+
+                }
+
+
+            }
+        });
+
+
         Log.e(TAG, "onStart: " + mAuth.getUid());
 
     }
@@ -190,4 +225,7 @@ public class MainActivity extends AppCompatActivity {
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
     }
+
+
+
 }

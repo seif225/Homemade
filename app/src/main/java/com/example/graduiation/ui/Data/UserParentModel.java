@@ -1,12 +1,22 @@
 package com.example.graduiation.ui.Data;
 
 public class UserParentModel {
-    private String name, id, phone, image, rate, following, subType, email, password , membership,bio;
+    private String name, id, phone, image, rate, following, subType, email, password , membership,bio ,token;
     private WalletModel wallet;
+
 
     UserParentModel() {
 
     }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
     public void setBio(String bio) {
         this.bio = bio;
     }

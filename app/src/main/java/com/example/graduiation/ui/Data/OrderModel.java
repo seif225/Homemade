@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class OrderModel  {
-    private String state, address, orderId , paymentMethod , cookId , totalPrice;
+    private String state, address, orderId , paymentMethod , cookId ,cookToken ,totalPrice;
     private ArrayList<FoodModel> listOfFood;
     private long durationInUnix, orderPostTimeInUnix;
     private LatLng userCoordinates;
@@ -21,6 +21,23 @@ public class OrderModel  {
     public OrderModel()
     {
 
+    }
+
+
+    public void setCookToken(String cookToken) {
+        this.cookToken = cookToken;
+    }
+
+    public String getCookToken() {
+        return cookToken;
+    }
+
+    public void setTotalPrice(String totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public String getTotalPrice() {
+        return totalPrice;
     }
 
     public void setCookId(String cookId) {

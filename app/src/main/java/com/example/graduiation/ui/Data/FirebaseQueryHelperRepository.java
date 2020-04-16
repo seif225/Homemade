@@ -3,6 +3,7 @@ package com.example.graduiation.ui.Data;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
@@ -33,6 +34,8 @@ import java.util.List;
 import java.util.UUID;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -40,7 +43,7 @@ import io.reactivex.schedulers.Schedulers;
 public class FirebaseQueryHelperRepository {
     private FirebaseAuth mAuth;
     private static final String TAG = "FirebaseQueryHelper";
-   // private static final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    // private static final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     private static final DatabaseReference USER_REF = FirebaseDatabase.getInstance().getReference().child("Users");
     private static final DatabaseReference FOOD_REF = FirebaseDatabase.getInstance().getReference().child("Food");
     private Disposable uploadUserDataDisposable;
@@ -48,7 +51,8 @@ public class FirebaseQueryHelperRepository {
 
     public static FirebaseQueryHelperRepository getInstance() {
         if (Instance == null) {
-            Instance = new FirebaseQueryHelperRepository(); }
+            Instance = new FirebaseQueryHelperRepository();
+        }
         return Instance;
     }
 
@@ -220,6 +224,7 @@ public class FirebaseQueryHelperRepository {
             model.setPhone(phoneNum);
             model.setEmail(email);
             model.setPassword(password);
+
             io.reactivex.Observable<UserParentModel> observable = Observable.just(model);
             Observer observer = new Observer() {
                 @Override
@@ -434,6 +439,8 @@ public class FirebaseQueryHelperRepository {
                                         model.setImage(dataSnapshot.child(s).child("image").getValue().toString() + "");
                                     model.setName(dataSnapshot.child(s).child("name").getValue().toString());
                                     model.setPhone(dataSnapshot.child(s).child("phone").getValue().toString());
+                                    if (dataSnapshot.child(s).hasChild("token"))
+                                        model.setToken(dataSnapshot.child(s).child("token").getValue().toString());
                                     users.add(model);
                                 }
 
@@ -474,6 +481,11 @@ public class FirebaseQueryHelperRepository {
                 model.setId(dataSnapshot.child("id").getValue().toString());
                 if (dataSnapshot.hasChild("image"))
                     model.setImage(dataSnapshot.child("image").getValue().toString());
+
+                if (dataSnapshot.hasChild("token"))
+                    model.setToken(dataSnapshot.child("token").getValue().toString());
+
+
                 model.setName(dataSnapshot.child("name").getValue().toString());
                 model.setPhone(dataSnapshot.child("phone").getValue().toString());
                 userParentModel.setValue(model);
@@ -541,6 +553,9 @@ public class FirebaseQueryHelperRepository {
                         model.setPhone(dataSnapshot.child("phone").getValue().toString());
                         if (dataSnapshot.hasChild("bio"))
                             model.setBio(dataSnapshot.child("bio").getValue().toString());
+
+                        if (dataSnapshot.hasChild("token"))
+                            model.setToken(dataSnapshot.child("token").getValue().toString());
                         userParentModelMutableLiveData.setValue(model);
                     }
 
@@ -625,10 +640,9 @@ public class FirebaseQueryHelperRepository {
     }
 
 
-
     public void getCartItems(String uid, MutableLiveData<ArrayList<FoodModel>> listMutableLiveData) {
 
-        ArrayList<FoodModel> listOfFoodModel  = new ArrayList<>();
+        ArrayList<FoodModel> listOfFoodModel = new ArrayList<>();
         USER_REF.child(uid).child("cart").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -645,6 +659,7 @@ public class FirebaseQueryHelperRepository {
                     foodModel.setThumbnail(dataSnapshot1.child("thumbnail").getValue().toString());
                     foodModel.setTitle(dataSnapshot1.child("title").getValue().toString());
                     foodModel.setQuantity(dataSnapshot1.child("quantity").getValue().toString());
+                    if(dataSnapshot1.hasChild("cookToken"))foodModel.setCookToken(dataSnapshot1.child("cookToken").getValue().toString());
                     listOfFoodModel.add(foodModel);
                 }
 
@@ -664,9 +679,9 @@ public class FirebaseQueryHelperRepository {
         USER_REF.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChild("follower")){
+                if (dataSnapshot.hasChild("follower")) {
 
-                    numberOfFollowers.setValue((int)dataSnapshot.child("follower").getChildrenCount());
+                    numberOfFollowers.setValue((int) dataSnapshot.child("follower").getChildrenCount());
                 }
 
 
@@ -681,19 +696,82 @@ public class FirebaseQueryHelperRepository {
 
     }
 
-    public void addCartToOrders(HashMap<String, OrderModel> orderModelHashSet,String orderId) {
+
+
+    public void addCartToOrders(HashMap<String, OrderModel> orderModelHashSet, String orderId, HashSet<String> hashset, String userName) {
         //remove order from cart
         USER_REF.child(FirebaseAuth.getInstance().getUid()).child("cart").removeValue();
         // add the order in the buyer's database
         USER_REF.child(FirebaseAuth.getInstance().getUid()).child("ordersSent").child(orderId).setValue(orderModelHashSet);
         //add the order in each seller database
-        for (String s:orderModelHashSet.keySet()) {
+        for (String s : orderModelHashSet.keySet()) {
             USER_REF.child(s).child("ordersReceived").child(orderId).setValue(orderModelHashSet.get(s));
+        }
+
+            sendNotificationsToUsers(hashset,userName);
+
+    }
+
+    private void sendNotificationsToUsers(HashSet<String> hashset, String userName) {
+
+        Log.e(TAG, "sendNotificationsToUsers: " );
+
+        for (String token : hashset) {
+
+
+            PostModel postModel = new PostModel();
+            Data data = new Data();
+            data.setMessage("you gotta new order");
+            Log.e(TAG, "sendNotificationsToUsers: Check name again" + userName );
+            data.setTitle("you got an order from " + userName);
+            postModel.setData(data);
+            postModel.setTo(token);
+            Observable<PostModel> observable = ApiClient.getInstance().getApi(postModel);
+            Observer<PostModel> observer = new Observer<PostModel>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(PostModel postModel) {
+
+                    Log.e(TAG, "onNext: " );
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    Log.e(TAG, "onError: " + e.getMessage() );
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+            };
+
+
+            observable.subscribe(observer);
+
+
         }
 
 
 
+
+
     }
+
+
+    public void uploadUsersToken(String id, String idToken) {
+
+        USER_REF.child(id).child("token").setValue(idToken);
+        //saving user data in a shares preference
+
+
+    }
+
 
 
 }

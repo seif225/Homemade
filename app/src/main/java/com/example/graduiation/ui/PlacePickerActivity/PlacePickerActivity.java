@@ -64,10 +64,18 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
@@ -478,10 +486,11 @@ public class PlacePickerActivity extends AppCompatActivity implements DatePicker
             @Override
             public void onCameraIdle() {
                 Address geocoder =getPlaceDataFromGeoCoder(googleMap.getCameraPosition().target);
-               if(geocoder!=null ) {Log.e(TAG, "onCameraIdle: "+geocoder.getAddressLine(0) );
-                    addressEt.setText(geocoder.getAddressLine(0));
+                        if(geocoder!=null ) {
+                            Log.e(TAG, "onCameraIdle: "+geocoder.getAddressLine(0) );
+                            addressEt.setText(geocoder.getAddressLine(0));
 
-               }
+            }
 
             }
         });

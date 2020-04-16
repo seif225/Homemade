@@ -114,6 +114,10 @@ dependencies {
     // optional - RxJava2 support
     implementation "androidx.work:work-rxjava2:$work_version"
 
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.8.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.1'
 
 
 }

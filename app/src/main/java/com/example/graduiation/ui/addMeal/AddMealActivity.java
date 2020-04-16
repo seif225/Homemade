@@ -19,6 +19,7 @@ import com.example.graduiation.ui.Data.FoodModel;
 import com.example.graduiation.ui.login.LoginActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -102,6 +103,8 @@ public class AddMealActivity extends AppCompatActivity {
                 String des = etDescription.getText().toString();
                 String foodId = UUID.randomUUID().toString();
                 String userId = FirebaseAuth.getInstance().getUid();
+                String idToken = FirebaseInstanceId.getInstance().getToken();
+
                 //Log.e(TAG, "onClick: " + category);
                 if (title.isEmpty()) {
                     etMealName.requestFocus();
@@ -130,6 +133,7 @@ public class AddMealActivity extends AppCompatActivity {
                     model.setId(foodId);
                     model.setCookId(userId);
                     model.setDescribtion(des);
+                    model.setCookToken(idToken);
                     viewModel.uploadFoodData(model, getBaseContext(), photo, pd);
                 }
             }
@@ -151,6 +155,7 @@ public class AddMealActivity extends AppCompatActivity {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
