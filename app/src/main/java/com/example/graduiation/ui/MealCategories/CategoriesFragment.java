@@ -71,7 +71,8 @@ public class CategoriesFragment extends AppCompatActivity {
                         public void onChanged(ArrayList<UserParentModel> userParentModels) {
                             // Log.e(TAG, "onChanged: "+userParentModels.get(0).getName()+"" );
                             if (userParentModels.size() > 0) {
-                                adapter = new RecyclerViewAdapter(userParentModels, CategoriesFragment.this, category);
+                                adapter = new
+                                        RecyclerViewAdapter(userParentModels, CategoriesFragment.this, category);
                                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext()
                                         , RecyclerView.HORIZONTAL,
                                         false);

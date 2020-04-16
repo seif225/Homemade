@@ -616,10 +616,62 @@ public class FirebaseQueryHelperRepository {
 
     }
 
-    public void follow(String myId, String userId) {
+    public void follow(String myId, String userId, String name, String token) {
         Log.e(TAG, "follow: " + userId + myId);
         USER_REF.child(myId).child("following").child(userId).setValue("true");
         USER_REF.child(userId).child("follower").child(myId).setValue("true");
+
+       // sendFollowNotification(name, token);
+
+
+    }
+
+    public void sendFollowNotification(String name, String token) {
+
+
+
+        Log.e(TAG, "sendNotificationsToUsers on follow: Check name again " + name);
+        Log.e(TAG, "sendNotificationsToUsers on follow: Check token " + token);
+
+        PostModel postModel = new PostModel();
+        Data data = new Data();
+
+        data.setMessage("check his profile ^^");
+        data.setTitle(name + " has followed you");
+
+        postModel.setData(data);
+        postModel.setTo(token);
+
+        Observable<PostModel> observable = ApiClient.getInstance().getApi(postModel).subscribeOn(Schedulers.computation());
+        Observer<PostModel> observer = new Observer<PostModel>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(PostModel postModel) {
+
+                Log.e(TAG, "onNext: ");
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: " + e.getMessage());
+                Log.e(TAG, "onError: " + e.getLocalizedMessage() );
+                Log.e(TAG, "onError: "+ e.getStackTrace() );
+                Log.e(TAG, "onError: " + e.getSuppressed() );
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+
+
+        observable.subscribe(observer);
 
 
     }
@@ -659,7 +711,8 @@ public class FirebaseQueryHelperRepository {
                     foodModel.setThumbnail(dataSnapshot1.child("thumbnail").getValue().toString());
                     foodModel.setTitle(dataSnapshot1.child("title").getValue().toString());
                     foodModel.setQuantity(dataSnapshot1.child("quantity").getValue().toString());
-                    if(dataSnapshot1.hasChild("cookToken"))foodModel.setCookToken(dataSnapshot1.child("cookToken").getValue().toString());
+                    if (dataSnapshot1.hasChild("cookToken"))
+                        foodModel.setCookToken(dataSnapshot1.child("cookToken").getValue().toString());
                     listOfFoodModel.add(foodModel);
                 }
 
@@ -697,7 +750,6 @@ public class FirebaseQueryHelperRepository {
     }
 
 
-
     public void addCartToOrders(HashMap<String, OrderModel> orderModelHashSet, String orderId, HashSet<String> hashset, String userName) {
         //remove order from cart
         USER_REF.child(FirebaseAuth.getInstance().getUid()).child("cart").removeValue();
@@ -708,13 +760,13 @@ public class FirebaseQueryHelperRepository {
             USER_REF.child(s).child("ordersReceived").child(orderId).setValue(orderModelHashSet.get(s));
         }
 
-            sendNotificationsToUsers(hashset,userName);
+        sendNotificationsToUsers(hashset, userName);
 
     }
 
     private void sendNotificationsToUsers(HashSet<String> hashset, String userName) {
 
-        Log.e(TAG, "sendNotificationsToUsers: " );
+        Log.e(TAG, "sendNotificationsToUsers: ");
 
         for (String token : hashset) {
 
@@ -722,7 +774,7 @@ public class FirebaseQueryHelperRepository {
             PostModel postModel = new PostModel();
             Data data = new Data();
             data.setMessage("you gotta new order");
-            Log.e(TAG, "sendNotificationsToUsers: Check name again" + userName );
+            Log.e(TAG, "sendNotificationsToUsers in orders !: Check name again" + userName);
             data.setTitle("you got an order from " + userName);
             postModel.setData(data);
             postModel.setTo(token);
@@ -736,13 +788,13 @@ public class FirebaseQueryHelperRepository {
                 @Override
                 public void onNext(PostModel postModel) {
 
-                    Log.e(TAG, "onNext: " );
+                    Log.e(TAG, "onNext: ");
 
                 }
 
                 @Override
                 public void onError(Throwable e) {
-                    Log.e(TAG, "onError: " + e.getMessage() );
+                    Log.e(TAG, "onError: " + e.getMessage());
                 }
 
                 @Override
@@ -758,9 +810,6 @@ public class FirebaseQueryHelperRepository {
         }
 
 
-
-
-
     }
 
 
@@ -771,7 +820,6 @@ public class FirebaseQueryHelperRepository {
 
 
     }
-
 
 
 }

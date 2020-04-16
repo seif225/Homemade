@@ -54,7 +54,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 Intent i = new Intent(context, StoryDetailsActivity2.class);
                 i.putExtra("uid", userParentModel.getId());
                 i.putExtra("category", category);
-                i.putExtra("userName", userParentModel.getName());
+                i.putExtra("token", userParentModel.getToken());
+                if(userParentModel.getToken()!=null)
+                    i.putExtra("token" , userParentModel.getToken());
                 context.startActivity(i);
 
 

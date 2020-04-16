@@ -1,5 +1,6 @@
 package com.example.graduiation.ui.StoryDetails;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -74,8 +75,8 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
     private FoodItemRecyclerViewAdapter foodAdapter;
     private TextView textView;
     private CircleImageView profilePicture;
-
-
+    private String token;
+    private String userName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +94,9 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
         String uid = getIntent().getStringExtra("uid");
         String category = getIntent().getStringExtra("category");
         String userName = getIntent().getStringExtra("userName");
+        token = getIntent().getStringExtra("token");
+        userName = getSharedPreferences("userData", Context.MODE_PRIVATE).getString("name" , "folan");
+
         collapsingToolbar.setTitle(userName + "");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -144,6 +148,7 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
             });
 
 
+            String finalUserName = userName;
             followButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -157,8 +162,9 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
                                 setFollowedState();
 
                             } else {
-                                viewModel.follow(FirebaseAuth.getInstance().getUid(), uid);
+                                viewModel.follow(FirebaseAuth.getInstance().getUid(), uid , finalUserName, token);
                                 setUnfollowedState();
+                                viewModel.pushNotification(finalUserName , token);
                             }
 
                         }

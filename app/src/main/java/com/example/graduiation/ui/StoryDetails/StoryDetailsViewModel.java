@@ -40,8 +40,8 @@ public class StoryDetailsViewModel extends ViewModel {
         return mutableFlag;
     }
 
-    public void follow(String myId , String userId ){
-        firebaseQueryHelper.follow( myId ,  userId );
+    public void follow(String myId , String userId , String name , String token ){
+        firebaseQueryHelper.follow( myId ,  userId , name , token );
     }
 
     public void unFollow(String myId , String userId ){
@@ -53,5 +53,10 @@ public class StoryDetailsViewModel extends ViewModel {
     firebaseQueryHelper.getNumberOfFollowers(numberOfFollowers,id);
 
     return numberOfFollowers;
+    }
+
+    public void pushNotification(String finalUserName, String token) {
+    firebaseQueryHelper.sendFollowNotification(finalUserName, token);
+
     }
 }

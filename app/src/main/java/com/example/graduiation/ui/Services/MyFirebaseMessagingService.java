@@ -68,7 +68,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 notificationBuilder.setColor(getResources().getColor(R.color.colorPrimaryDark));
             }
-            notificationManager.notify(notificationID, notificationBuilder.build());
+            notificationManager.notify(1, notificationBuilder.build());
         }
 
 

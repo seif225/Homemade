@@ -10,6 +10,7 @@ public class ApiClient {
     private static final String BASE_URL ="https://fcm.googleapis.com/fcm/";
     private FirebaseCloudApi api;
     private static ApiClient Instance;
+    private static final Object lock = new Object();
 
     private ApiClient(){
 
@@ -26,7 +27,9 @@ public class ApiClient {
 
     public static ApiClient getInstance() {
        if(Instance==null){
-           Instance = new ApiClient();
+           synchronized (lock) {
+               Instance = new ApiClient();
+       }
        }
         return Instance;
     }
