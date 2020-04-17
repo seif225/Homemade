@@ -2,6 +2,7 @@ package com.example.graduiation.ui.WorkManagers;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -46,9 +47,7 @@ public class OrderTimeOutNotificationWorkManager extends Worker {
         Log.e(TAG, "doWork: "+ currentTime+"");
 
 
-        final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.putExtra("flag" , "orderReceived");
-        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
 
         String orderId = getInputData().getString("orderId");
         FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getUid())
@@ -74,6 +73,11 @@ public class OrderTimeOutNotificationWorkManager extends Worker {
 
                 Bitmap largeIcon = BitmapFactory.decodeResource(getApplicationContext().getResources(),
                         R.drawable.logo_circle);
+
+                final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("flag" , "orderReceived");
+                PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent,
+                        PendingIntent.FLAG_ONE_SHOT);
 
                 Uri notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), ORDER_CHANNEL_ID)
