@@ -763,11 +763,11 @@ public class FirebaseQueryHelperRepository {
             USER_REF.child(s).child("ordersReceived").child(orderId).setValue(orderModelHashSet.get(s));
         }
 
-        sendNotificationsToUsers(hashset, userName);
+        sendNotificationsToUsers(hashset, userName, orderId);
 
     }
 
-    private void sendNotificationsToUsers(HashSet<String> hashset, String userName) {
+    private void sendNotificationsToUsers(HashSet<String> hashset, String userName, String orderId) {
 
         Log.e(TAG, "sendNotificationsToUsers: ");
 
@@ -779,8 +779,12 @@ public class FirebaseQueryHelperRepository {
             data.setMessage("you gotta new order");
             Log.e(TAG, "sendNotificationsToUsers in orders !: Check name again" + userName);
             data.setTitle("you got an order from " + userName);
+            data.setKey1("order");
+            data.setKey2(System.currentTimeMillis()+"");
+            data.setKey3(orderId);
             postModel.setData(data);
             postModel.setTo(token);
+
             Observable<PostModel> observable = ApiClient.getInstance().getApi(postModel);
             Observer<PostModel> observer = new Observer<PostModel>() {
                 @Override

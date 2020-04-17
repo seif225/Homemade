@@ -1,50 +1,50 @@
 package com.example.graduiation.ui.main;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-
-import com.example.graduiation.R;
-import com.example.graduiation.ui.Data.UserParentModel;
-import com.example.graduiation.ui.UserCart.UserCartActivity;
-import com.example.graduiation.ui.WorkManagers.UploadUserTokenWorkManagerToFirebase;
-import com.example.graduiation.ui.addMeal.AddMealActivity;
-import com.example.graduiation.ui.login.LoginActivity;
-import com.example.graduiation.ui.profileTEST.ProfileTesting;
-
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
+import com.example.graduiation.R;
+import com.example.graduiation.ui.Data.UserParentModel;
+import com.example.graduiation.ui.OrdersRecieved.OrdersReceivedFragment;
+import com.example.graduiation.ui.UserCart.UserCartActivity;
+import com.example.graduiation.ui.WorkManagers.UploadUserTokenWorkManagerToFirebase;
+import com.example.graduiation.ui.addMeal.AddMealActivity;
+import com.example.graduiation.ui.login.LoginActivity;
+import com.example.graduiation.ui.profileTEST.ProfileTesting;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
-
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-
-import android.view.Menu;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.TextView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -66,7 +66,9 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseApp.initializeApp(this);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R
+
+                .id.toolbar);
         setSupportActionBar(toolbar);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -126,6 +128,28 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             });
+
+        }
+
+        String flag = getIntent().getStringExtra("flag");
+        if(flag!=null){
+
+
+
+            if(flag.equals("orderReceived")){
+
+
+
+                Fragment newFragment = new OrdersReceivedFragment();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.add(R.id.nav_host_fragment, newFragment);
+                transaction.setCustomAnimations(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim,
+                        R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim);
+                transaction.addToBackStack(null);
+                transaction.commit();
+
+            }
+
         }
 
     }

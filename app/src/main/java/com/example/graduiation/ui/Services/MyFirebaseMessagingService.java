@@ -16,18 +16,25 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.example.graduiation.R;
+import com.example.graduiation.ui.WorkManagers.OrderTimeOutNotificationWorkManager;
 import com.example.graduiation.ui.main.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMessagingServ";
-    private final String ADMIN_CHANNEL_ID ="admin_channel";
+    private final String ADMIN_CHANNEL_ID = "admin_channel";
+    private final String ORDER_CODE = "order";
+    private final String ORDER_CHANNEL_ID = "order_channel";
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -39,6 +46,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.e(TAG, "Message data payload: " + remoteMessage.getData());
 
             final Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("flag" , "orderReceived");
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             int notificationID = new Random().nextInt(3000);
 
@@ -53,22 +61,73 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             Bitmap largeIcon = BitmapFactory.decodeResource(getResources(),
                     R.drawable.logo_circle);
+            Log.e(TAG, "onMessageReceived: NotificationType" + remoteMessage.getData().get("key1"));
 
-            Uri notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
-                    .setSmallIcon(R.drawable.logo_circle)
-                    .setLargeIcon(largeIcon)
-                    .setContentTitle(remoteMessage.getData().get("title"))
-                    .setContentText(remoteMessage.getData().get("message"))
-                    .setAutoCancel(true)
-                    .setSound(notificationSoundUri)
-                    .setContentIntent(pendingIntent);
+            if (remoteMessage.getData().get("key1") != null) {
 
-            //Set notification color to match your app color template
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                notificationBuilder.setColor(getResources().getColor(R.color.colorPrimaryDark));
+                if (remoteMessage.getData().get("key1").equals(ORDER_CODE)) {
+
+                    long orderTime = Long.parseLong(remoteMessage.getData().get("key2"));
+                    String orderId= remoteMessage.getData().get("key3");
+                    if (orderTime + 1800000 > System.currentTimeMillis()) {
+
+                        //Create oneTime workManager request to notify the user
+                        // that he still has time to make the order before timeout
+                        // using workManager
+
+                        Uri notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, ORDER_CHANNEL_ID)
+                                .setSmallIcon(R.drawable.logo_circle)
+                                .setLargeIcon(largeIcon)
+                                .setContentTitle(remoteMessage.getData().get("title"))
+                                .setContentText(remoteMessage.getData().get("message"))
+                                .setAutoCancel(true)
+                                .setSound(notificationSoundUri)
+                                .setContentIntent(pendingIntent);
+
+                        //Set notification color to match your app color template
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            notificationBuilder.setColor(getResources().getColor(R.color.colorPrimaryDark));
+                        }
+                        notificationManager.notify(notificationID, notificationBuilder.build());
+
+                        Log.e(TAG, "onMessageReceived: " + " From Service to work manager" );
+                        Data data = new Data.Builder()
+                                .putString("orderId", orderId)
+                                .build();
+                        OneTimeWorkRequest myWork =
+                                new OneTimeWorkRequest.Builder(OrderTimeOutNotificationWorkManager.class)
+                                        .setInputData(data).setInitialDelay( 15, TimeUnit.MINUTES).build();
+
+                        WorkManager.getInstance(this).enqueue(myWork);
+
+                    }
+
+                } else {
+
+                    Uri notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
+                            .setSmallIcon(R.drawable.logo_circle)
+                            .setLargeIcon(largeIcon)
+                            .setContentTitle(remoteMessage.getData().get("title"))
+                            .setContentText(remoteMessage.getData().get("message"))
+                            .setAutoCancel(true)
+                            .setSound(notificationSoundUri)
+                            .setContentIntent(pendingIntent);
+
+                    //Set notification color to match your app color template
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        notificationBuilder.setColor(getResources().getColor(R.color.colorPrimaryDark));
+                    }
+                    notificationManager.notify(1, notificationBuilder.build());
+
+
+                }
+
+
             }
-            notificationManager.notify(1, notificationBuilder.build());
+
+
         }
 
 
@@ -81,9 +140,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void setupChannels(NotificationManager notificationManager){
-        CharSequence adminChannelName = "New notification";
-        String adminChannelDescription = "Device to devie notification";
+    private void setupChannels(NotificationManager notificationManager) {
+        CharSequence adminChannelName = "Orders";
+        String adminChannelDescription = "this notification channel with broadcast only the notification that are related to orders";
 
         NotificationChannel adminChannel;
         adminChannel = new NotificationChannel(ADMIN_CHANNEL_ID, adminChannelName, NotificationManager.IMPORTANCE_HIGH);
