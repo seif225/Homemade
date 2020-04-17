@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -606,6 +607,8 @@ public class FirebaseQueryHelperRepository {
                     mutableFlag.setValue(false);
 
                 }
+
+                return;
             }
 
             @Override
@@ -621,14 +624,12 @@ public class FirebaseQueryHelperRepository {
         USER_REF.child(myId).child("following").child(userId).setValue("true");
         USER_REF.child(userId).child("follower").child(myId).setValue("true");
 
-       // sendFollowNotification(name, token);
+        // sendFollowNotification(name, token);
 
 
     }
 
     public void sendFollowNotification(String name, String token) {
-
-
 
         Log.e(TAG, "sendNotificationsToUsers on follow: Check name again " + name);
         Log.e(TAG, "sendNotificationsToUsers on follow: Check token " + token);
@@ -642,7 +643,8 @@ public class FirebaseQueryHelperRepository {
         postModel.setData(data);
         postModel.setTo(token);
 
-        Observable<PostModel> observable = ApiClient.getInstance().getApi(postModel).subscribeOn(Schedulers.computation());
+        Observable<PostModel> observable = ApiClient.getInstance().getApi(postModel).subscribeOn(Schedulers.computation())
+                .distinctUntilChanged().debounce(2000, TimeUnit.MILLISECONDS);
         Observer<PostModel> observer = new Observer<PostModel>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -659,9 +661,9 @@ public class FirebaseQueryHelperRepository {
             @Override
             public void onError(Throwable e) {
                 Log.e(TAG, "onError: " + e.getMessage());
-                Log.e(TAG, "onError: " + e.getLocalizedMessage() );
-                Log.e(TAG, "onError: "+ e.getStackTrace() );
-                Log.e(TAG, "onError: " + e.getSuppressed() );
+                Log.e(TAG, "onError: " + e.getLocalizedMessage());
+                Log.e(TAG, "onError: " + e.getStackTrace());
+                Log.e(TAG, "onError: " + e.getSuppressed());
             }
 
             @Override
@@ -680,6 +682,7 @@ public class FirebaseQueryHelperRepository {
         Log.e(TAG, "unfollow:               " + userId + myId);
         USER_REF.child(myId).child("following").child(userId).removeValue();
         USER_REF.child(userId).child("follower").child(myId).removeValue();
+
     }
 
     public void addItemToCart(Context context, String uid, FoodModel model) {
@@ -822,4 +825,40 @@ public class FirebaseQueryHelperRepository {
     }
 
 
+    public void getReceivedOrder(MutableLiveData<ArrayList<OrderModel>> listOfReceivedOrders, String id) {
+
+        Log.e(TAG, "getReceivedOrder: " + "method invoked ! " );
+
+        USER_REF.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("ordersReceived")) {
+
+                    Log.e(TAG, "onDataChange: " + "orders received child is found" );
+                    ArrayList<OrderModel> listOfOrders = new ArrayList<>();
+                    for (DataSnapshot d1 : dataSnapshot.child("ordersReceived").getChildren()) {
+
+                        OrderModel orderModel = d1.getValue(OrderModel.class);
+                        if ((orderModel.getOrderPostTimeInUnix() + 1800000) > System.currentTimeMillis())listOfOrders.add(orderModel);
+                    }
+
+                    listOfReceivedOrders.setValue(listOfOrders);
+
+                }
+                else {
+                    Log.e(TAG, "onDataChange: "  + "didn't find orders received" );
+                    Log.e(TAG, "onDataChange: " +dataSnapshot );
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 }

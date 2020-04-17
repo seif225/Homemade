@@ -13,13 +13,23 @@
             android:icon="@drawable/ic_account_circle_black_24dp"
             android:title="@string/title_activity_profile" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_recieved_orders"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:title="@string/orders_recieved" />
         <item
             android:id="@+id/nav_tools"
             android:icon="@drawable/ic_menu_manage"
             android:title="@string/menu_tools" />
+
+       <!-- <item
+            android:id="@+id/nav_orders_sent"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/orders_sent" />
+
+        <item
+            android:id="@+id/nav_orders_recieved"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/orders_recieved" />-->
     </group>
 
     <item android:title="Communicate">

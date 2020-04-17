@@ -120,5 +120,17 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="title_activity_profile_testing">ProfileTesting</string>
+    <string name="orders_sent">Orders Sent</string>
+    <string name="orders_recieved">Orders Recieved</string>
+    <string name="dummy_order">
+        1-shetos \n
+        2-doretos \n
+        3- fter w d7k \n
+        4-akl kter \n
+        5- trabyzat billiardo w ping \n
+        6- welcome to the jungle "uhh uhh " \n
+        7- ehh ehhh "michael jackson"
+    </string>
+
 
 </resources>

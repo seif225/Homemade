@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private CircleImageView navuseRImage;
     private TextView navUserName, navUserMail;
     private MainViewModel viewModel;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,10 +79,11 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
+      //  hideItem();
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_profile, R.id.nav_slideshow,
+                R.id.nav_home, R.id.nav_profile, R.id.nav_recieved_orders,
                 R.id.nav_tools, R.id.nav_share, R.id.nav_send)
                 .setDrawerLayout(drawer)
                 .build();
@@ -181,19 +183,18 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
 
-
         OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(UploadUserTokenWorkManagerToFirebase.class).build();
         WorkManager.getInstance(MainActivity.this).enqueue(oneTimeWorkRequest);
 
         viewModel.getUserParentModel(mAuth.getUid()).observe(this, new Observer<UserParentModel>() {
             @Override
             public void onChanged(UserParentModel userParentModel) {
-                Log.e(TAG, "onChanged: " +userParentModel.getToken() );
-                Log.e(TAG, "onChanged: " +userParentModel.getId() );
-                Log.e(TAG, "onChanged: " +userParentModel.getName() );
-                if(userParentModel.getName()!=null && userParentModel.getId()!=null && userParentModel.getToken()!=null){
+                Log.e(TAG, "onChanged: " + userParentModel.getToken());
+                Log.e(TAG, "onChanged: " + userParentModel.getId());
+                Log.e(TAG, "onChanged: " + userParentModel.getName());
+                if (userParentModel.getName() != null && userParentModel.getId() != null && userParentModel.getToken() != null) {
 
-                    SharedPreferences sharedPreferences=getSharedPreferences("userData", Context.MODE_PRIVATE);
+                    SharedPreferences sharedPreferences = getSharedPreferences("userData", Context.MODE_PRIVATE);
 
 
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -226,6 +227,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+
+    private void hideItem() {
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        Menu nav_Menu = navigationView.getMenu();
+       // nav_Menu.findItem(R.id.nav_orders_recieved).setVisible(false);
+    }
 
 
 }
