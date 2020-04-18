@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,8 +19,13 @@ import com.example.graduiation.ui.Data.FoodModel;
 import com.example.graduiation.ui.Data.OrderModel;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 
 import static android.graphics.BlendMode.COLOR;
 
@@ -39,6 +45,19 @@ public class AcceptedOrdersRecyclerAdapter extends RecyclerView.Adapter<Accepted
                 , false);
         return new ViewHolder(view);
     }
+
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+
+       if(holder.countDownTimer!=null) holder.countDownTimer.cancel();
+
+    }
+
+
+
+
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -92,29 +111,45 @@ public class AcceptedOrdersRecyclerAdapter extends RecyclerView.Adapter<Accepted
         });
 
         long remainingTime = (postTime+(maxOrderDuration) )- System.currentTimeMillis();
-        new CountDownTimer(remainingTime, 1000) {
 
-            public void onTick(long millisUntilFinished) {
+        holder.getCountDownTimer(remainingTime).start();
 
-
-                long remainingSecs = millisUntilFinished/1000;
-                long hours = remainingSecs/60/60;
-                long minutes = (remainingSecs/60) -(hours*60);
-                long seconds = remainingSecs -(minutes*60)-(hours*60*60);
-                holder.timer_tv.setText( hours +" : "+minutes+" : " + seconds);
+     /*   Observable<Long> timer = Observable.intervalRange(System.currentTimeMillis(),postTime+(maxOrderDuration),0,1,TimeUnit.SECONDS);
+        long finalMaxOrderDuration = maxOrderDuration;
+        timer.observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Long>() {
+            @Override
+            public void onSubscribe(Disposable d) {
 
             }
 
-            public void onFinish() {
-               // removeItem(position);
-                holder.timer_tv.setText("OVERDUE");
-                holder.timer_tv.setTextColor(Color.RED);
+            @Override
+            public void onNext(Long aLong) {
+                Log.e(TAG, "onNext: " + aLong );
+                long remainingMillis = (postTime+(finalMaxOrderDuration))-aLong;
+                long remainingSecs = remainingMillis / 1000;
+                long hours = remainingSecs / 60 / 60;
+                long minutes = (remainingSecs / 60) - (hours * 60);
+                long seconds = remainingSecs - (minutes * 60) - (hours * 60 * 60);
+                holder.timer_tv.setText(hours + " : " + minutes + " : " + seconds);
             }
-        }
-        .start();
 
+            @Override
+            public void onError(Throwable e) {
 
+            }
 
+            @Override
+            public void onComplete() {
+
+            }
+        });*/
+
+        holder.requestBikerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "this feature will be available soon ,\n shayfak ya shobaki :'D", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -126,9 +161,11 @@ public class AcceptedOrdersRecyclerAdapter extends RecyclerView.Adapter<Accepted
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView timer_tv, orderId_tv, status_tv, order_details;
-        Button expand_tv , requestBikerBtn ;
+        Button expand_tv, requestBikerBtn;
         CircleImageView statusIndicator;
         View expandable_constraint;
+        CountDownTimer countDownTimer;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -139,11 +176,35 @@ public class AcceptedOrdersRecyclerAdapter extends RecyclerView.Adapter<Accepted
             order_details = itemView.findViewById(R.id.order_details);
             statusIndicator = itemView.findViewById(R.id.status_label);
             expandable_constraint = itemView.findViewById(R.id.expandable_constraint);
-            requestBikerBtn=itemView.findViewById(R.id.request_biker_btn);
-
+            requestBikerBtn = itemView.findViewById(R.id.request_biker_btn);
 
 
         }
+
+        public CountDownTimer getCountDownTimer(long remainingTime) {
+            countDownTimer = new CountDownTimer(remainingTime, 1000) {
+
+                public void onTick(long millisUntilFinished) {
+                    long remainingSecs = millisUntilFinished / 1000;
+                    long hours = remainingSecs / 60 / 60;
+                    long minutes = (remainingSecs / 60) - (hours * 60);
+                    long seconds = remainingSecs - (minutes * 60) - (hours * 60 * 60);
+                    timer_tv.setText(hours + " : " + minutes + " : " + seconds);
+                    Log.e(TAG, "onTick: " + "im still ticking my friend :D  : " + millisUntilFinished);
+                }
+
+                public void onFinish() {
+                    // removeItem(position);
+                    timer_tv.setText("OVERDUE");
+                    timer_tv.setTextColor(Color.RED);
+                }
+
+
+            };
+            return countDownTimer;
+
+        }
+
     }
     public void toggle_contents(View v, Button order_details) {
 
