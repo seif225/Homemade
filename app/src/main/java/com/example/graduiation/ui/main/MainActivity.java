@@ -33,7 +33,8 @@ import androidx.work.WorkManager;
 
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Data.UserParentModel;
-import com.example.graduiation.ui.OrdersRecieved.OrdersReceivedFragment;
+import com.example.graduiation.ui.OrdersHanging.OrdersHangingFragment;
+import com.example.graduiation.ui.OrdersReceived.OrdersRecievedPlaceHolder;
 import com.example.graduiation.ui.UserCart.UserCartActivity;
 import com.example.graduiation.ui.WorkManagers.UploadUserTokenWorkManagerToFirebase;
 import com.example.graduiation.ui.addMeal.AddMealActivity;
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                Fragment newFragment = new OrdersReceivedFragment();
+                Fragment newFragment = new OrdersRecievedPlaceHolder();
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.add(R.id.nav_host_fragment, newFragment);
                 transaction.setCustomAnimations(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim,

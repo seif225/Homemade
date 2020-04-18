@@ -1,6 +1,5 @@
-package com.example.graduiation.ui.OrdersRecieved;
+package com.example.graduiation.ui.OrdersHanging;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -9,12 +8,12 @@ import com.example.graduiation.ui.Data.OrderModel;
 
 import java.util.ArrayList;
 
-public class OrdersReceivedViewModel extends ViewModel {
+public class OrdersHangingViewModel extends ViewModel {
 
 
     private MutableLiveData<ArrayList<OrderModel>> listOfReceivedOrders;
     private final FirebaseQueryHelperRepository repository= FirebaseQueryHelperRepository.getInstance();
-    public OrdersReceivedViewModel() {
+    public OrdersHangingViewModel() {
         listOfReceivedOrders = new MutableLiveData<>();
     }
 

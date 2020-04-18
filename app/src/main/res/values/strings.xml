@@ -131,6 +131,8 @@
         6- welcome to the jungle "uhh uhh " \n
         7- ehh ehhh "michael jackson"
     </string>
+    <string name="hanging_orders">Hanging</string>
+    <string name="accepted_orders">Accepted</string>
 
 
 </resources>

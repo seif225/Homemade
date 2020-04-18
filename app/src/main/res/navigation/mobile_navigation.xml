@@ -19,9 +19,9 @@
 
     <fragment
         android:id="@+id/nav_recieved_orders"
-        android:name="com.example.graduiation.ui.OrdersRecieved.OrdersReceivedFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/orders_received_slideshow" />
+        android:name="com.example.graduiation.ui.OrdersReceived.OrdersRecievedPlaceHolder"
+        android:label="@string/orders_recieved"
+        tools:layout="@layout/fragment_orders_recieved_place_holder" />
 
     <fragment
         android:id="@+id/nav_tools"

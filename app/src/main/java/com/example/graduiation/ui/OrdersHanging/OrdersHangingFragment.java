@@ -1,4 +1,4 @@
-package com.example.graduiation.ui.OrdersRecieved;
+package com.example.graduiation.ui.OrdersHanging;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -7,9 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -23,17 +21,17 @@ import com.example.graduiation.ui.Data.OrderModel;
 
 import java.util.ArrayList;
 
-public class OrdersReceivedFragment extends Fragment {
+public class OrdersHangingFragment extends Fragment {
 
-    private OrdersReceivedViewModel viewModel;
+    private OrdersHangingViewModel viewModel;
     private RecyclerView receiverOrdersRecyclerView;
     private static final String TAG = "OrdersReceivedFragment";
     private OrdersRecieivedRecyclerAdapter adapter;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         viewModel =
-                ViewModelProviders.of(this).get(OrdersReceivedViewModel.class);
-        View root = inflater.inflate(R.layout.orders_received_slideshow, container, false);
+                ViewModelProviders.of(this).get(OrdersHangingViewModel.class);
+        View root = inflater.inflate(R.layout.orders_hanging_fragment, container, false);
         receiverOrdersRecyclerView = root.findViewById(R.id.received_orders_recycler_view);
         SharedPreferences  sp= getActivity().getSharedPreferences("userData",Context.MODE_PRIVATE);
         String userId = sp.getString("id","default_value");
