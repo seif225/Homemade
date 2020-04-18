@@ -1,5 +1,7 @@
 package com.example.graduiation.ui.Adapters;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.text.Layout;
@@ -12,15 +14,24 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Animators.Fx;
 import com.example.graduiation.ui.Data.FoodModel;
 import com.example.graduiation.ui.Data.OrderModel;
+import com.example.graduiation.ui.UserCart.UserCartActivity;
+import com.example.graduiation.ui.WorkManagers.AddingActionsOnOrdersWorkManager;
+import com.example.graduiation.ui.WorkManagers.UploadOrderWorker;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class OrdersRecieivedRecyclerAdapter extends RecyclerView.Adapter<OrdersRecieivedRecyclerAdapter.ViewHolder> {
 
@@ -85,6 +96,52 @@ public class OrdersRecieivedRecyclerAdapter extends RecyclerView.Adapter<OrdersR
         }.start();
 
 
+        holder.accept_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                sendToWorkManager(orderModel,"4",holder.itemView.getContext());
+                removeItem(position);
+
+            }
+        });
+
+    holder.decline_btn.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            sendToWorkManager(orderModel,"2",holder.itemView.getContext());
+            removeItem(position);
+
+        }
+    });
+
+
+    }
+
+    private void sendToWorkManager(OrderModel orderModel, String s, Context ctx) {
+
+        orderModel.setState(s);
+        Gson gson = new Gson();
+        String json = gson.toJson(orderModel);
+
+        SharedPreferences shared = ctx.getSharedPreferences("userData", MODE_PRIVATE);
+        String name = shared.getString("name", "");
+        Data data = new Data.Builder()
+                .putString("order",json)
+                .putString("name",name)
+                .build();
+
+
+        OneTimeWorkRequest uploadWorkRequest = new OneTimeWorkRequest.Builder(AddingActionsOnOrdersWorkManager.class)
+                .setInputData(data)
+                .build();
+
+        WorkManager.getInstance(ctx).enqueue(uploadWorkRequest);
+
+
+
+
+
 
 
     }
@@ -96,7 +153,7 @@ public class OrdersRecieivedRecyclerAdapter extends RecyclerView.Adapter<OrdersR
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView timer_tv, orderId_tv, status_tv, order_details;
-        Button expand_tv;
+        Button expand_tv , accept_btn , decline_btn, partial_btn;
         CircleImageView statusIndicator;
         View expandable_constraint;
 
@@ -110,7 +167,9 @@ public class OrdersRecieivedRecyclerAdapter extends RecyclerView.Adapter<OrdersR
             order_details = itemView.findViewById(R.id.order_details);
             statusIndicator = itemView.findViewById(R.id.status_label);
             expandable_constraint = itemView.findViewById(R.id.expandable_constraint);
-
+            accept_btn=itemView.findViewById(R.id.accept_btn);
+            decline_btn=itemView.findViewById(R.id.decline_btn);
+            partial_btn=itemView.findViewById(R.id.partial_accept_btn);
         }
     }
 

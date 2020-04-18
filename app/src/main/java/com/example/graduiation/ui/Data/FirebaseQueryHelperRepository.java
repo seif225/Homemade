@@ -1,5 +1,6 @@
 package com.example.graduiation.ui.Data;
 
+import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -40,6 +41,8 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class FirebaseQueryHelperRepository {
     private FirebaseAuth mAuth;
@@ -148,7 +151,7 @@ public class FirebaseQueryHelperRepository {
                     }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    public void onCancelled(@NonNull DatabaseError dgetUserCoordinatesatabaseError) {
 
                     }
                 });
@@ -780,7 +783,7 @@ public class FirebaseQueryHelperRepository {
             Log.e(TAG, "sendNotificationsToUsers in orders !: Check name again" + userName);
             data.setTitle("you got an order from " + userName);
             data.setKey1("order");
-            data.setKey2(System.currentTimeMillis()+"");
+            data.setKey2(System.currentTimeMillis() + "");
             data.setKey3(orderId);
             postModel.setData(data);
             postModel.setTo(token);
@@ -831,27 +834,29 @@ public class FirebaseQueryHelperRepository {
 
     public void getReceivedOrder(MutableLiveData<ArrayList<OrderModel>> listOfReceivedOrders, String id) {
 
-        Log.e(TAG, "getReceivedOrder: " + "method invoked ! " );
+        Log.e(TAG, "getReceivedOrder: " + "method invoked ! ");
 
         USER_REF.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChild("ordersReceived")) {
 
-                    Log.e(TAG, "onDataChange: " + "orders received child is found" );
+                    Log.e(TAG, "onDataChange: " + "orders received child is found");
                     ArrayList<OrderModel> listOfOrders = new ArrayList<>();
                     for (DataSnapshot d1 : dataSnapshot.child("ordersReceived").getChildren()) {
 
                         OrderModel orderModel = d1.getValue(OrderModel.class);
-                        if ((orderModel.getOrderPostTimeInUnix() + 1800000) > System.currentTimeMillis())listOfOrders.add(orderModel);
+                        if (
+                                ((orderModel.getOrderPostTimeInUnix() + 1800000) > System.currentTimeMillis())
+                                        && orderModel.getState().equals("1"))
+                            listOfOrders.add(orderModel);
                     }
 
                     listOfReceivedOrders.setValue(listOfOrders);
 
-                }
-                else {
-                    Log.e(TAG, "onDataChange: "  + "didn't find orders received" );
-                    Log.e(TAG, "onDataChange: " +dataSnapshot );
+                } else {
+                    Log.e(TAG, "onDataChange: " + "didn't find orders received");
+                    Log.e(TAG, "onDataChange: " + dataSnapshot);
 
                 }
 
@@ -865,4 +870,72 @@ public class FirebaseQueryHelperRepository {
         });
 
     }
+
+    public void addActionsOnOrder(OrderModel model, String name) {
+        USER_REF.child(model.getCookId()).child("ordersReceived").child(model.getOrderId()).child("state").setValue(model.getState());
+        USER_REF.child(model.getBuyerId()).child("ordersSent").child(model.getOrderId()).child(model.getCookId()).child("state").setValue(model.getState());
+        Log.e(TAG, "addActionsOnOrder: cookId: " + model.getCookId());
+        Log.e(TAG, "addActionsOnOrder: OrderId" + model.getOrderId() );
+        Log.e(TAG, "addActionsOnOrder: BuyerId :"+model.getBuyerId() );
+
+        sendNotificaitonOfActionToUser(model,name);
+
+    }
+
+    private void sendNotificaitonOfActionToUser(OrderModel model, String name) {
+
+
+        PostModel postModel = new PostModel();
+        Data data = new Data();
+
+
+
+        data.setMessage("check your orders");
+        if(model.getState().equals("4")){
+        data.setTitle(name + " has accepted your order");
+        }
+        else if(model.getState().equals("2")){
+            data.setTitle(name + " has declined your order");
+
+        }
+        Log.e(TAG, "sendNotificaitonOfActionToUser:BuyerToken " + model.getBuyerToken() );
+        data.setKey1("orderAction");
+        postModel.setData(data);
+        postModel.setTo(model.getBuyerToken());
+
+        Observable<PostModel> observable = ApiClient.getInstance().getApi(postModel).subscribeOn(Schedulers.computation());
+        Observer<PostModel> observer = new Observer<PostModel>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(PostModel postModel) {
+
+                Log.e(TAG, "onNext: ");
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: " + e.getMessage());
+                Log.e(TAG, "onError: " + e.getLocalizedMessage());
+                Log.e(TAG, "onError: " + e.getStackTrace());
+                Log.e(TAG, "onError: " + e.getSuppressed());
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+
+
+        observable.subscribe(observer);
+
+
+    }
+
+
 }

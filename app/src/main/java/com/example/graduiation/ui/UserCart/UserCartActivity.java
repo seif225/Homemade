@@ -151,7 +151,7 @@ public class UserCartActivity extends AppCompatActivity {
                     SharedPreferences sharedPref = getSharedPreferences("userData",Context.MODE_PRIVATE);
                     String name = sharedPref.getString("name", "No name defined");
                     String token = sharedPref.getString("token", "No name defined");
-                    String id = sharedPref.getString("token", "No name defined");
+                    String id = sharedPref.getString("id", "No name defined");
                 String orderId = UUID.randomUUID().toString();
 
                 long unixTime = System.currentTimeMillis();
