@@ -101,7 +101,7 @@
                             android:elevation="8dp"
                             android:textAllCaps="false"
                             android:background="@drawable/accept_btn_background"
-                            android:id="@+id/accept_btn"
+                            android:id="@+id/request_biker_btn"
                             android:textColor="#fefe"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/order_details" />
@@ -118,8 +118,8 @@
                             android:textColor="#fefe"
                             android:background="@drawable/decline_button_background"
                             android:textAllCaps="false"
-                            app:layout_constraintBottom_toBottomOf="@+id/accept_btn"
-                            app:layout_constraintStart_toEndOf="@+id/accept_btn"
+                            app:layout_constraintBottom_toBottomOf="@+id/request_biker_btn"
+                            app:layout_constraintStart_toEndOf="@+id/request_biker_btn"
                             app:layout_constraintTop_toBottomOf="@+id/order_details" />
 
                         <Button

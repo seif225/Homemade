@@ -22,6 +22,15 @@ public class AddingActionsOnOrdersWorkManager extends Worker {
     public Result doWork() {
         Gson gson = new Gson();
         OrderModel model = gson.fromJson(getInputData().getString("order"), OrderModel.class);
+        if(model.getState().equals("4")){
+
+            //TODO:  notify user every quarter
+
+
+
+
+
+        }
 
         FirebaseQueryHelperRepository.getInstance().addActionsOnOrder(model,getInputData().getString("name"));
 

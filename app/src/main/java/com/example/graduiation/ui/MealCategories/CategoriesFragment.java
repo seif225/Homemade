@@ -1,6 +1,7 @@
 package com.example.graduiation.ui.MealCategories;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -48,6 +49,8 @@ public class CategoriesFragment extends AppCompatActivity {
         Log.e(TAG, "onCreate: current category is " + category);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+      
         recyclerView = findViewById(R.id.recyclerView);
         foodRecyclerView = findViewById(R.id.food_recyclerView);
         categoryTv = findViewById(R.id.tv_category);

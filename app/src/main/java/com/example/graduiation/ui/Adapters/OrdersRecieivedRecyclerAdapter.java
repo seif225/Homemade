@@ -2,9 +2,7 @@ package com.example.graduiation.ui.Adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.CountDownTimer;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +20,7 @@ import com.example.graduiation.R;
 import com.example.graduiation.ui.Animators.Fx;
 import com.example.graduiation.ui.Data.FoodModel;
 import com.example.graduiation.ui.Data.OrderModel;
-import com.example.graduiation.ui.UserCart.UserCartActivity;
 import com.example.graduiation.ui.WorkManagers.AddingActionsOnOrdersWorkManager;
-import com.example.graduiation.ui.WorkManagers.UploadOrderWorker;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -167,7 +163,7 @@ public class OrdersRecieivedRecyclerAdapter extends RecyclerView.Adapter<OrdersR
             order_details = itemView.findViewById(R.id.order_details);
             statusIndicator = itemView.findViewById(R.id.status_label);
             expandable_constraint = itemView.findViewById(R.id.expandable_constraint);
-            accept_btn=itemView.findViewById(R.id.accept_btn);
+            accept_btn=itemView.findViewById(R.id.request_biker_btn);
             decline_btn=itemView.findViewById(R.id.decline_btn);
             partial_btn=itemView.findViewById(R.id.partial_accept_btn);
         }

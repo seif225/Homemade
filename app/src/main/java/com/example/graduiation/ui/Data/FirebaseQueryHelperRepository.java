@@ -872,13 +872,22 @@ public class FirebaseQueryHelperRepository {
     }
 
     public void addActionsOnOrder(OrderModel model, String name) {
+        //update Order State
         USER_REF.child(model.getCookId()).child("ordersReceived").child(model.getOrderId()).child("state").setValue(model.getState());
         USER_REF.child(model.getBuyerId()).child("ordersSent").child(model.getOrderId()).child(model.getCookId()).child("state").setValue(model.getState());
-        Log.e(TAG, "addActionsOnOrder: cookId: " + model.getCookId());
-        Log.e(TAG, "addActionsOnOrder: OrderId" + model.getOrderId() );
-        Log.e(TAG, "addActionsOnOrder: BuyerId :"+model.getBuyerId() );
+        //update lastAction
+        long currentTime = System.currentTimeMillis();
+        model.setLastActionTime(currentTime);
 
-        sendNotificaitonOfActionToUser(model,name);
+        USER_REF.child(model.getCookId()).child("ordersReceived").child(model.getOrderId()).child("lastActionTime").setValue(currentTime);
+        USER_REF.child(model.getBuyerId()).child("ordersSent").child(model.getOrderId()).child(model.getCookId()).child("lastActionTime").setValue(currentTime);
+
+
+        Log.e(TAG, "addActionsOnOrder: cookId: " + model.getCookId());
+        Log.e(TAG, "addActionsOnOrder: OrderId" + model.getOrderId());
+        Log.e(TAG, "addActionsOnOrder: BuyerId :" + model.getBuyerId());
+
+        sendNotificaitonOfActionToUser(model, name);
 
     }
 
@@ -889,16 +898,14 @@ public class FirebaseQueryHelperRepository {
         Data data = new Data();
 
 
-
         data.setMessage("check your orders");
-        if(model.getState().equals("4")){
-        data.setTitle(name + " has accepted your order");
-        }
-        else if(model.getState().equals("2")){
+        if (model.getState().equals("4")) {
+            data.setTitle(name + " has accepted your order");
+        } else if (model.getState().equals("2")) {
             data.setTitle(name + " has declined your order");
 
         }
-        Log.e(TAG, "sendNotificaitonOfActionToUser:BuyerToken " + model.getBuyerToken() );
+        Log.e(TAG, "sendNotificaitonOfActionToUser:BuyerToken " + model.getBuyerToken());
         data.setKey1("orderAction");
         postModel.setData(data);
         postModel.setTo(model.getBuyerToken());
@@ -938,4 +945,31 @@ public class FirebaseQueryHelperRepository {
     }
 
 
+    public void getAcceptedOrders(String id, MutableLiveData<ArrayList<OrderModel>> mutableLiveDataListOfAcceptedOrders) {
+        USER_REF.child(id).child("ordersReceived").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<OrderModel> listOdAccptedOrders = new ArrayList<>();
+                for (DataSnapshot d1 : dataSnapshot.getChildren()) {
+                    if (d1.child("state").getValue().toString().equals("4")) {
+                        if (d1.hasChild("lastActionTime")) {
+
+                            OrderModel model = d1.getValue(OrderModel.class);
+                            if(model.getLastActionTime()>0) listOdAccptedOrders.add(model);
+                            Log.e(TAG, "onDataChange: " + d1);
+                        }
+                    }
+                }
+
+                mutableLiveDataListOfAcceptedOrders.setValue(listOdAccptedOrders);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
 }

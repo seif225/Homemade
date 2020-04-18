@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class OrderModel  {
     private String state, address, orderId , paymentMethod , cookId ,cookToken ,totalPrice , buyerId,buyerToken , lat,lng;
     private ArrayList<FoodModel> listOfFood;
-    private long durationInUnix, orderPostTimeInUnix;
+    private long durationInUnix, orderPostTimeInUnix , lastActionTime;
 
 
 
@@ -20,9 +20,18 @@ public class OrderModel  {
 
     }
 
+    public long getLastActionTime() {
+        return lastActionTime;
+    }
+
+    public void setLastActionTime(long lastActionTime) {
+        this.lastActionTime = lastActionTime;
+    }
+
     public void setLat(String lat) {
         this.lat = lat;
     }
+
 
     public void setLng(String lng) {
         this.lng = lng;
