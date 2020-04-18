@@ -64,7 +64,7 @@ public class UserCartActivity extends AppCompatActivity {
     TextView address;
     private LatLng userCoordinates;
     private OrderModel orderModel;
-
+    private String addressStr;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -72,15 +72,17 @@ public class UserCartActivity extends AppCompatActivity {
 
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
-                String addressStr = data.getStringExtra("address");
+                 addressStr = data.getStringExtra("address");
                 double lat = data.getDoubleExtra("lat", 0);
                 double lng = data.getDoubleExtra("lng", 0);
 
                 if (lat > 0 && lng > 0) {
                     Log.e(TAG, "onActivityResult: " + lat);
                     Log.e(TAG, "onActivityResult: " + lng);
-                    userCoordinates = new LatLng(lat, lng);
-                    orderModel.setUserCoordinates(userCoordinates);
+                   // userCoordinates = new LatLng(lat, lng);
+                    orderModel.setLat(lat+"");
+                    orderModel.setLng(lng+"");
+
                 }
                 Log.e(TAG, "onActivityResult: " + addressStr);
 
@@ -139,22 +141,34 @@ public class UserCartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                if(addressStr!=null){
+
+
                 ProgressDialog pd = new ProgressDialog(UserCartActivity.this);
                 pd.setTitle("saving your order ..");
                 pd.setMessage("please wait ...");
                 pd.show();;
+                    SharedPreferences sharedPref = getSharedPreferences("userData",Context.MODE_PRIVATE);
+                    String name = sharedPref.getString("name", "No name defined");
+                    String token = sharedPref.getString("token", "No name defined");
+                    String id = sharedPref.getString("token", "No name defined");
                 String orderId = UUID.randomUUID().toString();
+
                 long unixTime = System.currentTimeMillis();
-                orderModel.setOrderId(orderId);
-                orderModel.setOrderPostTimeInUnix(unixTime);
-                orderModel.setState("1");
+
+                        orderModel.setOrderId(orderId);
+                        orderModel.setOrderPostTimeInUnix(unixTime);
+                        orderModel.setState("1");
+                        orderModel.setBuyerToken(token);
+                        orderModel.setBuyerId(id);
+
 
                 Constraints constraints = new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build();
 
                 Gson gson = new Gson();
                 String json = gson.toJson(orderModel);
-                SharedPreferences sharedPref = getSharedPreferences("userData",Context.MODE_PRIVATE);
-                String name = sharedPref.getString("name", "No name defined");
+
+
 
                 Data data = new Data.Builder()
                         .putString("data", "dummy text ")
@@ -200,7 +214,10 @@ public class UserCartActivity extends AppCompatActivity {
                                 }
                             }
                         });
-            }
+            }else {
+                    Toast.makeText(UserCartActivity.this, "you need to pick location first", Toast.LENGTH_SHORT).show();
+                }
+                }
         });
 
     }

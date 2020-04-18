@@ -9,18 +9,47 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class OrderModel  {
-    private String state, address, orderId , paymentMethod , cookId ,cookToken ,totalPrice;
+    private String state, address, orderId , paymentMethod , cookId ,cookToken ,totalPrice , buyerId,buyerToken , lat,lng;
     private ArrayList<FoodModel> listOfFood;
     private long durationInUnix, orderPostTimeInUnix;
-    private LatLng userCoordinates;
-
-
 
 
 
     public OrderModel()
     {
 
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setBuyerId(String buyerId) {
+        this.buyerId = buyerId;
+    }
+
+    public String getBuyerId() {
+        return buyerId;
+    }
+
+    public void setBuyerToken(String buyerToken) {
+        this.buyerToken = buyerToken;
+    }
+
+    public String getBuyerToken() {
+        return buyerToken;
     }
 
 
@@ -64,13 +93,6 @@ public class OrderModel  {
         this.address = address;
     }
 
-    public void setUserCoordinates(LatLng userCoordinates) {
-        this.userCoordinates = userCoordinates;
-    }
-
-    public LatLng getUserCoordinates() {
-        return userCoordinates;
-    }
 
     public String getOrderId() {
         return orderId;

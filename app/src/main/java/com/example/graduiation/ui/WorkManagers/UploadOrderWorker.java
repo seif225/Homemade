@@ -82,7 +82,10 @@ public class UploadOrderWorker extends Worker {
             orderModel.setOrderPostTimeInUnix(model.getOrderPostTimeInUnix());
             orderModel.setOrderId(model.getOrderId());
             orderModel.setAddress(model.getAddress());
-            orderModel.setUserCoordinates(model.getUserCoordinates());
+            orderModel.setLng(model.getLng());
+            orderModel.setLat(model.getLat());
+            orderModel.setBuyerId(model.getBuyerId());
+            orderModel.setBuyerToken(model.getBuyerToken());
 
             orderModelHashSet.put(id, orderModel);
 

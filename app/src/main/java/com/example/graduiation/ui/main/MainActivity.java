@@ -217,11 +217,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "onChanged: " + userParentModel.getToken());
                 Log.e(TAG, "onChanged: " + userParentModel.getId());
                 Log.e(TAG, "onChanged: " + userParentModel.getName());
+
                 if (userParentModel.getName() != null && userParentModel.getId() != null && userParentModel.getToken() != null) {
-
                     SharedPreferences sharedPreferences = getSharedPreferences("userData", Context.MODE_PRIVATE);
-
-
                     SharedPreferences.Editor editor = sharedPreferences.edit();
 
                     editor.putString("id", userParentModel.getId());
@@ -229,9 +227,8 @@ public class MainActivity extends AppCompatActivity {
                     editor.putString("name", userParentModel.getName());
                     editor.apply();
 
+
                 }
-
-
             }
         });
 
