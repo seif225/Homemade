@@ -133,6 +133,9 @@
     </string>
     <string name="hanging_orders">Hanging</string>
     <string name="accepted_orders">Accepted</string>
+    <string name="current_orders">Current Orders</string>
+    <string name="history">History</string>
+    <string name="sent_orders">Sent Orders</string>
 
 
 </resources>

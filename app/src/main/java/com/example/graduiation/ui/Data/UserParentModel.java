@@ -1,68 +1,60 @@
 package com.example.graduiation.ui.Data;
 
 public class UserParentModel {
+
     private String name, id, phone, image, rate, following, subType, email, password , membership,bio ,token;
     private WalletModel wallet;
 
+    public UserParentModel() {
 
-    UserParentModel() {
-
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 
-    public String getToken() {
-        return token;
+    public String getName() {
+        return name;
     }
 
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-    public String getBio() {
-        return bio;
-    }
-    public void setMembership(String membership) {
-        this.membership = membership;
-    }
-    public String getMembership() {
-        return membership;
-    }
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setSubType(String subType) {
-        this.subType = subType;
-    }
-
-    public void setWallet(WalletModel wallet) {
-        this.wallet = wallet;
+    public String getId() {
+        return id;
     }
 
     public String getPhone() {
         return phone;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public String getRate() {
+        return rate;
+    }
+
+    public String getFollowing() {
+        return following;
+    }
+
     public String getSubType() {
         return subType;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getMembership() {
+        return membership;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public String getToken() {
+        return token;
     }
 
     public WalletModel getWallet() {
@@ -77,6 +69,10 @@ public class UserParentModel {
         this.id = id;
     }
 
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public void setImage(String image) {
         this.image = image;
     }
@@ -89,27 +85,31 @@ public class UserParentModel {
         this.following = following;
     }
 
-    public String getName() {
-        return name;
+    public void setSubType(String subType) {
+        this.subType = subType;
     }
 
-    public String getId() {
-        return id;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getPhine() {
-        return phone;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getImage() {
-        return image;
+    public void setMembership(String membership) {
+        this.membership = membership;
     }
 
-    public String getRate() {
-        return rate;
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
-    public String getFollowing() {
-        return following;
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setWallet(WalletModel wallet) {
+        this.wallet = wallet;
     }
 }

@@ -44,64 +44,66 @@ public class OrderTimeOutNotificationWorkManager extends Worker {
     public Result doWork() {
 
         Date currentTime = Calendar.getInstance().getTime();
-        Log.e(TAG, "doWork: "+ currentTime+"");
-
-
+        Log.e(TAG, "doWork: " + currentTime + "");
 
 
         String orderId = getInputData().getString("orderId");
-        FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getUid())
-                .child("ordersReceived").child(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String state = dataSnapshot.child("state").getValue().toString();
-                if(state.equals("1")){
 
-                 notifyUser();
 
-                }
-            }
+            FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getUid())
+                    .child("ordersReceived").child(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String state = dataSnapshot.child("state").getValue().toString();
+                    if (state.equals("1")) {
 
-            private void notifyUser() {
+                        notifyUser();
 
-                NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-                int notificationID = new Random().nextInt(3000);
-
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                    setupChannels(notificationManager);
+                    }
                 }
 
-                Bitmap largeIcon = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                        R.drawable.logo_circle);
+                private void notifyUser() {
 
-                final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("flag" , "orderReceived");
-                PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent,
-                        PendingIntent.FLAG_ONE_SHOT);
+                    NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                    int notificationID = new Random().nextInt(3000);
 
-                Uri notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), ORDER_CHANNEL_ID)
-                        .setSmallIcon(R.drawable.logo_circle)
-                        .setLargeIcon(largeIcon)
-                        .setContentTitle("you left some orders hanging")
-                        .setContentText("orders are cancelled automatically withing 30 minutes after sending request")
-                        .setAutoCancel(true)
-                        .setContentIntent(pendingIntent)
-                        .setSound(notificationSoundUri);
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        setupChannels(notificationManager);
+                    }
 
-                //Set notification color to match your app color template
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    notificationBuilder.setColor(getApplicationContext().getResources().getColor(R.color.colorPrimaryDark));
+                    Bitmap largeIcon = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                            R.drawable.logo_circle);
+
+                    final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("flag", "orderReceived");
+                    PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent,
+                            PendingIntent.FLAG_ONE_SHOT);
+
+                    Uri notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), ORDER_CHANNEL_ID)
+                            .setSmallIcon(R.drawable.logo_circle)
+                            .setLargeIcon(largeIcon)
+                            .setContentTitle("you left some orders hanging")
+                            .setContentText("orders are cancelled automatically withing 30 minutes after sending request")
+                            .setAutoCancel(true)
+                            .setContentIntent(pendingIntent)
+                            .setSound(notificationSoundUri);
+
+                    //Set notification color to match your app color template
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        notificationBuilder.setColor(getApplicationContext().getResources().getColor(R.color.colorPrimaryDark));
+                    }
+                    notificationManager.notify(2, notificationBuilder.build());
+
                 }
-                notificationManager.notify(2, notificationBuilder.build());
 
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
 
-            }
-        });
+
 
         return Result.success();
     }

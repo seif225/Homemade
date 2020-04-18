@@ -268,9 +268,9 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
                             , tabsArray
                             , foodModels
                     );
-                    ViewPager viewPager = findViewById(R.id.view_pager);
+                    ViewPager viewPager = findViewById(R.id.current_orders_view_pager);
                     viewPager.setAdapter(sectionsPagerAdapter);
-                    TabLayout tabs = findViewById(R.id.tabs);
+                    TabLayout tabs = findViewById(R.id.current_orders_tabs);
                     tabs.setupWithViewPager(viewPager);
 
 

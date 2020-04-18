@@ -1,7 +1,9 @@
 package com.example.graduiation.ui.register;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,12 +13,21 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.graduiation.R;
+import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
+import com.example.graduiation.ui.Data.UserParentModel;
 import com.example.graduiation.ui.login.LoginActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
@@ -61,49 +72,106 @@ public class RegisterActivity extends AppCompatActivity {
         cirRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mail, phone, pw1, pw2, name;
+                String mail="", phone="", pw1="", pw2="", name="";
                 mail = editTextEmail.getText().toString();
                 phone = editTextMobile.getText().toString();
                 pw1 = editTextPassword.getText().toString();
                 pw2 = editTextPasswordConfirm.getText().toString();
                 name = editTextName.getText().toString();
-                try {
-                    viewModel.Authenticate(mail, pw1, pw2, pd, phone, name);
-                } catch (IllegalArgumentException ex) {
-                    Log.i(TAG, "onClick: " + ex.getMessage());
-                    handleException(""+ex.getMessage());
-                }
-                finally {
-                   //TODO(2):fix this bug where the user is automatically send to login activity even if an error has occurr    ed during registering
-                    sendUserToLogin();
+
+                if(name.trim().isEmpty()){
+                    editTextName.requestFocus();
+                    editTextName.setError("you can't leave this field empty");
                 }
 
+                else if(mail.trim().isEmpty()){
+                    editTextEmail.requestFocus();
+                    editTextEmail.setError("you can't leave this field empty");
+                }
+                else if(!mail.contains(".com")){
+                    editTextEmail.requestFocus();
+                    editTextEmail.setError("wrong mail format");
+                }
+                else if (phone.trim().length()!=11){
+                    editTextMobile.requestFocus();
+                    editTextMobile.setError("this phone number is not correct");
+                }
+                else if(pw1.length()<6){
+                    editTextPassword.requestFocus();
+                    editTextPassword.setError("password should be at least 6 charcters");
+                }
+                else if(!pw1.equals(pw2)){
+                    editTextPasswordConfirm.requestFocus();
+                    editTextPasswordConfirm.setError("doesn't match your password");
+                }
+                else
+                {
+                    //TODO : Check internet connection and log user in
+                    if(!isNetworkConnected()){
+
+                        Toast.makeText(RegisterActivity.this, "it looks like you don't have an internet connection \n " +
+                                ", please reconnect and try again", Toast.LENGTH_LONG).show();
+                    }
+
+                    else {
+
+                        ProgressDialog pr = new ProgressDialog(RegisterActivity.this);
+                        pr.setTitle("please wait");
+                        pr.setMessage("working on registering you ..");
+                        pr.setCancelable(false);
+                        pr.setCanceledOnTouchOutside(false);
+                        pr.show();
+
+                        String finalName = name;
+                        String finalPhone = phone;
+                        String finalMail = mail;
+                        FirebaseAuth.getInstance().createUserWithEmailAndPassword(mail,pw1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                if(task.isSuccessful()){
+
+                                    String id = FirebaseAuth.getInstance().getUid();
+                                    UserParentModel user = new UserParentModel();
+                                    user.setName(finalName);
+                                    user.setId(id);
+                                    String idToken = FirebaseInstanceId.getInstance().getToken();
+                                    user.setToken(idToken);
+                                    user.setEmail(finalMail);
+                                    user.setPhone(finalPhone);
+
+                                    viewModel.getUserRegisterationState(id,user).observe(RegisterActivity.this, new Observer<String>() {
+                                        @Override
+                                        public void onChanged(String s) {
+                                            pr.dismiss();
+                                            Toast.makeText(RegisterActivity.this, s, Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    });
+
+
+                                }
+                                else {
+                                    pr.dismiss();
+                                    Toast.makeText(RegisterActivity.this, "Error : "+task.getException().getMessage(), Toast.LENGTH_LONG).show();
+
+                                }
+
+                            }
+                        });
+
+
+                    }
+
+
+                }
             }
         });
 
 
     }
 
-    private void handleException(String message) {
 
-        switch (message) {
-
-            case "1":
-                editTextPassword.setError("password must be more than 6 chars");
-                break;
-            case "2":
-                Toast.makeText(this, "password doesnt match", Toast.LENGTH_SHORT).show();
-                break;
-            case "3":
-                editTextMobile.setError("invalid phone number");
-                break;
-            case "4":
-                editTextName.setError("you must add a name");
-                break;
-        }
-
-
-    }
 
     private void changeStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -123,6 +191,12 @@ public class RegisterActivity extends AppCompatActivity {
     private void sendUserToLogin() {
         startActivity(new Intent(this, LoginActivity.class));
         overridePendingTransition(R.anim.slide_in_left, android.R.anim.slide_out_right);
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
 

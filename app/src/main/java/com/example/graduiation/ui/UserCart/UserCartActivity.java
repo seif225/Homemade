@@ -148,6 +148,9 @@ public class UserCartActivity extends AppCompatActivity {
                 pd.setTitle("saving your order ..");
                 pd.setMessage("please wait ...");
                 pd.show();;
+                pd.setCanceledOnTouchOutside(false);
+                pd.setCancelable(false);
+
                     SharedPreferences sharedPref = getSharedPreferences("userData",Context.MODE_PRIVATE);
                     String name = sharedPref.getString("name", "No name defined");
                     String token = sharedPref.getString("token", "No name defined");

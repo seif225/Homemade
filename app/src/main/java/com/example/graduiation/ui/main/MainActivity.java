@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_profile, R.id.nav_recieved_orders,
-                R.id.nav_tools, R.id.nav_share, R.id.nav_send)
+                R.id.navi_sent_orders, R.id.nav_share, R.id.nav_send)
                 .setDrawerLayout(drawer)
                 .build();
 
@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+
             viewModel.getUserParentModel(FirebaseAuth.getInstance().getUid()).observe(this, new Observer<UserParentModel>() {
                 @Override
                 public void onChanged(UserParentModel userParentModel) {
@@ -207,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
             sendUserToAddMeal();
         }*/
 
+        else {
 
         OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(UploadUserTokenWorkManagerToFirebase.class).build();
         WorkManager.getInstance(MainActivity.this).enqueue(oneTimeWorkRequest);
@@ -234,6 +236,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         Log.e(TAG, "onStart: " + mAuth.getUid());
+
+        }
 
     }
 

@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Adapters.OrdersSectionPagerAdapter;
-import com.example.graduiation.ui.Adapters.SectionsPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 /**
@@ -33,9 +32,9 @@ public class OrdersRecievedPlaceHolder extends Fragment {
         View view = inflater.inflate(R.layout.fragment_orders_recieved_place_holder, container, false);
         Log.e(TAG, "onCreateView: "+getActivity().getSupportFragmentManager() );
         OrdersSectionPagerAdapter sectionsPagerAdapter = new OrdersSectionPagerAdapter(getContext(), getActivity().getSupportFragmentManager());
-        ViewPager viewPager = view.findViewById(R.id.view_pager);
+        ViewPager viewPager = view.findViewById(R.id.current_orders_view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
-        TabLayout tabs = view.findViewById(R.id.tabs);
+        TabLayout tabs = view.findViewById(R.id.current_orders_tabs);
         tabs.setupWithViewPager(viewPager);
 
         return view;

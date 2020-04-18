@@ -57,7 +57,7 @@
                     android:visibility="gone" />
 
                 <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabs"
+                    android:id="@+id/current_orders_tabs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?attr/colorPrimary"
@@ -70,7 +70,7 @@
             </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.viewpager.widget.ViewPager
-                android:id="@+id/view_pager"
+                android:id="@+id/current_orders_view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />

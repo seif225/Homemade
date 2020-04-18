@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@id/nav_home">
 
     <fragment
         android:id="@+id/nav_home"
@@ -24,10 +24,12 @@
         tools:layout="@layout/fragment_orders_recieved_place_holder" />
 
     <fragment
-        android:id="@+id/nav_tools"
-        android:name="com.example.graduiation.ui.tools.ToolsFragment"
-        android:label="@string/menu_tools"
-        tools:layout="@layout/fragment_tools" />
+        android:id="@+id/navi_sent_orders"
+        android:name="com.example.graduiation.ui.SentOrders.SendOrdersPlaceHolder"
+        android:label="@string/sent_orders"
+        tools:layout="@layout/send_orders_place_holder_fragment"
+        />
+
 
     <fragment
         android:id="@+id/nav_share"

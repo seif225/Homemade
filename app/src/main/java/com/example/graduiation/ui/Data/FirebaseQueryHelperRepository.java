@@ -174,6 +174,7 @@ public class FirebaseQueryHelperRepository {
     }
 
 
+    @Deprecated
     public void SignUp(String email, String password, String confirmPassword, ProgressDialog pB,
                        String phoneNum, String name) throws IllegalArgumentException {
         pB.setTitle("Please Wait");
@@ -259,12 +260,13 @@ public class FirebaseQueryHelperRepository {
         }
     }
 
-    public void SignIn(String email, String password, Context context,
-                       ProgressDialog progressDialog) {
+
+    @Deprecated
+    public void SignIn(String email, String password, Context context, ProgressDialog progressDialog) {
         progressDialog.setTitle("Please wait");
         progressDialog.setMessage("Signing you in");
         progressDialog.show();
-        if (email.isEmpty()) {
+        if (email.trim().isEmpty()) {
             Toast.makeText(context, "Enter a valid email", Toast.LENGTH_SHORT).show();
         } else if (password.isEmpty()) {
             Toast.makeText(context, "Enter a valid password", Toast.LENGTH_SHORT).show();
@@ -278,8 +280,7 @@ public class FirebaseQueryHelperRepository {
                                 SendUserToIntro(context);
                                 progressDialog.dismiss();
                             } else {
-                                Toast.makeText(context, "Error " + task.getResult(),
-                                        Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 progressDialog.dismiss();
 
                             }
@@ -955,7 +956,7 @@ public class FirebaseQueryHelperRepository {
                         if (d1.hasChild("lastActionTime")) {
 
                             OrderModel model = d1.getValue(OrderModel.class);
-                            if(model.getLastActionTime()>0) listOdAccptedOrders.add(model);
+                            if (model.getLastActionTime() > 0) listOdAccptedOrders.add(model);
                             Log.e(TAG, "onDataChange: " + d1);
                         }
                     }
@@ -972,4 +973,57 @@ public class FirebaseQueryHelperRepository {
 
 
     }
+
+    public void getListOfCurrentOrders(String id, MutableLiveData<ArrayList<OrderModel>> mutableLiveDataForOrdeRModelList) {
+
+        Log.e(TAG, "getListOfOrders: \n \n \n " );
+        ArrayList<OrderModel> listOfOrders = new ArrayList<>();
+        USER_REF.child(id).child("ordersSent").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot d1 : dataSnapshot.getChildren()) {
+                    for (DataSnapshot d2 : d1.getChildren()) {
+                        Log.e(TAG, "onDataChange: " + d2 );
+                        OrderModel model = d2.getValue(OrderModel.class);
+                        listOfOrders.add(model);
+                    }
+
+
+                }
+                mutableLiveDataForOrdeRModelList.setValue(listOfOrders);
+
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+    public void addUserToDataBase(String id, UserParentModel user, MutableLiveData<String> mutableLiveDataOfUserState) {
+            USER_REF.child(id).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+                    if(task.isSuccessful()){
+                        mutableLiveDataOfUserState.setValue("user has been registered successfully");
+
+                    }
+                    else {
+                        mutableLiveDataOfUserState.setValue("Error: "+task.getResult()+"");
+
+                    }
+
+
+
+                }
+            });
+    }
+
+
+
 }
