@@ -26,7 +26,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         super(fm);
         tabTitles = tabs;
         mContext = context;
-
         this.foodModels = foodModels;
 
     }

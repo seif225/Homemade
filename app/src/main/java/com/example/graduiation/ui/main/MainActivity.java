@@ -85,14 +85,13 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.nav_view);
       //  hideItem();
 
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_profile, R.id.nav_recieved_orders,
-                R.id.navi_sent_orders, R.id.nav_share, R.id.nav_send)
-                .setDrawerLayout(drawer)
-                .build();
 
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+        mAppBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph())
+                .setDrawerLayout(drawer)
+                .build();
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
@@ -145,14 +144,23 @@ public class MainActivity extends AppCompatActivity {
                 Fragment newFragment = new OrdersRecievedPlaceHolder();
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.add(R.id.nav_host_fragment, newFragment);
-                transaction.setCustomAnimations(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim,
-                        R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim);
+                transaction.setCustomAnimations(R.anim.nav_default_enter_anim,
+                        R.anim.nav_default_exit_anim,
+                        R.anim.nav_default_enter_anim,
+                        R.anim.nav_default_exit_anim);
                 transaction.addToBackStack(null);
                 transaction.commit();
 
             }
 
         }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
 
     }
 
@@ -194,8 +202,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
     }
 
     @Override
@@ -203,40 +210,38 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         if (mAuth.getCurrentUser() == null) {
             sendUserToLogin();
-        } /*else if (mAuth.getCurrentUser().getUid().equals("7zOFRqGEuwcyL9h7IuBRW9OWdDn1")
-                || mAuth.getCurrentUser().getUid().equals("a10286zJHwaaq0zAPW26XX6uITB2")) {
-            sendUserToAddMeal();
-        }*/
-
+        }
         else {
 
-        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(UploadUserTokenWorkManagerToFirebase.class).build();
-        WorkManager.getInstance(MainActivity.this).enqueue(oneTimeWorkRequest);
+            if (getSharedPreferences("userData", Context.MODE_PRIVATE).getString("token",null) == null) {
+                OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(UploadUserTokenWorkManagerToFirebase.class).build();
+                WorkManager.getInstance(MainActivity.this).enqueue(oneTimeWorkRequest);
 
-        viewModel.getUserParentModel(mAuth.getUid()).observe(this, new Observer<UserParentModel>() {
-            @Override
-            public void onChanged(UserParentModel userParentModel) {
-                Log.e(TAG, "onChanged: " + userParentModel.getToken());
-                Log.e(TAG, "onChanged: " + userParentModel.getId());
-                Log.e(TAG, "onChanged: " + userParentModel.getName());
+                viewModel.getUserParentModel(mAuth.getUid()).observe(this, new Observer<UserParentModel>() {
+                    @Override
+                    public void onChanged(UserParentModel userParentModel) {
+                        Log.e(TAG, "onChanged: " + userParentModel.getToken());
+                        Log.e(TAG, "onChanged: " + userParentModel.getId());
+                        Log.e(TAG, "onChanged: " + userParentModel.getName());
 
-                if (userParentModel.getName() != null && userParentModel.getId() != null && userParentModel.getToken() != null) {
-                    SharedPreferences sharedPreferences = getSharedPreferences("userData", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                        if (userParentModel.getName() != null && userParentModel.getId() != null && userParentModel.getToken() != null) {
+                            SharedPreferences sharedPreferences = getSharedPreferences("userData", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                    editor.putString("id", userParentModel.getId());
-                    editor.putString("token", userParentModel.getToken());
-                    editor.putString("name", userParentModel.getName());
-                    editor.apply();
+                            editor.putString("id", userParentModel.getId());
+                            editor.putString("token", userParentModel.getToken());
+                            editor.putString("name", userParentModel.getName());
+                            editor.apply();
 
 
-                }
+                        }
+                    }
+                });
+
+
+                Log.e(TAG, "onStart: " + mAuth.getUid());
+
             }
-        });
-
-
-        Log.e(TAG, "onStart: " + mAuth.getUid());
-
         }
 
     }
@@ -257,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
     private void hideItem() {
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         Menu nav_Menu = navigationView.getMenu();
-       // nav_Menu.findItem(R.id.nav_orders_recieved).setVisible(false);
+
     }
 
 

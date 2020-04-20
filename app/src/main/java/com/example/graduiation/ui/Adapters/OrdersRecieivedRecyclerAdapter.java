@@ -78,7 +78,7 @@ public class OrdersRecieivedRecyclerAdapter extends RecyclerView.Adapter<OrdersR
 
             public void onTick(long millisUntilFinished) {
 
-
+                Log.e(TAG, "onTick: " + "still ticking hommie " + millisUntilFinished );
                 long remainingSecs = millisUntilFinished/1000;
                 long minutes = remainingSecs /60;
                 long seconds = remainingSecs -(minutes*60);

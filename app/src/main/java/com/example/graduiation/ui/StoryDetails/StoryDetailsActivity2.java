@@ -263,7 +263,8 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
                         }
                     }
 
-                    SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(StoryDetailsActivity2.this
+                    SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(
+                            StoryDetailsActivity2.this
                             , getSupportFragmentManager()
                             , tabsArray
                             , foodModels

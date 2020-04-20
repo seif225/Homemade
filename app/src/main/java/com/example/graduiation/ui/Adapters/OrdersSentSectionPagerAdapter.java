@@ -9,22 +9,21 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.graduiation.R;
-import com.example.graduiation.ui.AcceptedOrders.AcceptedOrdersFragment;
-import com.example.graduiation.ui.OrdersHanging.OrdersHangingFragment;
-import com.example.graduiation.ui.OrdersReceived.OrdersRecievedPlaceHolder;
-import com.example.graduiation.ui.SellerProfileViewPager.PlaceholderFragment;
-import com.example.graduiation.ui.SentOrders.CurrentSentOrdersFragment;
-import com.example.graduiation.ui.SentOrders.HistorySentOrders;
+import com.example.graduiation.ui.Data.OrderModel;
+
+import java.util.ArrayList;
 
 public class OrdersSentSectionPagerAdapter  extends FragmentPagerAdapter {
 
     @StringRes
     private static final int[] TAB_TITLES = new int[]{R.string.current_orders, R.string.history};
     private final Context mContext;
+    private ArrayList<OrderModel>orderModels;
 
-    public OrdersSentSectionPagerAdapter(Context context, FragmentManager fm) {
+    public OrdersSentSectionPagerAdapter(ArrayList<OrderModel> orderModels, Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
+        this.orderModels=orderModels;
     }
 
 
@@ -32,15 +31,16 @@ public class OrdersSentSectionPagerAdapter  extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
-        if(position==0){
-            return new CurrentSentOrdersFragment();
+        /*if(position==0){
+            return new CurrentSentOrdersFragment(orderModels);
 
 
         }
         else {
 
             return new HistorySentOrders();
-        }
+        }*/
+        return null;
 
     }
 

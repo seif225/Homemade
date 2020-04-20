@@ -1,6 +1,7 @@
 package com.example.graduiation.ui.WorkManagers;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.work.Worker;
@@ -27,7 +28,7 @@ public class UploadUserTokenWorkManagerToFirebase extends Worker {
         String idToken = FirebaseInstanceId.getInstance().getToken();
         String id = FirebaseAuth.getInstance().getUid();
         FirebaseQueryHelperRepository.getInstance().uploadUsersToken(id, idToken);
-
+        FirebaseQueryHelperRepository.getInstance().UploadNewTokenToUsersFoodList(id ,idToken);
 
 
         return Result.success();

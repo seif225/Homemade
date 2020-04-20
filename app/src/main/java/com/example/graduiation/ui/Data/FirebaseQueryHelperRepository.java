@@ -339,7 +339,7 @@ public class FirebaseQueryHelperRepository {
                         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                Log.e("PhotoUploadFirebaseQueryHelper", uri + "");
+                                //Log.e("PhotoUploadFirebaseQueryHelper", uri + "");
                                 String link = uri.toString();
                                 userParentModel.setImage(link);
                                 USER_REF.child(uId).setValue(userParentModel);
@@ -390,7 +390,7 @@ public class FirebaseQueryHelperRepository {
                         storageReference.child("Food").child(model.getCookId()).child(model.getId()).child(imageName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                Log.e("PhotoUploadFirebaseQueryHelper", uri + "");
+                               // Log.e("PhotoUploadFirebaseQueryHelper", uri + "");
                                 String link = uri.toString();
                                 model.setThumbnail(link);
                                 uploadFoodDataToRealTimeDataBase(model, context);
@@ -408,10 +408,10 @@ public class FirebaseQueryHelperRepository {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(context, "your meal has been added successfully", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "onComplete: " + "done");
+                    //Log.e(TAG, "onComplete: " + "done");
                 } else {
                     Toast.makeText(context, "Error occurred", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "onComplete: " + "ERROOOOOOOOOR");
+                    //Log.e(TAG, "onComplete: " + "ERROOOOOOOOOR");
                 }
             }
         });
@@ -480,7 +480,7 @@ public class FirebaseQueryHelperRepository {
         USER_REF.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.e(TAG, "onDataChange: " + dataSnapshot);
+               // Log.e(TAG, "onDataChange: " + dataSnapshot);
                 UserParentModel model = new UserParentModel();
                 model.setEmail(dataSnapshot.child("email").getValue().toString());
                 model.setId(dataSnapshot.child("id").getValue().toString());
@@ -595,7 +595,7 @@ public class FirebaseQueryHelperRepository {
 
                 if (dataSnapshot.hasChild("following")) {
                     if (dataSnapshot.child("following").hasChild(userId)) {
-                        Log.e(TAG, "onDataChange: " + " \n \n \n the flag should be true here  \n \n \n ");
+                      //  Log.e(TAG, "onDataChange: " + " \n \n \n the flag should be true here  \n \n \n ");
                         mutableFlag.setValue(true);
 
                     } else {
@@ -604,9 +604,9 @@ public class FirebaseQueryHelperRepository {
                         mutableFlag.setValue(false);
 
                     }
-                    Log.e(TAG, "onDataChange: " + "if the user has following list check");
+                   // Log.e(TAG, "onDataChange: " + "if the user has following list check");
                 } else {
-                    Log.e(TAG, "flag: " + "false");
+                  //  Log.e(TAG, "flag: " + "false");
                     USER_REF.child(myId).child("following").child("createFollowingList").setValue("true");
                     mutableFlag.setValue(false);
 
@@ -624,7 +624,7 @@ public class FirebaseQueryHelperRepository {
     }
 
     public void follow(String myId, String userId, String name, String token) {
-        Log.e(TAG, "follow: " + userId + myId);
+       // Log.e(TAG, "follow: " + userId + myId);
         USER_REF.child(myId).child("following").child(userId).setValue("true");
         USER_REF.child(userId).child("follower").child(myId).setValue("true");
 
@@ -957,7 +957,7 @@ public class FirebaseQueryHelperRepository {
 
                             OrderModel model = d1.getValue(OrderModel.class);
                             if (model.getLastActionTime() > 0) listOdAccptedOrders.add(model);
-                            Log.e(TAG, "onDataChange: " + d1);
+                            //Log.e(TAG, "onDataChange: " + d1);
                         }
                     }
                 }
@@ -983,7 +983,7 @@ public class FirebaseQueryHelperRepository {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot d1 : dataSnapshot.getChildren()) {
                     for (DataSnapshot d2 : d1.getChildren()) {
-                        Log.e(TAG, "onDataChange: " + d2 );
+                        //Log.e(TAG, "onDataChange: " + d2 );
                         OrderModel model = d2.getValue(OrderModel.class);
                         listOfOrders.add(model);
                     }
@@ -1025,5 +1025,33 @@ public class FirebaseQueryHelperRepository {
     }
 
 
+    public void updateUserToken(String id, String token) {
 
+        USER_REF.child(id).child("token").setValue(token);
+
+    }
+
+    public void UploadNewTokenToUsersFoodList(String userId, String s) {
+        Log.e(TAG, "UploadNewTokenToUsersFoodList: " + userId+"\n \n " + s );
+
+        FOOD_REF.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
+                    Log.e(TAG, "onDataChange: " + d.getKey() );
+                    FOOD_REF.child(userId).child( d.getKey()).child("cookToken").setValue(s);
+                  // if( d.hasChild("cookToken")) Log.e(TAG, "onDataChange:UploadNewTokenToUsersFoodList \n " + d.child("cookToken").getValue().toString() );
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 }

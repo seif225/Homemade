@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -14,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.work.Data;
@@ -21,8 +23,10 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.example.graduiation.R;
+import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
 import com.example.graduiation.ui.WorkManagers.OrderTimeOutNotificationWorkManager;
 import com.example.graduiation.ui.main.MainActivity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -30,6 +34,9 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
+
+
+
 
     private static final String TAG = "MyFirebaseMessagingServ";
     private final String ADMIN_CHANNEL_ID = "admin_channel";
@@ -154,4 +161,31 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationManager.createNotificationChannel(adminChannel);
         }
     }
+
+    @Override
+    public void onNewToken(@NonNull String s) {
+        super.onNewToken(s);
+
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null)
+
+        {
+            String userId = FirebaseAuth.getInstance().getUid();
+            FirebaseQueryHelperRepository.getInstance().updateUserToken(userId,s);
+            FirebaseQueryHelperRepository.getInstance().UploadNewTokenToUsersFoodList(userId ,s);
+
+            SharedPreferences sharedPreferences = getSharedPreferences("userData", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("token", s);
+
+
+
+        }
+
+
+
+
+    }
+
+
+
 }

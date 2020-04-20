@@ -32,6 +32,7 @@ public class OrdersHangingFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+        Log.e(TAG, "onCreateView: " );
         View root = inflater.inflate(R.layout.orders_hanging_fragment, container, false);
         receiverOrdersRecyclerView = root.findViewById(R.id.received_orders_recycler_view);
         SharedPreferences  sp= getActivity().getSharedPreferences("userData",Context.MODE_PRIVATE);
@@ -53,8 +54,26 @@ public class OrdersHangingFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        Log.e(TAG, "onActivityCreated: " );
         // TODO: Use the ViewModel
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.e(TAG, "onCreate: " );
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        receiverOrdersRecyclerView.setAdapter(null);
+        Log.e(TAG, "onDestroy: " );
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.e(TAG, "onStop: " );
+    }
 }

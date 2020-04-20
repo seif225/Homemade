@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public class AcceptedOrdersFragment extends Fragment {
     private AcceptedOrdersViewModel mViewModel;
     private RecyclerView acceptedOrdersRecyclerView;
     private AcceptedOrdersRecyclerAdapter adapter;
+    private static final String TAG = "AcceptedOrdersFragment";
     public static AcceptedOrdersFragment newInstance() {
         return new AcceptedOrdersFragment();
     }
@@ -63,6 +65,12 @@ public class AcceptedOrdersFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+        Log.e(TAG, "onStop: " );
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e(TAG, "onDestroy: " );
     }
 }
