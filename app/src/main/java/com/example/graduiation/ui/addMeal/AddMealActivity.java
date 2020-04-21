@@ -138,7 +138,10 @@ public class AddMealActivity extends AppCompatActivity {
                     model.setCookId(userId);
                     model.setDescribtion(des);
                     model.setCookToken(idToken);
-                    viewModel.uploadFoodData(model, getBaseContext(), photo, pd);
+
+                    viewModel.uploadFoodDataWork(model, getBaseContext(), photo);
+                    finish();
+
 
                 }
             }

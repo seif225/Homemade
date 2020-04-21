@@ -355,11 +355,14 @@ public class FirebaseQueryHelperRepository {
     }
 
 
+    @Deprecated
     public void uploadFoodDataToFirebase(FoodModel model, Context context, Uri photo, ProgressDialog pd) {
 
         pd.setCancelable(false);
         pd.setTitle("please wait .. ");
         pd.show();
+
+
         final String imageName = UUID.randomUUID().toString() + ".jpg";
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
@@ -406,7 +409,7 @@ public class FirebaseQueryHelperRepository {
 
     }
 
-    private void uploadFoodDataToRealTimeDataBase(FoodModel model, Context context) {
+    public void uploadFoodDataToRealTimeDataBase(FoodModel model, Context context) {
         FOOD_REF.child(model.getCookId()).child(model.getId()).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
