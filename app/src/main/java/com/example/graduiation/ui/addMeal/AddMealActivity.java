@@ -123,7 +123,11 @@ public class AddMealActivity extends AppCompatActivity {
                 } else if (des.isEmpty()) {
                     etDescription.requestFocus();
                     etDescription.setError("you can't leave this field empty");
-                } else {
+                }
+                else if (photo==null){
+                    Toast.makeText(AddMealActivity.this, "you must upload a photo first", Toast.LENGTH_SHORT).show();
+                }
+                else {
                     FoodModel model = new FoodModel();
                     model.setTitle(title);
                     model.setPrice(price);
@@ -135,6 +139,7 @@ public class AddMealActivity extends AppCompatActivity {
                     model.setDescribtion(des);
                     model.setCookToken(idToken);
                     viewModel.uploadFoodData(model, getBaseContext(), photo, pd);
+
                 }
             }
         });

@@ -1,19 +1,24 @@
-package com.example.graduiation.ui.SentOrders.ui.main;
+package com.example.graduiation.ui.SentOrders;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduiation.R;
+import com.example.graduiation.ui.Adapters.CurrentOrdersRecyclerAddapter;
+import com.example.graduiation.ui.Data.OrderModel;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
 
 
 /**
@@ -22,11 +27,13 @@ import com.example.graduiation.R;
 public class PlaceholderFragment extends Fragment {
 
 
-
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     private PageViewModel pageViewModel;
     private static final String TAG = "PlaceholderFragment";
+    private RecyclerView currentOrdersRecyclerView;
+    private CurrentOrdersRecyclerAddapter adapter;
+
 
     public static PlaceholderFragment newInstance(int index, String hey) {
 
@@ -40,21 +47,10 @@ public class PlaceholderFragment extends Fragment {
     }
 
 
-
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pageViewModel = ViewModelProviders.of(this).get(PageViewModel.class);
-        int index = 1;
-        String s;
-        if (getArguments() != null) {
-            index = getArguments().getInt(ARG_SECTION_NUMBER);
-            s = getArguments().getString("s");
 
-        }
-        pageViewModel.setIndex(index);
 
     }
 
@@ -63,13 +59,19 @@ public class PlaceholderFragment extends Fragment {
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_sent_orders_place_holder, container, false);
-        final TextView textView = root.findViewById(R.id.section_label);
-        pageViewModel.getString().observe(this, new Observer<String>() {
+        currentOrdersRecyclerView = root.findViewById(R.id.current_orders_recycler_view);
+        pageViewModel = ViewModelProviders.of(this).get(PageViewModel.class);
+        pageViewModel.getMutableLiveDataForOrdeRModelList(FirebaseAuth.getInstance().getUid()).observe(this, new Observer<ArrayList<OrderModel>>() {
             @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
+            public void onChanged(ArrayList<OrderModel> orderModels) {
+                adapter = new CurrentOrdersRecyclerAddapter(orderModels);
+                currentOrdersRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                currentOrdersRecyclerView.setAdapter(adapter);
+
             }
         });
+
+
         return root;
     }
 
@@ -82,6 +84,6 @@ public class PlaceholderFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e(TAG, "onDestroy: " );
+        Log.e(TAG, "onDestroy: ");
     }
 }

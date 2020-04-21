@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.SentOrders.SentOrdersFragment"
+            android:name=".ui.SentOrders.CurrentSentOrdersFragment"
             android:label="@string/title_activity_sent_orders_fragment"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 

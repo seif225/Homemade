@@ -41,13 +41,14 @@
             android:id="@+id/tvUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:text="NAME HERE"
             android:textColor="@android:color/black"
             android:textSize="20sp"
-            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:textStyle="bold|italic"
             app:layout_constraintStart_toStartOf="@+id/profileImage"
-            app:layout_constraintTop_toBottomOf="@id/profileImage" />
+            app:layout_constraintTop_toBottomOf="@+id/add_profile_picture" />
 
         <TextView
             android:id="@+id/tvBio"
@@ -124,5 +125,20 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_profile_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_camera_alt_black_24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/profileImage"
+            app:layout_constraintEnd_toEndOf="@+id/profileImage"
+
+            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintStart_toEndOf="@+id/profileImage"
+            app:layout_constraintTop_toBottomOf="@+id/profileImage"
+            app:layout_constraintVertical_bias="0.8" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

@@ -20,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -28,13 +30,16 @@ public class ProfileFragment extends Fragment {
     private ProfileViewModel viewModel;
     private CircleImageView userProfilePicture;
     private TextView userName;
-    private FloatingActionButton fab;
+    private FloatingActionButton fab,addProfilePic;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_profile, container, false);
         userProfilePicture = root.findViewById(R.id.profileImage);
         userName = root.findViewById(R.id.tvUserName);
         fab =root.findViewById(R.id.profiel_fab);
+        addProfilePic = root.findViewById(R.id.add_profile_picture);
+
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +75,13 @@ public class ProfileFragment extends Fragment {
         });
 
 
+        addProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickPhoto();
+            }
+        });
+
         return root;
     }
 
@@ -78,4 +90,11 @@ public class ProfileFragment extends Fragment {
     Intent i = new Intent(getActivity(), AddMealActivity.class);
     getActivity().startActivity(i);
     }
+
+    private void pickPhoto() {
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .start(getActivity());
+    }
+
 }

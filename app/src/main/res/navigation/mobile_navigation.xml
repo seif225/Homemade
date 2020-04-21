@@ -51,7 +51,7 @@
 
     <fragment
         android:id="@+id/navi_sent_orders"
-        android:name="com.example.graduiation.ui.SentOrders.SentOrdersFragment"
+        android:name="com.example.graduiation.ui.SentOrders.CurrentSentOrdersFragment"
         android:label="@string/sent_orders"
         tools:layout="@layout/activity_sent_orders_fragment"
         >
@@ -74,7 +74,7 @@
         tools:layout="@layout/fragment_send" />
     <fragment
         android:id="@+id/placeholderFragment"
-        android:name="com.example.graduiation.ui.SentOrders.ui.main.PlaceholderFragment"
+        android:name="com.example.graduiation.ui.SentOrders.PlaceholderFragment"
         android:label="fragment_sent_orders_place_holder"
         tools:layout="@layout/fragment_sent_orders_place_holder" />
 

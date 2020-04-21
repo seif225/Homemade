@@ -3,17 +3,11 @@ package com.example.graduiation.ui.SentOrders;
 import android.os.Bundle;
 
 import com.example.graduiation.R;
-import com.example.graduiation.ui.SentOrders.ui.main.PageViewModel;
-import com.example.graduiation.ui.home.HomeFragment;
 import com.google.android.material.tabs.TabLayout;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
@@ -22,9 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.graduiation.ui.SentOrders.ui.main.SentOrdersSectionsPagerAdapter;
+import com.example.graduiation.ui.Adapters.SentOrdersSectionsPagerAdapter;
 
-public class SentOrdersFragment extends Fragment {
+public class CurrentSentOrdersFragment extends Fragment {
     private static final String TAG = "SentOrdersFragment";
     SentOrdersSectionsPagerAdapter sectionsPagerAdapter;
     ViewPager viewPager;
@@ -43,17 +37,10 @@ public class SentOrdersFragment extends Fragment {
          sectionsPagerAdapter = new SentOrdersSectionsPagerAdapter(getActivity()
                 , getActivity().getSupportFragmentManager() ,"test");
          viewPager = root.findViewById(R.id.view_pager);
-
-        viewPager.setAdapter(sectionsPagerAdapter);
+         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = root.findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
         PageViewModel viewModel = ViewModelProviders.of(this).get(PageViewModel.class);
-        viewModel.getString().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-
-            }
-        });
 
 
 

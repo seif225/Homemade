@@ -54,12 +54,15 @@ public class OrderTimeOutNotificationWorkManager extends Worker {
                     .child("ordersReceived").child(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                  if(dataSnapshot.hasChild("state")){
+
                     String state = dataSnapshot.child("state").getValue().toString();
                     if (state.equals("1")) {
 
                         notifyUser();
 
                     }
+                }
                 }
 
                 private void notifyUser() {

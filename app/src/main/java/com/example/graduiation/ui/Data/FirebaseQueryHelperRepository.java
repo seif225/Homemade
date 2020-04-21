@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.graduiation.ui.intro.IntroActivity;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -85,6 +87,7 @@ public class FirebaseQueryHelperRepository {
                             FoodModel foodModel = datasnapshot1.getValue(FoodModel.class);
                             /*if (foodModel.getCategory().equals(category)) {*/
                             list.add(foodModel);
+
                             /*}*/
                         }
                         listMutableLiveData.setValue(list);
@@ -142,6 +145,7 @@ public class FirebaseQueryHelperRepository {
                                 assert foodModel != null;
                                 if (foodModel.getCategory().equals(category)) {
                                     foodModelArrayList.add(foodModel);
+
                                     //Log.e(TAG, "onDataChange: "+dataSnapshot1 );
                                     cookIds.add(dataSnapshot1.child("cookId").getValue().toString());
                                 }
@@ -169,7 +173,7 @@ public class FirebaseQueryHelperRepository {
             }
         };
 
-        observable.subscribeOn(Schedulers.io()).observeOn(Schedulers.computation()).subscribe(observer);
+        observable.subscribeOn(Schedulers.computation()).subscribe(observer);
 
     }
 
@@ -1052,6 +1056,44 @@ public class FirebaseQueryHelperRepository {
 
             }
         });
+
+    }
+
+    public void uploadUserProfilePic(String uid, Uri photo) {
+
+        String photoName = FirebaseAuth.getInstance().getUid() + ".jpg";
+        UploadTask uploadTask = FirebaseStorage.getInstance().getReference().child(photoName).putFile(photo);
+
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                // Continue with the task to get the download URL
+                return FirebaseStorage.getInstance().getReference().child(photoName).getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    Log.e(TAG, "onComplete: "+ downloadUri);
+                    uploadUserImageToFirebase(uid,downloadUri);
+                } else {
+                    // Handle failures
+                    // ...
+                }
+            }
+        });
+
+
+    }
+
+    private void uploadUserImageToFirebase(String uid, Uri downloadUri) {
+
+        USER_REF.child(uid).child("image").setValue(downloadUri+"");
 
     }
 }

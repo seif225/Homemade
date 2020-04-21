@@ -76,7 +76,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                     long orderTime = Long.parseLong(remoteMessage.getData().get("key2"));
                     String orderId= remoteMessage.getData().get("key3");
-                    if (orderTime + 1800000 > System.currentTimeMillis()) {
+                    if (orderTime + 1800000 > System.currentTimeMillis()&&orderId!=null) {
 
                         //Create oneTime workManager request to notify the user
                         // that he still has time to make the order before timeout

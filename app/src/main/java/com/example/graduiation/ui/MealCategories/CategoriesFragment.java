@@ -50,43 +50,54 @@ public class CategoriesFragment extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-      
+
         recyclerView = findViewById(R.id.recyclerView);
         foodRecyclerView = findViewById(R.id.food_recyclerView);
         categoryTv = findViewById(R.id.tv_category);
         categoryTv.setText(category);
         viewModel = ViewModelProviders.of(this).get(CatrgoryViewModel.class);
+        foodAdapter = new FoodItemRecyclerViewAdapter(CategoriesFragment.this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(CategoriesFragment.this
+                , RecyclerView.VERTICAL,
+                false);
+        foodRecyclerView.setLayoutManager(linearLayoutManager);
+        foodRecyclerView.setHasFixedSize(true);
+        foodRecyclerView.setAdapter(foodAdapter);
+        foodRecyclerView.setNestedScrollingEnabled(false);
+
+
+
         viewModel.getFoodModelMutableLiveData(category).observe(this, new Observer<ArrayList<FoodModel>>() {
             @Override
             public void onChanged(ArrayList<FoodModel> foodModels) {
                 if (foodModels != null) {
-                    //Log.e(TAG, "onChanged:fooooood "+ foodModels.get(0).getTitle() );
-                    foodAdapter = new FoodItemRecyclerViewAdapter(foodModels, CategoriesFragment.this);
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(CategoriesFragment.this
-                            , RecyclerView.VERTICAL,
+
+                    foodAdapter.setFoodModelList(foodModels);
+                    foodAdapter.notifyDataSetChanged();
+
+                }
+            }
+
+
+        });
+
+
+        viewModel.getUsersLiveData().observe(CategoriesFragment.this, new Observer<ArrayList<UserParentModel>>() {
+            @Override
+            public void onChanged(ArrayList<UserParentModel> userParentModels) {
+                // Log.e(TAG, "onChanged: "+userParentModels.get(0).getName()+"" );
+                if (userParentModels.size() > 0) {
+                    adapter = new
+                            RecyclerViewAdapter(userParentModels, CategoriesFragment.this, category);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext()
+                            , RecyclerView.HORIZONTAL,
                             false);
-                    foodRecyclerView.setLayoutManager(linearLayoutManager);
-                    foodRecyclerView.setAdapter(foodAdapter);
-                    //foodRecyclerView.setVerticalScrollBarEnabled(true);
-                    recyclerView.setNestedScrollingEnabled(false);
-                    viewModel.getUsersLiveData().observe(CategoriesFragment.this, new Observer<ArrayList<UserParentModel>>() {
-                        @Override
-                        public void onChanged(ArrayList<UserParentModel> userParentModels) {
-                            // Log.e(TAG, "onChanged: "+userParentModels.get(0).getName()+"" );
-                            if (userParentModels.size() > 0) {
-                                adapter = new
-                                        RecyclerViewAdapter(userParentModels, CategoriesFragment.this, category);
-                                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext()
-                                        , RecyclerView.HORIZONTAL,
-                                        false);
-                                recyclerView.setLayoutManager(linearLayoutManager);
-                                recyclerView.setHorizontalScrollBarEnabled(true);
-                                recyclerView.setAdapter(adapter);
-                            }
-                        }
-                    });
+                    recyclerView.setLayoutManager(linearLayoutManager);
+                    recyclerView.setHorizontalScrollBarEnabled(true);
+                    recyclerView.setAdapter(adapter);
                 }
             }
         });
+
     }
 }

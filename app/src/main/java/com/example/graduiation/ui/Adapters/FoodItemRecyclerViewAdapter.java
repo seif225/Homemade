@@ -44,6 +44,16 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
         this.context = context;
     }
 
+    public FoodItemRecyclerViewAdapter( Context context) {
+
+        this.context = context;
+    }
+
+
+    public void setFoodModelList(List<FoodModel> foodModelList) {
+        this.foodModelList = foodModelList;
+    }
+
     @Override
     public void onBindViewHolder(@NonNull FoodItemRecyclerViewAdapter.ViewHolder holder, int position) {
 

@@ -115,56 +115,35 @@ public class CurrentOrdersRecyclerAddapter extends RecyclerView.Adapter<CurrentO
 
         long remainingTime = (postTime+1800000 )- System.currentTimeMillis();
 
+          //  holder.status_tv.setText(orderModel.getState()+"");
+
         if(orderModel.getState().equals("1")){
-            holder.status_tv.setText("hanging");
-
-            new CountDownTimer(remainingTime, 1000) {
-
-                public void onTick(long millisUntilFinished) {
-
-
-                    long remainingSecs = millisUntilFinished/1000;
-                    long minutes = remainingSecs /60;
-                    long seconds = remainingSecs -(minutes*60);
-                    holder.timer_tv.setText(minutes+" : " + seconds);
-
-                }
-
-                public void onFinish() {
-                    //removeItem(position);
-                    holder.timer_tv.setText("timeout");
-                }
-            }.start();
-
+            holder.status_tv.setText("Hanging");
         }
         else if (orderModel.getState().equals("2")){
-            holder.status_tv.setText("declined");
-
-            holder.timer_tv.setText("");
+            holder.status_tv.setText("Declined");
 
         }
-        else if(orderModel.getState().equals("4")){
-
-
-            holder.status_tv.setText("preparing");
-
-
-            if(maxOrderDuration==0){
-                //a full day
-                maxOrderDuration = 24*60*60*1000;
-
-            }
-
-
-            holder.getCountDownTimer(remainingTime).start();
-
-
-
-
+        else if (orderModel.getState().equals("3")){
+            holder.status_tv.setText("");
 
         }
+        else if (orderModel.getState().equals("4")){
+            holder.status_tv.setText("Preparing");
 
+        }
+        else if (orderModel.getState().equals("5")){
+            holder.status_tv.setText("Preparing");
 
+        }
+        else if (orderModel.getState().equals("6")){
+            holder.status_tv.setText("On Delivery");
+
+        }
+        else if (orderModel.getState().equals("7")){
+            holder.status_tv.setText("Delivered");
+
+        }
     }
 
     @Override

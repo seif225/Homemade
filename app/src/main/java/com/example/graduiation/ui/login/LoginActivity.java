@@ -1,14 +1,17 @@
 package com.example.graduiation.ui.login;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -53,15 +56,23 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         ProgressDialog pd = new ProgressDialog(this);
+        pd.setCancelable(false);
+        pd.setCanceledOnTouchOutside(false);
+
         getSupportActionBar().hide();
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         cirLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(isNetworkConnected()){
                 String mail, password;
                 mail = editTextEmail.getText().toString();
                 password = editTextPassword.getText().toString();
-                viewModel.authenticate(mail, password, getBaseContext() , pd);
+                viewModel.authenticate(mail, password, getBaseContext() , pd);}
+                else {
+                    Toast.makeText(LoginActivity.this, "it looks like there is no internet connection", Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
 
@@ -82,6 +93,13 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+    }
+
 
 
 }
