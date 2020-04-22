@@ -60,6 +60,8 @@ public class RegisterActivity extends AppCompatActivity {
     TextInputLayout textInputPasswordConfirm;
     private static final String TAG = "RegisterActivity";
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,6 +141,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     user.setToken(idToken);
                                     user.setEmail(finalMail);
                                     user.setPhone(finalPhone);
+                                    user.setRegistrationTime(System.currentTimeMillis());
 
                                     viewModel.getUserRegisterationState(id,user).observe(RegisterActivity.this, new Observer<String>() {
                                         @Override

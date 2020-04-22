@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,48 +20,41 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Adapters.FoodItemRecyclerViewAdapter;
+import com.example.graduiation.ui.Adapters.KitchensRecyclerAdapter;
 import com.example.graduiation.ui.Adapters.RecyclerViewAdapter;
 import com.example.graduiation.ui.Data.FoodModel;
 import com.example.graduiation.ui.Data.UserParentModel;
 
 import java.util.ArrayList;
 
-public class CategoriesFragment extends AppCompatActivity {
+public class CategoriesFragment extends Fragment {
 
     private static final String TAG = "CategoriesFragment";
     private RecyclerView recyclerView;
     private CatrgoryViewModel viewModel;
     private RecyclerView foodRecyclerView;
     private RecyclerViewAdapter adapter;
-    private FoodItemRecyclerViewAdapter foodAdapter;
+    private KitchensRecyclerAdapter foodAdapter;
     private String category;
     private TextView categoryTv;
 
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
 
+
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_categories);
-        Intent i = getIntent();
-        category = i.getStringExtra("category");
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_categories, container, false);
+
+
+        category =getArguments().getString("category");
         Log.e(TAG, "onCreate: current category is " + category);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
-        recyclerView = findViewById(R.id.recyclerView);
-        foodRecyclerView = findViewById(R.id.food_recyclerView);
-        categoryTv = findViewById(R.id.tv_category);
+        recyclerView = root.findViewById(R.id.recyclerView);
+        foodRecyclerView = root.findViewById(R.id.food_recyclerView);
+        categoryTv = root.findViewById(R.id.tv_category);
         categoryTv.setText(category);
         viewModel = ViewModelProviders.of(this).get(CatrgoryViewModel.class);
-        foodAdapter = new FoodItemRecyclerViewAdapter(CategoriesFragment.this);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(CategoriesFragment.this
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()
                 , RecyclerView.VERTICAL,
                 false);
         foodRecyclerView.setLayoutManager(linearLayoutManager);
@@ -72,8 +69,6 @@ public class CategoriesFragment extends AppCompatActivity {
             public void onChanged(ArrayList<FoodModel> foodModels) {
                 if (foodModels != null) {
 
-                    foodAdapter.setFoodModelList(foodModels);
-                    foodAdapter.notifyDataSetChanged();
 
                 }
             }
@@ -88,16 +83,21 @@ public class CategoriesFragment extends AppCompatActivity {
                 // Log.e(TAG, "onChanged: "+userParentModels.get(0).getName()+"" );
                 if (userParentModels.size() > 0) {
                     adapter = new
-                            RecyclerViewAdapter(userParentModels, CategoriesFragment.this, category);
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext()
+                            RecyclerViewAdapter(userParentModels, getActivity(), category);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()
                             , RecyclerView.HORIZONTAL,
                             false);
                     recyclerView.setLayoutManager(linearLayoutManager);
                     recyclerView.setHorizontalScrollBarEnabled(true);
                     recyclerView.setAdapter(adapter);
+                    foodAdapter = new KitchensRecyclerAdapter(userParentModels,category);
+                    foodAdapter.notifyDataSetChanged();
+                    foodRecyclerView.setAdapter(foodAdapter);
                 }
             }
         });
 
+        return root;
     }
+
 }

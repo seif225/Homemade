@@ -95,7 +95,7 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
         String category = getIntent().getStringExtra("category");
         String userName = getIntent().getStringExtra("userName");
         token = getIntent().getStringExtra("token");
-        userName = getSharedPreferences("userData", Context.MODE_PRIVATE).getString("name" , "folan");
+        String userNameFromSharedPref = getSharedPreferences("userData", Context.MODE_PRIVATE).getString("name" , "folan");
 
         collapsingToolbar.setTitle(userName + "");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -148,7 +148,7 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
             });
 
 
-            String finalUserName = userName;
+            String finalUserName = userNameFromSharedPref;
             followButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

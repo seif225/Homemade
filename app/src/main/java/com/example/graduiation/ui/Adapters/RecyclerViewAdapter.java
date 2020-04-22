@@ -52,6 +52,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, StoryDetailsActivity2.class);
+                i.putExtra("userName" , userParentModel.getName());
                 i.putExtra("uid", userParentModel.getId());
                 i.putExtra("category", category);
                 i.putExtra("token", userParentModel.getToken());
@@ -79,6 +80,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             });
 
         }
+        else {
+
+            holder.imgStory.setImageResource(R.drawable.profile_round);
+
+        }
+
         if (userParentModel.getName() != null) holder.tvName.setText(userParentModel.getName());
 
 

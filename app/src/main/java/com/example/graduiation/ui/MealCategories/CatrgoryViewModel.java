@@ -16,9 +16,9 @@ public class CatrgoryViewModel extends ViewModel {
 
     private MutableLiveData<ArrayList<UserParentModel>> usersLiveData = new MutableLiveData<>();
     private MutableLiveData<ArrayList<FoodModel>> foodModelMutableLiveData = new MutableLiveData<>();
-    FirebaseQueryHelperRepository firebaseQueryHelper = FirebaseQueryHelperRepository.getInstance();
+    private FirebaseQueryHelperRepository firebaseQueryHelper = FirebaseQueryHelperRepository.getInstance();
     private HashSet<String> cookIds = new HashSet<String>();
-    String category;
+    private String category;
     private static final String TAG = "CatrgoryViewModel";
 
     public MutableLiveData<ArrayList<FoodModel>> getFoodModelMutableLiveData(String category) {

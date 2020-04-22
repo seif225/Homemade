@@ -38,7 +38,7 @@
         android:layout_width="54dp"
         android:layout_height="54dp"
         android:elevation="20dp"
-        android:src="@drawable/profile_round"
+
         app:layout_constraintBottom_toBottomOf="@id/ring"
         app:layout_constraintEnd_toEndOf="@id/ring"
         app:layout_constraintStart_toStartOf="@id/ring"

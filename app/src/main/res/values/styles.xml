@@ -150,5 +150,12 @@
         <item name="android:minWidth">250dp</item>
     </style>
 
+
+
+    <style name="customRatingBar"
+        parent="android:style/Widget.Material.RatingBar.Small">
+        ... // Additional customizations
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 </resources>

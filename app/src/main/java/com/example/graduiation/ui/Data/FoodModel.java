@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class FoodModel implements Parcelable {
     private String title , describtion ,  id , category , cookId , price , orderCount , thumbnail, quantity  , cookToken;
     private String min , max ;
-    private long PreparingTime;
+    private long PreparingTime , postTime;
     private HashMap<Object , Object> reviewsMap , picsMap , ratingMap;
 
     public FoodModel(){}
@@ -27,6 +27,13 @@ public class FoodModel implements Parcelable {
     }
 
 
+    public void setPostTime(long postTime) {
+        this.postTime = postTime;
+    }
+
+    public long getPostTime() {
+        return postTime;
+    }
 
     public void setPreparingTime(long preparingTime) {
         PreparingTime = preparingTime;

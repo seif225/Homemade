@@ -12,18 +12,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
-
 import com.example.graduiation.R;
-
 import com.example.graduiation.ui.intro.IntroActivity;
-import com.example.graduiation.ui.main.MainActivity;
 import com.example.graduiation.ui.register.RegisterActivity;
 import com.google.android.material.textfield.TextInputLayout;
-
-
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,12 +47,12 @@ public class LoginActivity extends AppCompatActivity {
             window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
+
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         ProgressDialog pd = new ProgressDialog(this);
         pd.setCancelable(false);
         pd.setCanceledOnTouchOutside(false);
-
         getSupportActionBar().hide();
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         cirLoginButton.setOnClickListener(new View.OnClickListener() {
@@ -85,21 +79,14 @@ public class LoginActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.stay);
     }
 
-
-
     public void onLoginClick(View View) {
         startActivity(new Intent(this, RegisterActivity.class));
-        overridePendingTransition(R.anim.slide_in_right, R.anim.stay);
-
-
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
-
-
 
 }

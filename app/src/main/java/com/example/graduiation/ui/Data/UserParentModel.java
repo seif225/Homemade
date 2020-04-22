@@ -2,11 +2,28 @@ package com.example.graduiation.ui.Data;
 
 public class UserParentModel {
 
-    private String name, id, phone, image, rate, following, subType, email, password , membership,bio ,token;
+    private String name, id, phone, image, rate, following, subType, email, password , membership,bio ,token , numberOfOrders;
     private WalletModel wallet;
-
+    private long registrationTime;
     public UserParentModel() {
 
+    }
+
+
+    public void setRegistrationTime(long registrationTime) {
+        this.registrationTime = registrationTime;
+    }
+
+    public void setNumberOfOrders(String numberOfOrders) {
+        this.numberOfOrders = numberOfOrders;
+    }
+
+    public String getNumberOfOrders() {
+        return numberOfOrders;
+    }
+
+    public long getRegistrationTime() {
+        return registrationTime;
     }
 
     public String getName() {

@@ -62,6 +62,7 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/colorPrimary"
                     app:tabMode="fixed"
+                    app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
                     android:layout_gravity="center"
                     app:tabGravity="center"
                     app:tabTextColor="@color/colorAccent"

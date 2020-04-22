@@ -16,6 +16,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.graduiation.R;
 import com.example.graduiation.ui.MealCategories.CategoriesFragment;
@@ -25,7 +27,7 @@ import net.colindodd.gradientlayout.GradientLinearLayout;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment  {
 
     private HomeViewModel homeViewModel;
     private static final String TAG = "HomeFragment";
@@ -33,6 +35,8 @@ public class HomeFragment extends Fragment {
     private CardView semiCooked;
     private CardView pastry;
     private CardView dessert;
+    private NavController navController ;
+    private String category;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -42,11 +46,15 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         cooked = root.findViewById(R.id.well_cooked_layout);
-
+        navController = Navigation.findNavController(container);
         cooked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeFragment("well-cooked");
+                category = "well-cooked";
+                Bundle bundle = new Bundle();
+                bundle.putString("category", category);
+                navController.navigate(R.id.action_nav_home_to_categoriesFragment,bundle);
+
             }
         });
 
@@ -56,7 +64,11 @@ public class HomeFragment extends Fragment {
         semiCooked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeFragment("semi-cooked");
+
+                category = "semi-cooked";
+                Bundle bundle = new Bundle();
+                bundle.putString("category", category);
+                navController.navigate(R.id.action_nav_home_to_categoriesFragment,bundle);
             }
         });
 
@@ -66,7 +78,11 @@ public class HomeFragment extends Fragment {
         pastry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeFragment("Pastry");
+
+                category = "Pastry";
+                Bundle bundle = new Bundle();
+                bundle.putString("category", category);
+                navController.navigate(R.id.action_nav_home_to_categoriesFragment,bundle);
             }
         });
 
@@ -76,7 +92,11 @@ public class HomeFragment extends Fragment {
         dessert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeFragment("dessert");
+
+                category = "dessert";
+                Bundle bundle = new Bundle();
+                bundle.putString("category", category);
+                navController.navigate(R.id.action_nav_home_to_categoriesFragment,bundle);
             }
         });
 
@@ -91,12 +111,6 @@ public class HomeFragment extends Fragment {
     }
 
 
-    public void changeFragment(String s) {
-        Log.e(TAG, "changeFragment: Clicked ! ");
-        // Create new fragment and transaction
-        Intent i = new Intent (getContext() , CategoriesFragment.class);
-        i.putExtra("category",s);
-        // consider using Java coding conventions (upper first char class names!!!)
-        startActivity(i);
-    }
+
+
 }

@@ -10,9 +10,22 @@
         android:name="com.example.graduiation.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" >
+        <argument
+            android:name="category"
+            app:argType="string"
+            android:defaultValue=" "
+             />
+
         <action
             android:id="@+id/action_nav_home_to_navi_sent_orders"
             app:destination="@id/navi_sent_orders"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="true"
+            />
+
+        <action
+            android:id="@+id/action_to_category"
+            app:destination="@id/categoriesFragment"
             app:popUpTo="@id/nav_home"
             app:popUpToInclusive="true"
             />
@@ -33,6 +46,15 @@
             app:destination="@id/nav_send"
 
             />
+        <action
+            android:id="@+id/action_nav_home_to_categoriesFragment"
+            app:destination="@id/categoriesFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            />
+
     </fragment>
 
     <fragment
@@ -77,5 +99,10 @@
         android:name="com.example.graduiation.ui.SentOrders.PlaceholderFragment"
         android:label="fragment_sent_orders_place_holder"
         tools:layout="@layout/fragment_sent_orders_place_holder" />
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="com.example.graduiation.ui.MealCategories.CategoriesFragment"
+        android:label="Kitchens"
+        tools:layout="@layout/fragment_categories" />
 
 </navigation>

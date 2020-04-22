@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:fitsSystemWindows="true"
                 android:scaleType="center"
-                android:src="@drawable/ic_person_outline_black_24dp" />
+                android:src="@drawable/ic_person_outline_white_24dp" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"

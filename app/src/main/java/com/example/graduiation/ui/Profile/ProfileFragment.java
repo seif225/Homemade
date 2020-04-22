@@ -56,7 +56,7 @@ public class ProfileFragment extends Fragment {
             public void onChanged(UserParentModel userParentModel) {
                 if (userParentModel != null) {
                     userName.setText(userParentModel.getName());
-                    Picasso.get().load(userParentModel.getImage()).networkPolicy(NetworkPolicy.OFFLINE).into(userProfilePicture, new Callback() {
+                    Picasso.get().load(userParentModel.getImage()).fit().networkPolicy(NetworkPolicy.OFFLINE).into(userProfilePicture, new Callback() {
                         @Override
                         public void onSuccess() {
 
@@ -94,6 +94,7 @@ public class ProfileFragment extends Fragment {
     private void pickPhoto() {
         CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
+                .setAspectRatio(1,1)
                 .start(getActivity());
     }
 
