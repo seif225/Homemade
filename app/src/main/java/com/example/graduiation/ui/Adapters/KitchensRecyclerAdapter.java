@@ -25,6 +25,7 @@ public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecycl
 
     private ArrayList<UserParentModel> listOfKitchens;
     private String category;
+    private int mode = 0;
 
     public KitchensRecyclerAdapter(ArrayList<UserParentModel> listOfKitchens, String category) {
         this.listOfKitchens = listOfKitchens;
@@ -107,4 +108,19 @@ public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecycl
             ratingBar = itemView.findViewById(R.id.ratingBar);
         }
     }
+
+
+
+
+    public void setData(ArrayList<UserParentModel> listOfKitchens){
+        this.listOfKitchens=listOfKitchens;
+    }
+    public void setMode(int mode) {
+        this.mode = mode;
+    }
+    public long getLastItemDate() {
+        return listOfKitchens.get(listOfKitchens.size()-1).getRegistrationTime();
+    }
+    
+
 }

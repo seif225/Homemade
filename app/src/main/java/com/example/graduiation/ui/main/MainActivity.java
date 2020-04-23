@@ -47,6 +47,7 @@ import com.example.graduiation.ui.profileTEST.ProfileTesting;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -141,24 +142,20 @@ public class MainActivity extends AppCompatActivity {
         if(flag!=null){
 
 
-
             if(flag.equals("orderReceived")){
 
-
-
-                Fragment newFragment = new OrdersRecievedPlaceHolder();
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.add(R.id.nav_host_fragment, newFragment);
-                transaction.setCustomAnimations(R.anim.nav_default_enter_anim,
-                        R.anim.nav_default_exit_anim,
-                        R.anim.nav_default_enter_anim,
-                        R.anim.nav_default_exit_anim);
-                transaction.addToBackStack(null);
-                transaction.commit();
+             transactFragmnetWithActions();
 
             }
 
         }
+
+    }
+
+    private void transactFragmnetWithActions() {
+
+        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_nav_home_to_nav_recieved_orders);
+
 
     }
 
@@ -213,6 +210,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        Log.e(TAG, "\n \n \n onStart: TOKEN \n \n \n "+ FirebaseInstanceId.getInstance().getToken() );
+
         if (mAuth.getCurrentUser() == null) {
             sendUserToLogin();
         }

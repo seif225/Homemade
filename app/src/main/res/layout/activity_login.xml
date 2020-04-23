@@ -36,11 +36,13 @@
                     android:text="Already \nhave an \nAccount?" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
-                    android:src="@drawable/ic_register_hero" />
+                    android:layout_marginStart="115dp"
+
+                    android:src="@drawable/logo_circle" />
             </RelativeLayout>
 
             <com.google.android.material.textfield.TextInputLayout

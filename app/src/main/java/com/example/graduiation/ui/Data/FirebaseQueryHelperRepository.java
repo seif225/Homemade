@@ -399,7 +399,7 @@ public class FirebaseQueryHelperRepository {
                         storageReference.child("Food").child(model.getCookId()).child(model.getId()).child(imageName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                               // Log.e("PhotoUploadFirebaseQueryHelper", uri + "");
+                                // Log.e("PhotoUploadFirebaseQueryHelper", uri + "");
                                 String link = uri.toString();
                                 model.setThumbnail(link);
                                 uploadFoodDataToRealTimeDataBase(model, context);
@@ -455,6 +455,19 @@ public class FirebaseQueryHelperRepository {
                                     model.setPhone(dataSnapshot.child(s).child("phone").getValue().toString());
                                     if (dataSnapshot.child(s).hasChild("token"))
                                         model.setToken(dataSnapshot.child(s).child("token").getValue().toString());
+
+                                    if (dataSnapshot.child(s).hasChild("ordersReceived"))
+                                        model.setNumberOfOrders(dataSnapshot.child(s)
+                                                .child("ordersReceived")
+                                                .getChildrenCount() + ""
+                                        );
+
+                                    if (dataSnapshot.child(s).hasChild("following"))
+                                        model.setFollowing(dataSnapshot.child(s)
+                                                .child("following")
+                                                .getChildrenCount() + ""
+                                        );
+
                                     users.add(model);
                                 }
 
@@ -489,7 +502,7 @@ public class FirebaseQueryHelperRepository {
         USER_REF.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               // Log.e(TAG, "onDataChange: " + dataSnapshot);
+                // Log.e(TAG, "onDataChange: " + dataSnapshot);
                 UserParentModel model = new UserParentModel();
                 model.setEmail(dataSnapshot.child("email").getValue().toString());
                 model.setId(dataSnapshot.child("id").getValue().toString());
@@ -604,7 +617,7 @@ public class FirebaseQueryHelperRepository {
 
                 if (dataSnapshot.hasChild("following")) {
                     if (dataSnapshot.child("following").hasChild(userId)) {
-                      //  Log.e(TAG, "onDataChange: " + " \n \n \n the flag should be true here  \n \n \n ");
+                        //  Log.e(TAG, "onDataChange: " + " \n \n \n the flag should be true here  \n \n \n ");
                         mutableFlag.setValue(true);
 
                     } else {
@@ -613,9 +626,9 @@ public class FirebaseQueryHelperRepository {
                         mutableFlag.setValue(false);
 
                     }
-                   // Log.e(TAG, "onDataChange: " + "if the user has following list check");
+                    // Log.e(TAG, "onDataChange: " + "if the user has following list check");
                 } else {
-                  //  Log.e(TAG, "flag: " + "false");
+                    //  Log.e(TAG, "flag: " + "false");
                     USER_REF.child(myId).child("following").child("createFollowingList").setValue("true");
                     mutableFlag.setValue(false);
 
@@ -633,7 +646,7 @@ public class FirebaseQueryHelperRepository {
     }
 
     public void follow(String myId, String userId, String name, String token) {
-       // Log.e(TAG, "follow: " + userId + myId);
+        // Log.e(TAG, "follow: " + userId + myId);
         USER_REF.child(myId).child("following").child(userId).setValue("true");
         USER_REF.child(userId).child("follower").child(myId).setValue("true");
 
@@ -786,7 +799,7 @@ public class FirebaseQueryHelperRepository {
 
         for (String token : hashset) {
 
-
+            Log.e(TAG, "sendNotificationsToUsers: TOKE \n" + token );
             PostModel postModel = new PostModel();
             Data data = new Data();
             data.setMessage("you gotta new order");
@@ -808,7 +821,7 @@ public class FirebaseQueryHelperRepository {
                 @Override
                 public void onNext(PostModel postModel) {
 
-                    Log.e(TAG, "onNext: ");
+                    Log.e(TAG, "onNext: Token " +postModel.getTo());
 
                 }
 
@@ -824,7 +837,7 @@ public class FirebaseQueryHelperRepository {
             };
 
 
-            observable.subscribe(observer);
+            observable.subscribeOn(Schedulers.computation()).subscribe(observer);
 
 
         }
@@ -985,7 +998,7 @@ public class FirebaseQueryHelperRepository {
 
     public void getListOfCurrentOrders(String id, MutableLiveData<ArrayList<OrderModel>> mutableLiveDataForOrdeRModelList) {
 
-        Log.e(TAG, "getListOfOrders: \n \n \n " );
+        Log.e(TAG, "getListOfOrders: \n \n \n ");
         ArrayList<OrderModel> listOfOrders = new ArrayList<>();
         USER_REF.child(id).child("ordersSent").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -1014,23 +1027,21 @@ public class FirebaseQueryHelperRepository {
     }
 
     public void addUserToDataBase(String id, UserParentModel user, MutableLiveData<String> mutableLiveDataOfUserState) {
-            USER_REF.child(id).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
+        USER_REF.child(id).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
 
-                    if(task.isSuccessful()){
-                        mutableLiveDataOfUserState.setValue("user has been registered successfully");
+                if (task.isSuccessful()) {
+                    mutableLiveDataOfUserState.setValue("user has been registered successfully");
 
-                    }
-                    else {
-                        mutableLiveDataOfUserState.setValue("Error: "+task.getResult()+"");
-
-                    }
-
-
+                } else {
+                    mutableLiveDataOfUserState.setValue("Error: " + task.getResult() + "");
 
                 }
-            });
+
+
+            }
+        });
     }
 
 
@@ -1041,16 +1052,16 @@ public class FirebaseQueryHelperRepository {
     }
 
     public void UploadNewTokenToUsersFoodList(String userId, String s) {
-        Log.e(TAG, "UploadNewTokenToUsersFoodList: " + userId+"\n \n " + s );
+        Log.e(TAG, "UploadNewTokenToUsersFoodList: " + userId + "\n \n " + s);
 
         FOOD_REF.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot d : dataSnapshot.getChildren()) {
-                    Log.e(TAG, "onDataChange: " + d.getKey() );
-                    FOOD_REF.child(userId).child( d.getKey()).child("cookToken").setValue(s);
-                  // if( d.hasChild("cookToken")) Log.e(TAG, "onDataChange:UploadNewTokenToUsersFoodList \n " + d.child("cookToken").getValue().toString() );
+                    Log.e(TAG, "onDataChange: " + d.getKey());
+                    FOOD_REF.child(userId).child(d.getKey()).child("cookToken").setValue(s);
+                    // if( d.hasChild("cookToken")) Log.e(TAG, "onDataChange:UploadNewTokenToUsersFoodList \n " + d.child("cookToken").getValue().toString() );
 
                 }
 
@@ -1084,8 +1095,8 @@ public class FirebaseQueryHelperRepository {
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
-                    Log.e(TAG, "onComplete: "+ downloadUri);
-                    uploadUserImageToFirebase(uid,downloadUri);
+                    Log.e(TAG, "onComplete: " + downloadUri);
+                    uploadUserImageToFirebase(uid, downloadUri);
                 } else {
                     // Handle failures
                     // ...
@@ -1098,10 +1109,9 @@ public class FirebaseQueryHelperRepository {
 
     private void uploadUserImageToFirebase(String uid, Uri downloadUri) {
 
-        USER_REF.child(uid).child("image").setValue(downloadUri+"");
+        USER_REF.child(uid).child("image").setValue(downloadUri + "");
 
     }
-
 
 
 }

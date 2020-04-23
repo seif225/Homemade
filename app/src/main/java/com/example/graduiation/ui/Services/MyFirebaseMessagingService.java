@@ -49,7 +49,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.e(TAG, "From: " + remoteMessage.getFrom());
 
         // Check if message contains a data payload.
-        if (remoteMessage.getData().size() > 0) {
+        /*if (remoteMessage.getData().size() > 0) {*/
             Log.e(TAG, "Message data payload: " + remoteMessage.getData());
 
             final Intent intent = new Intent(this, MainActivity.class);
@@ -135,7 +135,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
 
 
-        }
+
 
 
         // Check if message contains a notification payload.
@@ -176,6 +176,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             SharedPreferences sharedPreferences = getSharedPreferences("userData", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("token", s);
+
+            Log.e(TAG, "onNewToken: \n \n \n " + s  );
 
 
 

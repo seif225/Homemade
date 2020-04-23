@@ -117,7 +117,7 @@
             android:id="@+id/followers_kitchen_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="20 Followers"
+            android:text="0 Followers"
             android:layout_marginStart="4dp"
             app:layout_constraintBottom_toBottomOf="@+id/imageView2"
             app:layout_constraintStart_toEndOf="@+id/imageView2"
@@ -137,7 +137,7 @@
             android:id="@+id/orders_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="22 Orders"
+            android:text="0 Orders"
             android:layout_marginStart="4dp"
 
             app:layout_constraintBottom_toBottomOf="@+id/imageView3"

@@ -38,8 +38,7 @@
         <action
             android:id="@+id/action_nav_home_to_nav_recieved_orders"
             app:destination="@id/nav_recieved_orders"
-            app:popUpTo="@id/nav_home"
-            app:popUpToInclusive="true"
+
             />
         <action
             android:id="@+id/action_nav_home_to_nav_send"
