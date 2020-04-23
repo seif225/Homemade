@@ -8,6 +8,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#fefefe"
+    android:id="@+id/nested_scroll_view_categories_fragment"
     tools:context=".ui.MealCategories.CategoriesFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +21,6 @@
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-
             android:elevation="8dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"

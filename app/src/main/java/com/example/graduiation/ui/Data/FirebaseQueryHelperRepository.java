@@ -1120,52 +1120,62 @@ public class FirebaseQueryHelperRepository {
 
     public void getFirstChucnkOfData( int n, MutableLiveData<ArrayList<UserParentModel>> foodModelMutableLiveData, String category) {
 
-        final int[] localN = {n};
+
         ArrayList<UserParentModel> listOfKitchens = new ArrayList<>();
-        USER_REF.addListenerForSingleValueEvent(new ValueEventListener() {
+
+       USER_REF.orderByChild("registrationTime").addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onChildAdded(@NonNull DataSnapshot d, @Nullable String s) {
+                Log.e(TAG, "onChildfoodModelMutableLiveData.getValue()Added: getMore"+d +"\n \n "  );
 
-                for (DataSnapshot d:dataSnapshot.getChildren()){
-                    Log.e(TAG, "onDataChange: "+d.getKey() +"\n \n "  );
 
-                    if (d.hasChild("food")) {
-                        if (d.child("food").hasChild(category)) {
-                            UserParentModel model = new UserParentModel();
-                            model.setEmail(d.child("email").getValue().toString());
-                            model.setId(d.child("id").getValue().toString());
-                            if (d.hasChild("image"))
-                                model.setImage(d.child("image").getValue().toString() + "");
-                            model.setName(d.child("name").getValue().toString());
-                            model.setPhone(d.child("phone").getValue().toString());
-                            if (d.hasChild("token"))
-                                model.setToken(d.child("token").getValue().toString());
+                if (d.hasChild("food")) {
+                    if (d.child("food").hasChild(category)) {
+                        UserParentModel model = new UserParentModel();
+                        model.setEmail(d.child("email").getValue().toString());
+                        model.setId(d.child("id").getValue().toString());
+                        if (d.hasChild("image"))
+                            model.setImage(d.child("image").getValue().toString() + "");
+                        model.setName(d.child("name").getValue().toString());
+                        model.setPhone(d.child("phone").getValue().toString());
+                        if (d.hasChild("token"))
+                            model.setToken(d.child("token").getValue().toString());
 
-                            if (d.hasChild("ordersReceived"))
-                                model.setNumberOfOrders(d
-                                        .child("ordersReceived")
-                                        .getChildrenCount() + ""
-                                );
+                        if (d.hasChild("ordersReceived"))
+                            model.setNumberOfOrders(d
+                                    .child("ordersReceived")
+                                    .getChildrenCount() + ""
+                            );
 
-                            if (d.hasChild("following"))
-                                model.setFollowing(d
-                                        .child("following")
-                                        .getChildrenCount() + ""
-                                );
-                            listOfKitchens.add(model);
+                        if (d.hasChild("following"))
+                            model.setFollowing(d
+                                    .child("following")
+                                    .getChildrenCount() + ""
+                            );
+                        Log.e(TAG, "onChildAdded: " +model.getId() );
+                        listOfKitchens.add(model);
 
-                        }
-                        else {
-                            localN[0]++;
-                        }
-                    }
-                    else {
-                        localN[0]++;
                     }
 
                 }
 
                 foodModelMutableLiveData.setValue(listOfKitchens);
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
             }
 
             @Override
@@ -1177,18 +1187,23 @@ public class FirebaseQueryHelperRepository {
 
     }
 
-    public void getMoreKitchens(String id, MutableLiveData<ArrayList<UserParentModel>> kitchenLiveData, String category, int n) {
-        int[] localN={n};
+    public void getMoreKitchens(long id, MutableLiveData<ArrayList<UserParentModel>> kitchenLiveData, String category, int n) {
+
+
 
         ArrayList<UserParentModel> listOfKitchens = new ArrayList<>();
-        USER_REF.orderByChild("registrationTime")
-                .startAt(id)
-                .limitToFirst(n).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        Log.e(TAG, "getMoreKitchens: " + id );
+        Query query =  USER_REF
+                .orderByChild("registrationTime")
+                .startAt(id);
 
-                for (DataSnapshot d:dataSnapshot.getChildren()){
-                    Log.e(TAG, "onDataChange: "+d +"\n \n "  );
+
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot d, @Nullable String s) {
+
+                    Log.e(TAG, "onChildAdded: getMore"+d +"\n \n "  );
+
 
                     if (d.hasChild("food")) {
                         if (d.child("food").hasChild(category)) {
@@ -1213,16 +1228,13 @@ public class FirebaseQueryHelperRepository {
                                         .child("following")
                                         .getChildrenCount() + ""
                                 );
-                            listOfKitchens.add(model);
+                            Log.e(TAG, "onChildAdded: " +model.getId() );
+                            kitchenLiveData.getValue().add(model);
 
-                        }
-                        else {
-                            localN[0]++;
-                        }
+
+
                     }
-                    else {
-                        localN[0]++;
-                    }
+
 
                 }
 
@@ -1230,11 +1242,24 @@ public class FirebaseQueryHelperRepository {
             }
 
             @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
-
     }
 }

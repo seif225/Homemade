@@ -26,6 +26,7 @@ public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecycl
     private ArrayList<UserParentModel> listOfKitchens;
     private String category;
     private int mode = 0;
+    private boolean last = false;
 
     public KitchensRecyclerAdapter(ArrayList<UserParentModel> listOfKitchens, String category) {
         this.listOfKitchens = listOfKitchens;
@@ -47,13 +48,16 @@ public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecycl
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
+        if(position==listOfKitchens.size()-1) last=true;
+        else last=false;
+
         UserParentModel model = listOfKitchens.get(position);
 
         holder.userNameTv.setText(model.getName());
-       if (model.getImage()!=null) Picasso.get().load(model.getImage()).networkPolicy(NetworkPolicy.OFFLINE).into(holder.userPic, new Callback() {
+       if (model.getImage()!=null) Picasso.get().load(model.getImage()).resize(200,200).networkPolicy(NetworkPolicy.OFFLINE).into(holder.userPic, new Callback() {
             @Override
             public void onSuccess() {
-                if (model.getImage()!=null) Picasso.get().load(model.getImage()).into(holder.userPic);
+                if (model.getImage()!=null) Picasso.get().load(model.getImage()).resize(200,200).into(holder.userPic);
             }
 
             @Override
@@ -130,5 +134,7 @@ public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecycl
         return listOfKitchens.get(listOfKitchens.size()-1).getId();
     }
 
-
+    public boolean isLast() {
+        return last;
+    }
 }

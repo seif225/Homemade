@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        Log.e(TAG, "\n \n \n onStart: TOKEN \n \n \n "+ FirebaseInstanceId.getInstance().getToken() );
+        //Log.e(TAG, "\n \n \n onStart: TOKEN \n \n \n "+ FirebaseInstanceId.getInstance().getToken() );
 
         if (mAuth.getCurrentUser() == null) {
             sendUserToLogin();

@@ -45,7 +45,7 @@ public class CatrgoryViewModel extends ViewModel {
     }
 
 
-    public void addNewKitchens(String lastId ,String category ,int n) {
-        firebaseQueryHelper.getMoreKitchens( lastId,kitchenLiveData, category , n);
+    public void addNewKitchens(long lastDate ,String category ,int n) {
+        firebaseQueryHelper.getMoreKitchens( lastDate,kitchenLiveData, category , n);
     }
 }
