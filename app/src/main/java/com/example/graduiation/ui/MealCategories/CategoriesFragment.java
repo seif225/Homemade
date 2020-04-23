@@ -37,7 +37,7 @@ public class CategoriesFragment extends Fragment {
     private KitchensRecyclerAdapter foodAdapter;
     private String category;
     private TextView categoryTv;
-
+    private int listSize = 0;
 
 
 
@@ -61,41 +61,33 @@ public class CategoriesFragment extends Fragment {
         foodRecyclerView.setHasFixedSize(true);
         foodRecyclerView.setAdapter(foodAdapter);
         foodRecyclerView.setNestedScrollingEnabled(false);
+        foodAdapter = new KitchensRecyclerAdapter(category);
+        adapter = new
+                RecyclerViewAdapter( getActivity(), category);
+         linearLayoutManager = new LinearLayoutManager(getActivity()
+                , RecyclerView.HORIZONTAL,
+                false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setHorizontalScrollBarEnabled(true);
+        recyclerView.setAdapter(adapter);
+        foodRecyclerView.setAdapter(foodAdapter);
 
 
-
-        viewModel.getFoodModelMutableLiveData(category).observe(this, new Observer<ArrayList<FoodModel>>() {
-            @Override
-            public void onChanged(ArrayList<FoodModel> foodModels) {
-                if (foodModels != null) {
-
-
-                }
-            }
-
-
-        });
-
-
-        viewModel.getUsersLiveData().observe(CategoriesFragment.this, new Observer<ArrayList<UserParentModel>>() {
+        viewModel.getFirstChunkOfKitchens(3,category).observe(this, new Observer<ArrayList<UserParentModel>>() {
             @Override
             public void onChanged(ArrayList<UserParentModel> userParentModels) {
-                // Log.e(TAG, "onChanged: "+userParentModels.get(0).getName()+"" );
+
+                listSize = userParentModels.size();
                 if (userParentModels.size() > 0) {
-                    adapter = new
-                            RecyclerViewAdapter(userParentModels, getActivity(), category);
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()
-                            , RecyclerView.HORIZONTAL,
-                            false);
-                    recyclerView.setLayoutManager(linearLayoutManager);
-                    recyclerView.setHorizontalScrollBarEnabled(true);
-                    recyclerView.setAdapter(adapter);
-                    foodAdapter = new KitchensRecyclerAdapter(userParentModels,category);
+                    adapter.setData(userParentModels);
+                    adapter.notifyDataSetChanged();
+                    foodAdapter.setData(userParentModels);
                     foodAdapter.notifyDataSetChanged();
-                    foodRecyclerView.setAdapter(foodAdapter);
                 }
+
             }
         });
+
 
         return root;
     }

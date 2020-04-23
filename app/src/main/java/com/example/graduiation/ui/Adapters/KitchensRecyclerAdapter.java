@@ -32,6 +32,10 @@ public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecycl
         this.category=category;
     }
 
+    public KitchensRecyclerAdapter(String category) {
+        this.category = category;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -118,9 +122,13 @@ public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecycl
     public void setMode(int mode) {
         this.mode = mode;
     }
+
     public long getLastItemDate() {
         return listOfKitchens.get(listOfKitchens.size()-1).getRegistrationTime();
     }
-    
+    public String getLastItemId() {
+        return listOfKitchens.get(listOfKitchens.size()-1).getId();
+    }
+
 
 }

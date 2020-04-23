@@ -417,6 +417,7 @@ public class FirebaseQueryHelperRepository {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(context, "your meal has been added successfully", Toast.LENGTH_SHORT).show();
+
                     //Log.e(TAG, "onComplete: " + "done");
                 } else {
                     Toast.makeText(context, "Error occurred", Toast.LENGTH_SHORT).show();
@@ -424,6 +425,9 @@ public class FirebaseQueryHelperRepository {
                 }
             }
         });
+
+        USER_REF.child(model.getCookId()).child("food").child(model.getCategory()).child(model.getId()).setValue(model.getId());
+
     }
 
     public void getUsersData(MutableLiveData<ArrayList<UserParentModel>> usersLiveData, HashSet<String> cookIds) {
@@ -799,7 +803,7 @@ public class FirebaseQueryHelperRepository {
 
         for (String token : hashset) {
 
-            Log.e(TAG, "sendNotificationsToUsers: TOKE \n" + token );
+            Log.e(TAG, "sendNotificationsToUsers: TOKE \n" + token);
             PostModel postModel = new PostModel();
             Data data = new Data();
             data.setMessage("you gotta new order");
@@ -821,7 +825,7 @@ public class FirebaseQueryHelperRepository {
                 @Override
                 public void onNext(PostModel postModel) {
 
-                    Log.e(TAG, "onNext: Token " +postModel.getTo());
+                    Log.e(TAG, "onNext: Token " + postModel.getTo());
 
                 }
 
@@ -1114,4 +1118,123 @@ public class FirebaseQueryHelperRepository {
     }
 
 
+    public void getFirstChucnkOfData( int n, MutableLiveData<ArrayList<UserParentModel>> foodModelMutableLiveData, String category) {
+
+        final int[] localN = {n};
+        ArrayList<UserParentModel> listOfKitchens = new ArrayList<>();
+        USER_REF.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot d:dataSnapshot.getChildren()){
+                    Log.e(TAG, "onDataChange: "+d.getKey() +"\n \n "  );
+
+                    if (d.hasChild("food")) {
+                        if (d.child("food").hasChild(category)) {
+                            UserParentModel model = new UserParentModel();
+                            model.setEmail(d.child("email").getValue().toString());
+                            model.setId(d.child("id").getValue().toString());
+                            if (d.hasChild("image"))
+                                model.setImage(d.child("image").getValue().toString() + "");
+                            model.setName(d.child("name").getValue().toString());
+                            model.setPhone(d.child("phone").getValue().toString());
+                            if (d.hasChild("token"))
+                                model.setToken(d.child("token").getValue().toString());
+
+                            if (d.hasChild("ordersReceived"))
+                                model.setNumberOfOrders(d
+                                        .child("ordersReceived")
+                                        .getChildrenCount() + ""
+                                );
+
+                            if (d.hasChild("following"))
+                                model.setFollowing(d
+                                        .child("following")
+                                        .getChildrenCount() + ""
+                                );
+                            listOfKitchens.add(model);
+
+                        }
+                        else {
+                            localN[0]++;
+                        }
+                    }
+                    else {
+                        localN[0]++;
+                    }
+
+                }
+
+                foodModelMutableLiveData.setValue(listOfKitchens);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+    public void getMoreKitchens(String id, MutableLiveData<ArrayList<UserParentModel>> kitchenLiveData, String category, int n) {
+        int[] localN={n};
+
+        ArrayList<UserParentModel> listOfKitchens = new ArrayList<>();
+        USER_REF.orderByChild("registrationTime")
+                .startAt(id)
+                .limitToFirst(n).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot d:dataSnapshot.getChildren()){
+                    Log.e(TAG, "onDataChange: "+d +"\n \n "  );
+
+                    if (d.hasChild("food")) {
+                        if (d.child("food").hasChild(category)) {
+                            UserParentModel model = new UserParentModel();
+                            model.setEmail(d.child("email").getValue().toString());
+                            model.setId(d.child("id").getValue().toString());
+                            if (d.hasChild("image"))
+                                model.setImage(d.child("image").getValue().toString() + "");
+                            model.setName(d.child("name").getValue().toString());
+                            model.setPhone(d.child("phone").getValue().toString());
+                            if (d.hasChild("token"))
+                                model.setToken(d.child("token").getValue().toString());
+
+                            if (d.hasChild("ordersReceived"))
+                                model.setNumberOfOrders(d
+                                        .child("ordersReceived")
+                                        .getChildrenCount() + ""
+                                );
+
+                            if (d.hasChild("following"))
+                                model.setFollowing(d
+                                        .child("following")
+                                        .getChildrenCount() + ""
+                                );
+                            listOfKitchens.add(model);
+
+                        }
+                        else {
+                            localN[0]++;
+                        }
+                    }
+                    else {
+                        localN[0]++;
+                    }
+
+                }
+
+                kitchenLiveData.setValue(listOfKitchens);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
 }

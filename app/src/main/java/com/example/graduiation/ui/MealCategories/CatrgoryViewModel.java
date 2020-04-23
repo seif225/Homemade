@@ -19,15 +19,19 @@ public class CatrgoryViewModel extends ViewModel {
     private FirebaseQueryHelperRepository firebaseQueryHelper = FirebaseQueryHelperRepository.getInstance();
     private HashSet<String> cookIds = new HashSet<String>();
     private String category;
+    private MutableLiveData<ArrayList<UserParentModel>> kitchenLiveData = new MutableLiveData<>();
+
+
     private static final String TAG = "CatrgoryViewModel";
 
+    @Deprecated
     public MutableLiveData<ArrayList<FoodModel>> getFoodModelMutableLiveData(String category) {
         if (this.category == null) this.category = category;
         firebaseQueryHelper.getListOfFoodAndUsers(foodModelMutableLiveData, cookIds, this.category);
         return foodModelMutableLiveData;
     }
 
-
+    @Deprecated
     public MutableLiveData<ArrayList<UserParentModel>> getUsersLiveData() {
         Log.e(TAG, "getUsersLiveData: " + cookIds.size());
         // if (cookIds.size() > 0) Log.e(TAG, "getUsersLiveData: " + cookIds.get(0));
@@ -35,7 +39,13 @@ public class CatrgoryViewModel extends ViewModel {
         return usersLiveData;
     }
 
+    public MutableLiveData<ArrayList<UserParentModel>> getFirstChunkOfKitchens(int n, String category) {
+        firebaseQueryHelper.getFirstChucnkOfData(n, kitchenLiveData, category);
+        return kitchenLiveData;
+    }
 
 
-
+    public void addNewKitchens(String lastId ,String category ,int n) {
+        firebaseQueryHelper.getMoreKitchens( lastId,kitchenLiveData, category , n);
+    }
 }

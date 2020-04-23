@@ -18,6 +18,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -98,6 +99,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         } else {
             return userParentModelList.size();
         }
+
+    }
+
+    public RecyclerViewAdapter(Context context, String category) {
+        this.context = context;
+        this.category = category;
+    }
+
+    public void setData(ArrayList<UserParentModel> userParentModels) {
+        this.userParentModelList=userParentModels;
 
     }
 

@@ -30,9 +30,10 @@
                     android:textColor="@color/whiteTextColor"
                     android:text="Here’s\nyour first\nstep with \nus! "/>
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="180dp"
                     android:layout_height="180dp"
+
                     android:src="@drawable/logo_circle"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"/>
