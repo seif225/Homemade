@@ -66,7 +66,7 @@ public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecycl
             }
         });
 
-       if(model.getFollowing()!=null) holder.followTv.setText(model.getFollowing()+ " Followers") ;
+       if(model.getNumberOfFollowing()!=null) holder.followTv.setText(model.getNumberOfFollowing()+ " Followers") ;
         if(model.getNumberOfOrders()!=null) holder.ordersTv.setText(model.getNumberOfOrders()+ " Orders");
         if(model.getRate()!=null) holder.ratingBar.setRating(Float.parseFloat(model.getRate()));
         if(position==listOfKitchens.size()-1){

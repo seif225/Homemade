@@ -61,7 +61,7 @@ public class CategoriesFragment extends Fragment {
         categoryTv.setText(category);
         parentLayout = root.findViewById(R.id.nested_scroll_view_categories_fragment);
         viewModel = ViewModelProviders.of(this).get(CatrgoryViewModel.class);
-         linearLayoutManager = new LinearLayoutManager(getActivity()
+        linearLayoutManager = new LinearLayoutManager(getActivity()
                 , RecyclerView.VERTICAL,
                 false);
         linearLayoutManager2 = new LinearLayoutManager(getActivity()

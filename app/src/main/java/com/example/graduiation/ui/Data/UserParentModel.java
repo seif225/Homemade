@@ -1,14 +1,33 @@
 package com.example.graduiation.ui.Data;
 
+import java.util.HashMap;
+
 public class UserParentModel {
 
-    private String name, id, phone, image, rate, following, subType, email, password , membership,bio ,token , numberOfOrders;
+    private String name, id, phone, image, rate, numberOfFollowing, subType, email, password , membership,bio ,token , numberOfOrders;
     private WalletModel wallet;
     private long registrationTime;
+    private HashMap<String ,String> follower , following;
+
     public UserParentModel() {
 
     }
 
+    public void setFollower(HashMap<String, String> follower) {
+        this.follower = follower;
+    }
+
+    public HashMap<String, String> getFollower() {
+        return follower;
+    }
+
+    public void setFollowing(HashMap<String, String> following) {
+        this.following = following;
+    }
+
+    public HashMap<String, String> getFollowing() {
+        return following;
+    }
 
     public void setRegistrationTime(long registrationTime) {
         this.registrationTime = registrationTime;
@@ -46,8 +65,8 @@ public class UserParentModel {
         return rate;
     }
 
-    public String getFollowing() {
-        return following;
+    public String getNumberOfFollowing() {
+        return numberOfFollowing;
     }
 
     public String getSubType() {
@@ -98,8 +117,8 @@ public class UserParentModel {
         this.rate = rate;
     }
 
-    public void setFollowing(String following) {
-        this.following = following;
+    public void setNumberOfFollowing(String numberOfFollowing) {
+        this.numberOfFollowing = numberOfFollowing;
     }
 
     public void setSubType(String subType) {

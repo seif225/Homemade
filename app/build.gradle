@@ -125,5 +125,14 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.1'
 
+    //Firebase-UI Library
+    implementation 'com.firebaseui:firebase-ui-database:4.3.1'
+
+    //Android Paging Libray
+    implementation "android.arch.paging:runtime:1.0.1"
+
+    //Firebase Pagination Library
+    implementation 'com.shreyaspatil:FirebaseRecyclerPagination:1.0.1'
+
 
 }

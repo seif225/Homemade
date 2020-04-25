@@ -1,10 +1,8 @@
 package com.example.graduiation.ui.Data;
 
-import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
@@ -35,18 +33,13 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class FirebaseQueryHelperRepository {
     private FirebaseAuth mAuth;
@@ -467,7 +460,7 @@ public class FirebaseQueryHelperRepository {
                                         );
 
                                     if (dataSnapshot.child(s).hasChild("following"))
-                                        model.setFollowing(dataSnapshot.child(s)
+                                        model.setNumberOfFollowing(dataSnapshot.child(s)
                                                 .child("following")
                                                 .getChildrenCount() + ""
                                         );
@@ -638,7 +631,7 @@ public class FirebaseQueryHelperRepository {
 
                 }
 
-                return;
+
             }
 
             @Override
@@ -654,8 +647,7 @@ public class FirebaseQueryHelperRepository {
         USER_REF.child(myId).child("following").child(userId).setValue("true");
         USER_REF.child(userId).child("follower").child(myId).setValue("true");
 
-        // sendFollowNotification(name, token);
-
+         sendFollowNotification(name, token);
 
     }
 
@@ -1148,7 +1140,7 @@ public class FirebaseQueryHelperRepository {
                             );
 
                         if (d.hasChild("following"))
-                            model.setFollowing(d
+                            model.setNumberOfFollowing(d
                                     .child("following")
                                     .getChildrenCount() + ""
                             );
@@ -1224,7 +1216,7 @@ public class FirebaseQueryHelperRepository {
                                 );
 
                             if (d.hasChild("following"))
-                                model.setFollowing(d
+                                model.setNumberOfFollowing(d
                                         .child("following")
                                         .getChildrenCount() + ""
                                 );
