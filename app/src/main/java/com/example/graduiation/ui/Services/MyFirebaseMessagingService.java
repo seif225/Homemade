@@ -110,7 +110,29 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                     }
 
-                } else {
+                }
+                else if(remoteMessage.getData().get("key1").equals("follow")){
+                    Log.e(TAG, "onMessageReceived: " + " follow notification" );
+                    Uri notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
+                            .setSmallIcon(R.drawable.logo_circle)
+                            .setLargeIcon(largeIcon)
+                            .setContentTitle(remoteMessage.getData().get("title"))
+                            .setContentText(remoteMessage.getData().get("message"))
+                            .setAutoCancel(true)
+                            .setSound(notificationSoundUri)
+                            .setContentIntent(pendingIntent);
+
+                    //Set notification color to match your app color template
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        notificationBuilder.setColor(getResources().getColor(R.color.colorPrimaryDark));
+                    }
+                    notificationManager.notify(3, notificationBuilder.build());
+
+
+
+                }
+                else {
 
                     Uri notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                     NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)

@@ -136,10 +136,11 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
 
 
                     if (aBoolean) {
+                        //true , set TextUnfollow
                         setUnfollowedState();
 
                     } else {
-
+                        //false , set Follow statement
                         setFollowedState();
 
                     }
@@ -152,24 +153,16 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
             followButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    viewModel.isFollowed(FirebaseAuth.getInstance().getUid(), uid).observe(StoryDetailsActivity2.this, new Observer<Boolean>() {
-                        @Override
-                        public void onChanged(Boolean aBoolean) {
+                   if( followButton.getText().toString().equals("Unfollow")){
+                       viewModel.unFollow(FirebaseAuth.getInstance().getUid(), uid);
+                       setFollowedState();
+                   }
+                   else {
+                       viewModel.follow(FirebaseAuth.getInstance().getUid(), uid , finalUserName, token);
+                       setUnfollowedState();
+                       viewModel.pushNotification(finalUserName , token);
 
-
-                            if (aBoolean) {
-                                viewModel.unFollow(FirebaseAuth.getInstance().getUid(), uid);
-                                setFollowedState();
-
-                            } else {
-                                viewModel.follow(FirebaseAuth.getInstance().getUid(), uid , finalUserName, token);
-                                setUnfollowedState();
-                                viewModel.pushNotification(finalUserName , token);
-                            }
-
-                        }
-                    });
-
+                   }
 
                 }
             });

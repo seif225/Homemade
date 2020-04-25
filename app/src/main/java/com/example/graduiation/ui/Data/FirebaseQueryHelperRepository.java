@@ -661,6 +661,7 @@ public class FirebaseQueryHelperRepository {
 
         data.setMessage("check his profile ^^");
         data.setTitle(name + " has followed you");
+        data.setKey1("follow");
 
         postModel.setData(data);
         postModel.setTo(token);
