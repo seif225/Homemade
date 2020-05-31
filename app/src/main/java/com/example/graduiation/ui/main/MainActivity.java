@@ -57,6 +57,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
+
     private AppBarConfiguration mAppBarConfiguration;
     private FirebaseAuth mAuth;
     private static final String TAG = "MainActivity";
@@ -66,12 +67,16 @@ public class MainActivity extends AppCompatActivity {
     private MainViewModel viewModel;
     NavigationView navigationView;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         FirebaseApp.initializeApp(this);
+
 
         Toolbar toolbar = findViewById(R
 
@@ -86,18 +91,33 @@ public class MainActivity extends AppCompatActivity {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
 
+
+
         mAuth = FirebaseAuth.getInstance();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
-      //  hideItem();
+        //  hideItem();
 
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                Log.e(TAG, "onNavigationItemSelected: \n \n " );
+                if(id== R.id.nav_log_out){
 
+                    logOut();
+                }
+                return false;
+            }
+        });
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph())
                 .setDrawerLayout(drawer)
                 .build();
+
+
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
@@ -106,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
         navuseRImage = navigationHeader.findViewById(R.id.imageView);
         navUserName = navigationHeader.findViewById(R.id.user_name);
         navUserMail = navigationHeader.findViewById(R.id.nav_user_mail);
+
+
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
@@ -139,12 +161,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String flag = getIntent().getStringExtra("flag");
-        if(flag!=null){
+        if (flag != null) {
 
 
-            if(flag.equals("orderReceived")){
+            if (flag.equals("orderReceived")) {
 
-             transactFragmnetWithActions();
+                transactFragmnetWithActions();
 
             }
 
@@ -169,25 +191,29 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if (item.getItemId() == R.id.action_logout) {
-            FirebaseAuth.getInstance().signOut();
-            sendUserToLogin();
-        }
-
         if (item.getItemId() == R.id.cart_button) {
 
             sendUserToCart();
         }
+        if (item.getItemId() == R.id.nav_log_out) {
+
+            logOut();
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     private void sendUserToCart() {
         Intent i = new Intent(this, UserCartActivity.class);
@@ -201,11 +227,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        Log.e(TAG, "onSupportNavigateUp: " );
         return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
+
     }
+
 
     @Override
     protected void onStart() {
@@ -215,10 +246,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (mAuth.getCurrentUser() == null) {
             sendUserToLogin();
-        }
-        else {
+        } else {
 
-            if (getSharedPreferences("userData", Context.MODE_PRIVATE).getString("token",null) == null) {
+            if (getSharedPreferences("userData", Context.MODE_PRIVATE).getString("token", null) == null) {
                 OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(UploadUserTokenWorkManagerToFirebase.class).build();
                 WorkManager.getInstance(MainActivity.this).enqueue(oneTimeWorkRequest);
 
@@ -278,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri photo = result.getUri();
-                FirebaseQueryHelperRepository.getInstance().uploadUserProfilePic(FirebaseAuth.getInstance().getUid(),photo);
+                FirebaseQueryHelperRepository.getInstance().uploadUserProfilePic(FirebaseAuth.getInstance().getUid(), photo);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
                 Toast.makeText(this, error.getMessage(), Toast.LENGTH_SHORT).show();
@@ -287,4 +317,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    private void logOut() {
+        FirebaseAuth.getInstance().signOut();
+        sendUserToLogin();
+    }
+
+
+
 }

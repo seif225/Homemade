@@ -1,12 +1,20 @@
 package com.example.graduiation.ui.MealCategories;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +35,16 @@ import com.example.graduiation.ui.Adapters.KitchensRecyclerAdapter;
 import com.example.graduiation.ui.Adapters.RecyclerViewAdapter;
 import com.example.graduiation.ui.Data.FoodModel;
 import com.example.graduiation.ui.Data.UserParentModel;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.ChasingDots;
+import com.github.ybq.android.spinkit.style.DoubleBounce;
+import com.github.ybq.android.spinkit.style.RotatingPlane;
+import com.github.ybq.android.spinkit.style.ThreeBounce;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.processors.PublishProcessor;
 
 public class CategoriesFragment extends Fragment {
 
@@ -48,6 +64,16 @@ public class CategoriesFragment extends Fragment {
     private LinearLayoutManager linearLayoutManager2;
 
 
+    private PublishProcessor<Integer> paginator = PublishProcessor.create();
+    private ProgressBar progressBar;
+    private boolean loading = false;
+    private int pageNumber = 1;
+    private final int VISIBLE_THRESHOLD = 1;
+    private int lastVisibleItem, totalItemCount;
+    private NestedScrollView scroll;
+    private Handler handler;
+    private TextView tv;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_categories, container, false);
@@ -59,7 +85,14 @@ public class CategoriesFragment extends Fragment {
         foodRecyclerView = root.findViewById(R.id.food_recyclerView);
         categoryTv = root.findViewById(R.id.tv_category);
         categoryTv.setText(category);
-        parentLayout = root.findViewById(R.id.nested_scroll_view_categories_fragment);
+        // scroll = root.findViewById(R.id.nested_scroll_view_categories_fragment);
+        handler = new Handler();
+        tv = root.findViewById(R.id.tv_highly_rated_kitchens_dummy);
+
+        progressBar = root.findViewById(R.id.spin_kit);
+        Sprite doubleBounce = new DoubleBounce();
+
+        progressBar.setIndeterminateDrawable(doubleBounce);
         viewModel = ViewModelProviders.of(this).get(CatrgoryViewModel.class);
         linearLayoutManager = new LinearLayoutManager(getActivity()
                 , RecyclerView.VERTICAL,
@@ -72,9 +105,8 @@ public class CategoriesFragment extends Fragment {
         foodRecyclerView.setAdapter(foodAdapter);
         foodRecyclerView.setNestedScrollingEnabled(false);
         foodAdapter = new KitchensRecyclerAdapter(category);
-        adapter = new
-                RecyclerViewAdapter(getActivity(), category);
-
+        adapter = new RecyclerViewAdapter(getActivity(), category);
+        recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(linearLayoutManager2);
         recyclerView.setHorizontalScrollBarEnabled(true);
@@ -88,60 +120,70 @@ public class CategoriesFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+
         viewModel.getFirstChunkOfKitchens(6, category).observe(this, new Observer<ArrayList<UserParentModel>>() {
             @Override
             public void onChanged(ArrayList<UserParentModel> userParentModels) {
+
+
                 listSize = userParentModels.size();
                 if (userParentModels.size() > 0) {
-                    adapter.setData(userParentModels);
+                    exThread th = new exThread(2.5, userParentModels);
+                    th.start();
+                   /* adapter.setData(userParentModels);
                     adapter.notifyDataSetChanged();
                     foodAdapter.setData(userParentModels);
                     foodAdapter.notifyDataSetChanged();
-                    listOfKitchens = userParentModels;
+                    listOfKitchens = userParentModels;*/
 
                 }
             }
         });
 
 
-        //TODO : trigger pagination by reaching the last item in the  recyclerView
-        foodRecyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                Log.e(TAG, "onScrollChange: ");
+    }
+
+    class exThread extends Thread {
+        double sec;
+        ArrayList<UserParentModel> userParentModels;
+
+        exThread(double sec, ArrayList<UserParentModel> userParentModels) {
+            this.sec = sec * 1000;
+            this.userParentModels = userParentModels;
+        }
+
+        @Override
+        public void run() {
+            super.run();
+            try {
+                Thread.sleep((int) sec);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.animate()
+                                .alpha(0f)
+                                .setDuration(1000)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        progressBar.setVisibility(View.GONE);
+                                        adapter.setData(userParentModels);
+                                        adapter.notifyDataSetChanged();
+                                        foodAdapter.setData(userParentModels);
+                                        foodAdapter.notifyDataSetChanged();
+                                        listOfKitchens = userParentModels;
+                                        categoryTv.setVisibility(View.VISIBLE);
+                                        tv.setVisibility(View.VISIBLE);
+                                    }
+                                });
+
+                    }
+                });
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-
-        });
-
-        recyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                Log.e(TAG, "onScrollChange : Story ");
-            }
-        });
-
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-
-                int id = linearLayoutManager.findLastCompletelyVisibleItemPosition();
-
-                if(id>=listOfKitchens.size()-1)
-
-                {
-
-                    //viewModel.addNewKitchens(listOfKitchens.get(listOfKitchens.size() - 1).getRegistrationTime(), category, 3);
-
-                }
-
-            }
-
-
-
-        });
-
+        }
     }
 }

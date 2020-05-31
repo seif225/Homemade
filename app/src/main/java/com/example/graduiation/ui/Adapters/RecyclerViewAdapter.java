@@ -67,7 +67,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
         if (userParentModel.getImage() != null) {
-            Picasso.get().load(userParentModel.getImage()).resize(100,100)
+            Picasso.get().load(userParentModel.getImage()).fit()
                     .networkPolicy(NetworkPolicy.OFFLINE).into(holder.imgStory, new Callback() {
                 @Override
                 public void onSuccess() {
@@ -76,7 +76,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                 @Override
                 public void onError(Exception e) {
-                    Picasso.get().load(userParentModel.getImage()).resize(100,100).into(holder.imgStory);
+                    Picasso.get().load(userParentModel.getImage()).into(holder.imgStory);
                 }
             });
 

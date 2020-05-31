@@ -1255,4 +1255,24 @@ public class FirebaseQueryHelperRepository {
             }
         });
     }
+
+    public void getNumberOfReceivedOrders(MutableLiveData<Integer> numOfOrders, String id) {
+
+    USER_REF.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            if(dataSnapshot.hasChild("ordersReceived")){
+
+                numOfOrders.setValue((int)dataSnapshot.child("ordersReceived").getChildrenCount());
+            }
+
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    });
+
+    }
 }

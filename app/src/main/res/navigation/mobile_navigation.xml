@@ -98,10 +98,12 @@
         android:name="com.example.graduiation.ui.SentOrders.PlaceholderFragment"
         android:label="fragment_sent_orders_place_holder"
         tools:layout="@layout/fragment_sent_orders_place_holder" />
+
     <fragment
         android:id="@+id/categoriesFragment"
         android:name="com.example.graduiation.ui.MealCategories.CategoriesFragment"
         android:label="Kitchens"
         tools:layout="@layout/fragment_categories" />
+
 
 </navigation>

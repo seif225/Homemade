@@ -44,9 +44,11 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="NAME HERE"
+            app:layout_constraintHorizontal_bias="0"
             android:textColor="@android:color/black"
             android:textSize="20sp"
             android:textStyle="bold|italic"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/profileImage"
             app:layout_constraintTop_toBottomOf="@+id/add_profile_picture" />
 
@@ -63,37 +65,22 @@
             android:id="@+id/tvFollowers"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_person_outline_white_24dp"
-            android:drawablePadding="8dp"
-            android:padding="4dp"
-            android:text="18 Followers"
+            android:drawableStart="@drawable/ic_person_outline_black_24dp"
+            android:text="0 Followers"
             android:textSize="16sp"
+            android:layout_marginTop="8dp"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="@id/tvUserName"
             app:layout_constraintTop_toBottomOf="@id/tvBio" />
 
-        <!--        <TextView-->
-        <!--            android:id="@+id/tvFollowing"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="8dp"-->
-        <!--            android:drawableStart="@drawable/ic_person_outline_white_24dp"-->
-        <!--            android:padding="4dp"-->
-        <!--            android:text="55 Following"-->
-        <!--            android:textSize="16sp"-->
-        <!--            app:layout_constraintBottom_toBottomOf="@id/tvFollowers"-->
-        <!--            app:layout_constraintStart_toEndOf="@id/tvFollowers"-->
-        <!--            app:layout_constraintTop_toTopOf="@id/tvFollowers" />-->
 
         <TextView
             android:id="@+id/tvMeals"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:drawableStart="@drawable/mumz"
-            android:drawablePadding="6dp"
-            android:padding="8dp"
-            android:text="88 orders "
+            android:layout_marginStart="8dp"
+            android:text="0 orders "
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@id/tvFollowers"
             app:layout_constraintStart_toEndOf="@id/tvFollowers"
@@ -121,7 +108,7 @@
             android:id="@+id/profiel_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_black_24dp"
+            android:src="@drawable/ic_file_upload_black_24dp"
             app:layout_constraintBottom_toBottomOf="@+id/coverProfile"
             app:layout_constraintEnd_toEndOf="parent"
             app:elevation="16dp"
@@ -142,6 +129,8 @@
             app:layout_constraintStart_toEndOf="@+id/profileImage"
             app:layout_constraintTop_toBottomOf="@+id/profileImage"
             app:layout_constraintVertical_bias="0.8" />
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

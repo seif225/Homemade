@@ -28,7 +28,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.graduiation.R;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResultCallback;
@@ -144,8 +143,8 @@ public class PlacePickerActivity extends AppCompatActivity implements DatePicker
                 Intent intent = new Intent();
                 double lat = mMap.getCameraPosition().target.latitude;
                 double lng = mMap.getCameraPosition().target.longitude;
-                intent.putExtra("lat",lat);
-                intent.putExtra("lng",lng);
+                intent.putExtra("lat", lat);
+                intent.putExtra("lng", lng);
                 intent.putExtra("address", str);
                 PlacePickerActivity.this.setResult(Activity.RESULT_OK, intent);
                 PlacePickerActivity.this.finish();
@@ -161,6 +160,18 @@ public class PlacePickerActivity extends AppCompatActivity implements DatePicker
             @Override
             public void onClick(View v) {
 
+                if (ActivityCompat.checkSelfPermission(PlacePickerActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( PlacePickerActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
                 Task<Location> location = fusedLocationProviderClient.getLastLocation();
                 location.addOnCompleteListener(new OnCompleteListener<Location>() {
                     @Override
@@ -463,6 +474,16 @@ public class PlacePickerActivity extends AppCompatActivity implements DatePicker
 
         if (mLocationPermission) {
             getDeviceLocation();
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
@@ -485,12 +506,12 @@ public class PlacePickerActivity extends AppCompatActivity implements DatePicker
         googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
-                Address geocoder =getPlaceDataFromGeoCoder(googleMap.getCameraPosition().target);
-                        if(geocoder!=null ) {
-                            Log.e(TAG, "onCameraIdle: "+geocoder.getAddressLine(0) );
-                            addressEt.setText(geocoder.getAddressLine(0));
+                Address geocoder = getPlaceDataFromGeoCoder(googleMap.getCameraPosition().target);
+                if (geocoder != null) {
+                    Log.e(TAG, "onCameraIdle: " + geocoder.getAddressLine(0));
+                    addressEt.setText(geocoder.getAddressLine(0));
 
-            }
+                }
 
             }
         });
@@ -498,37 +519,39 @@ public class PlacePickerActivity extends AppCompatActivity implements DatePicker
         googleMap.setOnCameraMoveCanceledListener(new GoogleMap.OnCameraMoveCanceledListener() {
             @Override
             public void onCameraMoveCanceled() {
-                Address geocoder =getPlaceDataFromGeoCoder(googleMap.getCameraPosition().target);
-                if(geocoder!=null ) Log.e(TAG, "onCameraCancelled: "+geocoder.getAddressLine(0) );
+                Address geocoder = getPlaceDataFromGeoCoder(googleMap.getCameraPosition().target);
+                if (geocoder != null)
+                    Log.e(TAG, "onCameraCancelled: " + geocoder.getAddressLine(0));
             }
         });
 
     }
 
     @Nullable
-   private  Address getPlaceDataFromGeoCoder(LatLng latLng){
+    private Address getPlaceDataFromGeoCoder(LatLng latLng) {
 
 
-       Geocoder geocoder;
-       List<Address> addresses = null;
-       geocoder = new Geocoder(this, Locale.getDefault());
+        Geocoder geocoder;
+        List<Address> addresses = null;
+        geocoder = new Geocoder(this, Locale.getDefault());
 
-       try {
-           addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-           if(addresses.size()>0){
-           String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-           String city = addresses.get(0).getLocality();
-           String state = addresses.get(0).getAdminArea();
-           String country = addresses.get(0).getCountryName();
-           String postalCode = addresses.get(0).getPostalCode();
-           String knownName = addresses.get(0).getFeatureName();}
-          // moveCamera(latLng, DEFAULT_ZOOM, knownName);
-       } catch (IOException e) {
-           e.printStackTrace();
-       }
+        try {
+            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            if (addresses.size() > 0) {
+                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                String city = addresses.get(0).getLocality();
+                String state = addresses.get(0).getAdminArea();
+                String country = addresses.get(0).getCountryName();
+                String postalCode = addresses.get(0).getPostalCode();
+                String knownName = addresses.get(0).getFeatureName();
+            }
+            // moveCamera(latLng, DEFAULT_ZOOM, knownName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-       return  addresses!=null && addresses.size()>0 ? addresses.get(0) : null;
-   }
+        return addresses != null && addresses.size() > 0 ? addresses.get(0) : null;
+    }
 
     private void markPlace(LatLng latLng) {
 
@@ -570,6 +593,16 @@ public class PlacePickerActivity extends AppCompatActivity implements DatePicker
             geoFenceLimits.remove();
         }
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         Location location = fusedLocationProviderClient.getLastLocation().getResult();
         CircleOptions circleOptions = new CircleOptions()
                 .center(new LatLng(location.getLatitude(), location.getLongitude()))

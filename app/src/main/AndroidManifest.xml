@@ -27,6 +27,7 @@
 
         <activity android:name=".ui.PlacePickerActivity.PlacePickerActivity" />
         <activity android:name=".ui.UserCart.UserCartActivity" />
+        <activity android:name=".ui.Meal.MealFragment" />
 
         <service
             android:name=".ui.Services.MyFirebaseMessagingService"

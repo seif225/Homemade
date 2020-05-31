@@ -1,6 +1,7 @@
 package com.example.graduiation.ui.Adapters;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +20,18 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecyclerAdapter.ViewHolder> {
 
 
-    private ArrayList<UserParentModel> listOfKitchens;
+    private List<UserParentModel> listOfKitchens;
+
+
     private String category;
-    private int mode = 0;
+    private Integer page = 5;
     private boolean last = false;
+    private static final String TAG = "KitchensRecyclerAdapter";
 
     public KitchensRecyclerAdapter(ArrayList<UserParentModel> listOfKitchens, String category) {
         this.listOfKitchens = listOfKitchens;
@@ -47,17 +52,19 @@ public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecycl
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Log.e(TAG, "onBindViewHolder: Position " + position );
 
-        if(position==listOfKitchens.size()-1) last=true;
-        else last=false;
+
+
 
         UserParentModel model = listOfKitchens.get(position);
 
         holder.userNameTv.setText(model.getName());
-       if (model.getImage()!=null) Picasso.get().load(model.getImage()).resize(200,200).networkPolicy(NetworkPolicy.OFFLINE).into(holder.userPic, new Callback() {
+       if (model.getImage()!=null) Picasso.get().load(model.getImage())
+               .fit().networkPolicy(NetworkPolicy.OFFLINE).into(holder.userPic, new Callback() {
             @Override
             public void onSuccess() {
-                if (model.getImage()!=null) Picasso.get().load(model.getImage()).resize(200,200).into(holder.userPic);
+                if (model.getImage()!=null) Picasso.get().load(model.getImage()).into(holder.userPic);
             }
 
             @Override
@@ -99,8 +106,15 @@ public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecycl
     }
 
     @Override
-    public int getItemCount() {
-        return listOfKitchens==null ? 0 : listOfKitchens.size();
+    public int getItemCount()
+    {
+      return listOfKitchens!=null ? listOfKitchens.size():0;
+    }
+
+    public void addPages() {
+        page=+5;
+
+        //notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -120,12 +134,10 @@ public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecycl
 
 
 
-    public void setData(ArrayList<UserParentModel> listOfKitchens){
+    public void setData(List<UserParentModel> listOfKitchens){
         this.listOfKitchens=listOfKitchens;
     }
-    public void setMode(int mode) {
-        this.mode = mode;
-    }
+
 
     public long getLastItemDate() {
         return listOfKitchens.get(listOfKitchens.size()-1).getRegistrationTime();

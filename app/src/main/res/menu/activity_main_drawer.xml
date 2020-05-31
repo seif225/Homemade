@@ -21,15 +21,7 @@
             android:icon="@drawable/ic_menu_manage"
             android:title="@string/sent_orders" />
 
-       <!-- <item
-            android:id="@+id/nav_orders_sent"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/orders_sent" />
 
-        <item
-            android:id="@+id/nav_orders_recieved"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/orders_recieved" />-->
     </group>
 
     <item android:title="Communicate">
@@ -42,6 +34,7 @@
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
                 android:title="@string/menu_send" />
+
         </menu>
     </item>
 

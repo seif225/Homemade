@@ -1,6 +1,7 @@
 package com.example.graduiation.ui.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
 import com.example.graduiation.ui.Data.FoodModel;
+import com.example.graduiation.ui.Meal.MealFragment;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -97,6 +100,16 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
             holder.addToCartButton.setVisibility(View.GONE);
         }
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, MealFragment.class);
+                String gson = new Gson().toJson(foodModel);
+                i.putExtra("meal"  , gson);
+                context.startActivity(i);
+            }
+        });
+
     }
 
     @Override
@@ -115,6 +128,8 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
         TextView price_tv;
         ConstraintLayout constraintLayout;
         Button addToCartButton;
+
+
         public ViewHolder(@NonNull View itemView) {
 
             super(itemView);

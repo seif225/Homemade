@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,15 +30,16 @@ public class ProfileFragment extends Fragment {
     private View root;
     private ProfileViewModel viewModel;
     private CircleImageView userProfilePicture;
-    private TextView userName;
-    private FloatingActionButton fab,addProfilePic;
+    private TextView userName, followers, orders;
+    private FloatingActionButton fab, addProfilePic;
+    private static final String TAG = "ProfileFragment";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_profile, container, false);
         userProfilePicture = root.findViewById(R.id.profileImage);
         userName = root.findViewById(R.id.tvUserName);
-        fab =root.findViewById(R.id.profiel_fab);
+        fab = root.findViewById(R.id.profiel_fab);
         addProfilePic = root.findViewById(R.id.add_profile_picture);
 
 
@@ -49,8 +51,30 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        followers = root.findViewById(R.id.tvFollowers);
+        orders = root.findViewById(R.id.tvMeals);
 
         viewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
+
+        viewModel.getNumOfFollowers(FirebaseAuth.getInstance().getUid()).observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                Log.e(TAG, "onChanged: " + integer);
+                followers.setText(integer + " Followers");
+            }
+        });
+
+        viewModel.getNumOfOrders(FirebaseAuth.getInstance().getUid()).observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+
+                orders.setText(integer + " Orders");
+
+            }
+        });
+
+
+
         viewModel.getUserParentModel(FirebaseAuth.getInstance().getUid()).observe(this, new Observer<UserParentModel>() {
             @Override
             public void onChanged(UserParentModel userParentModel) {
@@ -87,14 +111,14 @@ public class ProfileFragment extends Fragment {
 
     private void sendUserToAddMealActivity() {
 
-    Intent i = new Intent(getActivity(), AddMealActivity.class);
-    getActivity().startActivity(i);
+        Intent i = new Intent(getActivity(), AddMealActivity.class);
+        getActivity().startActivity(i);
     }
 
     private void pickPhoto() {
         CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
-                .setAspectRatio(1,1)
+                .setAspectRatio(1, 1)
                 .start(getActivity());
     }
 
