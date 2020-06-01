@@ -14,6 +14,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,14 +89,27 @@ public class CategoriesFragment extends Fragment {
         foodRecyclerView = root.findViewById(R.id.food_recyclerView);
         categoryTv = root.findViewById(R.id.tv_category);
         categoryTv.setText(category);
-        // scroll = root.findViewById(R.id.nested_scroll_view_categories_fragment);
+        scroll = root.findViewById(R.id.nested_scroll_view_categories_fragment);
         handler = new Handler();
         tv = root.findViewById(R.id.tv_highly_rated_kitchens_dummy);
 
         progressBar = root.findViewById(R.id.spin_kit);
         Sprite doubleBounce = new DoubleBounce();
-
         progressBar.setIndeterminateDrawable(doubleBounce);
+
+        switch (category) {
+            case "semi-cooked":
+                doubleBounce.setColor(Color.parseColor("#FF641A"));
+                break;
+            case "Pastry":
+                doubleBounce.setColor(Color.parseColor("#FF416C"));
+                break;
+            case "dessert":
+                doubleBounce.setColor(Color.parseColor("#8A52E9"));
+                break;
+        }
+
+
         viewModel = ViewModelProviders.of(this).get(CatrgoryViewModel.class);
         linearLayoutManager = new LinearLayoutManager(getActivity()
                 , RecyclerView.VERTICAL,
@@ -100,6 +117,7 @@ public class CategoriesFragment extends Fragment {
         linearLayoutManager2 = new LinearLayoutManager(getActivity()
                 , RecyclerView.HORIZONTAL,
                 false);
+
         foodRecyclerView.setLayoutManager(linearLayoutManager);
         foodRecyclerView.setHasFixedSize(true);
         foodRecyclerView.setAdapter(foodAdapter);
@@ -129,7 +147,7 @@ public class CategoriesFragment extends Fragment {
 
                 listSize = userParentModels.size();
                 if (userParentModels.size() > 0) {
-                    exThread th = new exThread(2.5, userParentModels);
+                    exThread th = new exThread(1.25, userParentModels);
                     th.start();
                    /* adapter.setData(userParentModels);
                     adapter.notifyDataSetChanged();
@@ -161,6 +179,48 @@ public class CategoriesFragment extends Fragment {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+                        /*AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
+                        anim.setDuration(1000);
+                        progressBar.startAnimation(anim);*/
+
+                        progressBar.animate().setDuration(450).alpha(0)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationStart(Animator animation) {
+                                        super.onAnimationStart(animation);
+                                        scroll.setVisibility(View.GONE);
+                                        adapter.setData(userParentModels);
+                                        adapter.notifyDataSetChanged();
+                                        foodAdapter.setData(userParentModels);
+                                        foodAdapter.notifyDataSetChanged();
+                                        Animation fadeOut = new AlphaAnimation(0, 1);
+                                        fadeOut.setInterpolator(new AccelerateInterpolator()); //and this
+                                        fadeOut.setStartOffset(1000);
+                                        fadeOut.setDuration(200);
+                                        scroll.setVisibility(View.VISIBLE);
+                                        scroll.setAnimation(fadeOut);
+                                        listOfKitchens = userParentModels;
+                                    }
+                                })
+                                .withEndAction(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                })
+                        ;
+
+                        // progressBar.setVisibility(View.GONE);
+
+                       /* adapter.setData(userParentModels);
+                        adapter.notifyDataSetChanged();
+                        foodAdapter.setData(userParentModels);
+                        foodAdapter.notifyDataSetChanged();
+                        listOfKitchens = userParentModels;
+                        categoryTv.setVisibility(View.VISIBLE);
+                        tv.setVisibility(View.VISIBLE);
+*/
+                       /* progressBar.startAnimation(anim);
                         progressBar.animate()
                                 .alpha(0f)
                                 .setDuration(1000)
@@ -168,22 +228,25 @@ public class CategoriesFragment extends Fragment {
                                     @Override
                                     public void onAnimationEnd(Animator animation) {
                                         progressBar.setVisibility(View.GONE);
-                                        adapter.setData(userParentModels);
-                                        adapter.notifyDataSetChanged();
-                                        foodAdapter.setData(userParentModels);
-                                        foodAdapter.notifyDataSetChanged();
-                                        listOfKitchens = userParentModels;
-                                        categoryTv.setVisibility(View.VISIBLE);
-                                        tv.setVisibility(View.VISIBLE);
+
+
                                     }
-                                });
+                                });*/
+
 
                     }
                 });
+
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
     }
 }

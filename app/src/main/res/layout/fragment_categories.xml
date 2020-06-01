@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#fefefe"
-    android:id="@+id/nested_scroll_view_categories_fragment"
     tools:context=".ui.MealCategories.CategoriesFragment">
 
     <com.github.ybq.android.spinkit.SpinKitView
@@ -31,6 +30,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#fefefe"
+    android:id="@+id/nested_scroll_view_categories_fragment"
 
     tools:context=".ui.MealCategories.CategoriesFragment">
 
@@ -71,7 +71,7 @@
             android:textColor="#000000"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:visibility="invisible"
+
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="@+id/tv_highly_rated_kitchens_dummy"
             app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
@@ -88,7 +88,7 @@
             android:textColor="#000000"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:visibility="invisible"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"

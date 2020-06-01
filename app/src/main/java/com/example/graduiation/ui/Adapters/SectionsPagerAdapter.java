@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.graduiation.ui.Data.FoodModel;
+import com.example.graduiation.ui.Data.UserParentModel;
 import com.example.graduiation.ui.SellerProfileViewPager.PlaceholderFragment;
 
 import java.util.ArrayList;
@@ -19,15 +20,16 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     private String[] tabTitles;
     private final Context mContext;
-
+    UserParentModel userParentModel;
     ArrayList<FoodModel> foodModels;
 
-    public SectionsPagerAdapter(Context context, FragmentManager fm, String[] tabs, ArrayList<FoodModel> foodModels) {
+
+    public SectionsPagerAdapter(Context context, FragmentManager fm, String[] tabs, ArrayList<FoodModel> foodModels, UserParentModel userParentModel) {
         super(fm);
         tabTitles = tabs;
         mContext = context;
         this.foodModels = foodModels;
-
+        this.userParentModel = userParentModel;
     }
 
     @Override
@@ -41,7 +43,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             }
         }
 
-        return PlaceholderFragment.newInstance(position + 1, tabTitles[position], categoryModels);
+        return PlaceholderFragment.newInstance(position + 1, tabTitles[position], categoryModels , userParentModel);
     }
 
     @Nullable

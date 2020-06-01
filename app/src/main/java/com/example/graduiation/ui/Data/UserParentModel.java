@@ -1,8 +1,11 @@
 package com.example.graduiation.ui.Data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.HashMap;
 
-public class UserParentModel {
+public class UserParentModel implements Parcelable {
 
     private String name, id, phone, image, rate, numberOfFollowing, subType, email, password , membership,bio ,token , numberOfOrders;
     private WalletModel wallet;
@@ -12,6 +15,35 @@ public class UserParentModel {
     public UserParentModel() {
 
     }
+
+    protected UserParentModel(Parcel in) {
+        name = in.readString();
+        id = in.readString();
+        phone = in.readString();
+        image = in.readString();
+        rate = in.readString();
+        numberOfFollowing = in.readString();
+        subType = in.readString();
+        email = in.readString();
+        password = in.readString();
+        membership = in.readString();
+        bio = in.readString();
+        token = in.readString();
+        numberOfOrders = in.readString();
+        registrationTime = in.readLong();
+    }
+
+    public static final Creator<UserParentModel> CREATOR = new Creator<UserParentModel>() {
+        @Override
+        public UserParentModel createFromParcel(Parcel in) {
+            return new UserParentModel(in);
+        }
+
+        @Override
+        public UserParentModel[] newArray(int size) {
+            return new UserParentModel[size];
+        }
+    };
 
     public void setFollower(HashMap<String, String> follower) {
         this.follower = follower;
@@ -147,5 +179,28 @@ public class UserParentModel {
 
     public void setWallet(WalletModel wallet) {
         this.wallet = wallet;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(id);
+        dest.writeString(phone);
+        dest.writeString(image);
+        dest.writeString(rate);
+        dest.writeString(numberOfFollowing);
+        dest.writeString(subType);
+        dest.writeString(email);
+        dest.writeString(password);
+        dest.writeString(membership);
+        dest.writeString(bio);
+        dest.writeString(token);
+        dest.writeString(numberOfOrders);
+        dest.writeLong(registrationTime);
     }
 }

@@ -54,8 +54,9 @@ public class SliderAdapterExample extends SliderViewAdapter<SliderAdapterExample
 
     @Override
     public void onBindViewHolder(SliderAdapterVH viewHolder, final int position) {
+        FoodModel sliderItem = mSliderItems.get(0);
 
-        FoodModel sliderItem = mSliderItems.get(position);
+        if(position>0){
 
         viewHolder.textViewDescription.setText(sliderItem.getTitle());
         viewHolder.textViewDescription.setTextSize(16);
@@ -71,7 +72,7 @@ public class SliderAdapterExample extends SliderViewAdapter<SliderAdapterExample
 
                     @Override
                     public void onError(Exception e) {
-                        Picasso.get().load(sliderItem.getThumbnail()).into(viewHolder.imageViewBackground);
+                        Picasso.get().load(sliderItem.getThumbnail()).fit().into(viewHolder.imageViewBackground);
                     }
                 });
 
@@ -80,13 +81,44 @@ public class SliderAdapterExample extends SliderViewAdapter<SliderAdapterExample
             public void onClick(View v) {
                 Toast.makeText(context, "This is item in position " + position, Toast.LENGTH_SHORT).show();
             }
-        });
+        });}
+        else {
+
+            viewHolder.textViewDescription.setText(sliderItem.getTitle());
+            viewHolder.textViewDescription.setTextSize(16);
+            viewHolder.textViewDescription.setTextColor(Color.WHITE);
+            Picasso.get().load("https://image.shutterstock.com/image-photo/healthy-food-clean-eating-selection-600w-722718082.jpg")
+                   .fit()
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .into(viewHolder.imageViewBackground, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Picasso.get().load("https://image.shutterstock.com/image-photo/healthy-food-clean-eating-selection-600w-722718082.jpg").fit().into(viewHolder.imageViewBackground);
+                        }
+                    });
+
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "This is item in position " + position, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
     }
 
     @Override
     public int getCount() {
         //slider view count could be dynamic size
-        return mSliderItems.size();
+        return mSliderItems.size()+1;
+    }
+
+    public void addItem(String thumbnail, String title) {
     }
 
     class SliderAdapterVH extends SliderViewAdapter.ViewHolder {

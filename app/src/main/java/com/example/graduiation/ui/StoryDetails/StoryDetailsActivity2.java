@@ -77,6 +77,7 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
     private CircleImageView profilePicture;
     private String token;
     private String userName;
+    private UserParentModel userParentModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,6 +177,8 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
 
 
                     if (userParentModel.getImage() != null) {
+
+                        StoryDetailsActivity2.this.userParentModel=userParentModel;
                         Picasso.get().load(userParentModel.getImage()).networkPolicy(NetworkPolicy.OFFLINE)
                                 .into((ImageView) findViewById(R.id.backdrop), new Callback() {
                                     @Override
@@ -215,63 +218,60 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
                         }
                     });
 
+                    viewModel.getListMutableLiveData().observe(StoryDetailsActivity2.this, new Observer<ArrayList<FoodModel>>() {
+                        @Override
+                        public void onChanged(ArrayList<FoodModel> foodModels) {
 
-                }
-            });
-
-            viewModel.getListMutableLiveData().observe(this, new Observer<ArrayList<FoodModel>>() {
-                @Override
-                public void onChanged(ArrayList<FoodModel> foodModels) {
-
-                    Log.e(TAG, "onChanged: " + foodModels.get(0).getTitle());
-                    /*foodAdapter = new FoodItemRecyclerViewAdapter(foodModels, getBaseContext());
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext()
-                            , RecyclerView.VERTICAL,
-                            false);
-                    recyclerView.setLayoutManager(linearLayoutManager);
-                    recyclerView.setAdapter(foodAdapter);*/
-
-                    HashSet<String> hashset = new HashSet<>();
+                            Log.e(TAG, "onChanged: " + foodModels.get(0).getTitle());
 
 
-                    for (int i = 0; i < foodModels.size(); i++) {
-                        hashset.add(foodModels.get(i).getCategory());
-                    }
-                    Log.e(TAG, "" + hashset.size());
-                    String[] tabsArray;
-                    tabsArray = new String[hashset.size()];
-                    int k = 0;
-                    for (String s : hashset) {
-                        tabsArray[k] = s;
-                        k++;
-                    }
+                            HashSet<String> hashset = new HashSet<>();
 
-                    for (int i = 1; i < tabsArray.length; i++) {
-                        if (tabsArray[i].equals(category)) {
-                            String temp;
-                            temp = tabsArray[0];
-                            tabsArray[0] = tabsArray[i];
-                            tabsArray[i] = temp;
-                            break;
+
+                            for (int i = 0; i < foodModels.size(); i++) {
+                                hashset.add(foodModels.get(i).getCategory());
+                            }
+                            Log.e(TAG, "" + hashset.size());
+                            String[] tabsArray;
+                            tabsArray = new String[hashset.size()];
+                            int k = 0;
+                            for (String s : hashset) {
+                                tabsArray[k] = s;
+                                k++;
+                            }
+
+                            for (int i = 1; i < tabsArray.length; i++) {
+                                if (tabsArray[i].equals(category)) {
+                                    String temp;
+                                    temp = tabsArray[0];
+                                    tabsArray[0] = tabsArray[i];
+                                    tabsArray[i] = temp;
+                                    break;
+                                }
+                            }
+
+                            SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(
+                                    StoryDetailsActivity2.this
+                                    , getSupportFragmentManager()
+                                    , tabsArray
+                                    , foodModels
+                                    ,userParentModel
+                            );
+                            ViewPager viewPager = findViewById(R.id.current_orders_view_pager);
+                            viewPager.setAdapter(sectionsPagerAdapter);
+                            TabLayout tabs = findViewById(R.id.current_orders_tabs);
+                            tabs.setupWithViewPager(viewPager);
+
+
                         }
-                    }
 
-                    SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(
-                            StoryDetailsActivity2.this
-                            , getSupportFragmentManager()
-                            , tabsArray
-                            , foodModels
-                    );
-                    ViewPager viewPager = findViewById(R.id.current_orders_view_pager);
-                    viewPager.setAdapter(sectionsPagerAdapter);
-                    TabLayout tabs = findViewById(R.id.current_orders_tabs);
-                    tabs.setupWithViewPager(viewPager);
 
+                    });
 
                 }
-
-
             });
+
+
 
         }
 

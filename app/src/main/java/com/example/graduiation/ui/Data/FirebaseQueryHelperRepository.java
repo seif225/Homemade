@@ -1275,4 +1275,35 @@ public class FirebaseQueryHelperRepository {
     });
 
     }
+
+    public void addNewRating(String uid, String cookId, String mealId, float rating) {
+
+        HashMap<String , Object> hash = new HashMap<>();
+        hash.put(uid,rating);
+        Log.e(TAG, "addNewRating: " + uid + " " + cookId + " " +mealId );
+        FOOD_REF.child(cookId).child(mealId).child("rateMap").updateChildren(hash);
+
+    }
+
+    public void getMapOfRatings(String cookId, String id, MutableLiveData<HashMap<String, Object>> rateMapMutableLifeData) {
+        final HashMap<String, Object>[] hash = new HashMap[]{new HashMap<>()};
+        FOOD_REF.child(cookId).child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.hasChild("rateMap")){
+                    hash[0] = dataSnapshot.child("rateMap").getValue(HashMap.class);
+                    rateMapMutableLifeData.setValue(hash[0]);
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 }

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
 import com.example.graduiation.ui.Data.FoodModel;
+import com.example.graduiation.ui.Data.UserParentModel;
 import com.example.graduiation.ui.Meal.MealFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
@@ -24,6 +25,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
@@ -32,6 +34,7 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
     private List<FoodModel> foodModelList;
     private Context context;
     private static final String TAG = "FoodItemRecyclerViewAda";
+    private String userName,userPicture , userId;
 
     @NonNull
     @Override
@@ -42,14 +45,22 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
         return new ViewHolder(view);
     }
 
-    public FoodItemRecyclerViewAdapter(List<FoodModel> buyerModels, Context context) {
+    public FoodItemRecyclerViewAdapter(List<FoodModel> buyerModels, Context context ) {
         this.foodModelList = buyerModels;
         this.context = context;
+
     }
 
-    public FoodItemRecyclerViewAdapter( Context context) {
 
+
+    public FoodItemRecyclerViewAdapter(ArrayList<FoodModel> arraylist, Context context, String userName, String userPicture , String userId) {
+
+        this.foodModelList = arraylist;
         this.context = context;
+        this.userName=userName;
+        this.userPicture=userPicture;
+        this.userId=userId;
+
     }
 
 
@@ -81,7 +92,7 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
                 });
 
         }
-        if(foodModel.getPrice()!= null) holder.price_tv.setText(foodModel.getPrice()+"$");
+        if(foodModel.getPrice()!= null) holder.price_tv.setText(foodModel.getPrice()+" EGP");
 
         holder.addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,8 +115,13 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, MealFragment.class);
-                String gson = new Gson().toJson(foodModel);
-                i.putExtra("meal"  , gson);
+                String gsonMeal = new Gson().toJson(foodModel);
+                i.putExtra("meal"  , gsonMeal);
+
+                i.putExtra("userName"  , userName);
+                i.putExtra("userPicture"  , userPicture);
+                i.putExtra("userId",userId);
+
                 context.startActivity(i);
             }
         });
