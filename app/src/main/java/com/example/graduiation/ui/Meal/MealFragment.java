@@ -74,6 +74,8 @@ public class MealFragment extends AppCompatActivity {
     ScaleRatingBar rate;
     @BindView(R.id.ratingBar_minimal)
     RatingBar ratingBarMinimal;
+    @BindView(R.id.number_of_ratings)
+    TextView numberOfRatings;
 
     private MealViewModel mViewModel;
     FoodModel model;
@@ -113,17 +115,18 @@ public class MealFragment extends AppCompatActivity {
             Iterator<HashMap.Entry<String, Object>> it = model.getRateMap().entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry<String, Object> pair = it.next();
-                if(pair.getKey().equals(FirebaseAuth.getInstance().getUid())){
-                    rate.setRating(Float.parseFloat(pair.getValue()+""));
+                if (pair.getKey().equals(FirebaseAuth.getInstance().getUid())) {
+                    rate.setRating(Float.parseFloat(pair.getValue() + ""));
                 }
 
-                    accRate += (Double) pair.getValue();
+                accRate += (Double) pair.getValue();
             }
             float ratePercent = (float) (accRate / model.getRateMap().size()) / 5 * 100;
             progressRing.setProgress(ratePercent / 100);
             accumlatedRate.setText(ratePercent + "%");
             ratingBarMinimal.setRating((float) (accRate / model.getRateMap().size()));
-            handleProgressColor((float)accRate / model.getRateMap().size());
+            handleProgressColor((float) accRate / model.getRateMap().size());
+            numberOfRatings.setText(model.getRateMap().size() + " people rated this product");
 
 
         } else {
@@ -211,7 +214,8 @@ public class MealFragment extends AppCompatActivity {
         });*/
 
     }
-    public void handleProgressColor(float rating){
+
+    public void handleProgressColor(float rating) {
 
         if (rating < 0.5) {
             progressRing.setProgress(0.0f);

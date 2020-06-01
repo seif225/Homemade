@@ -183,11 +183,17 @@ public class CategoriesFragment extends Fragment {
                         anim.setDuration(1000);
                         progressBar.startAnimation(anim);*/
 
-                        progressBar.animate().setDuration(450).alpha(0)
+                        progressBar.animate().setDuration(400).alpha(0.05f)
                                 .setListener(new AnimatorListenerAdapter() {
                                     @Override
                                     public void onAnimationStart(Animator animation) {
                                         super.onAnimationStart(animation);
+
+                                    }
+                                })
+                                .withEndAction(new Runnable() {
+                                    @Override
+                                    public void run() {
                                         scroll.setVisibility(View.GONE);
                                         adapter.setData(userParentModels);
                                         adapter.notifyDataSetChanged();
@@ -196,15 +202,10 @@ public class CategoriesFragment extends Fragment {
                                         Animation fadeOut = new AlphaAnimation(0, 1);
                                         fadeOut.setInterpolator(new AccelerateInterpolator()); //and this
                                         fadeOut.setStartOffset(1000);
-                                        fadeOut.setDuration(200);
+                                        fadeOut.setDuration(400);
                                         scroll.setVisibility(View.VISIBLE);
                                         scroll.setAnimation(fadeOut);
                                         listOfKitchens = userParentModels;
-                                    }
-                                })
-                                .withEndAction(new Runnable() {
-                                    @Override
-                                    public void run() {
                                         progressBar.setVisibility(View.GONE);
                                     }
                                 })
