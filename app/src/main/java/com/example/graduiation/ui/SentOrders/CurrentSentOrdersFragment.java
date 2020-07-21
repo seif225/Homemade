@@ -40,7 +40,7 @@ public class CurrentSentOrdersFragment extends Fragment {
          viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = root.findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
-        PageViewModel viewModel = ViewModelProviders.of(this).get(PageViewModel.class);
+        SentOrdersViewModel viewModel = ViewModelProviders.of(this).get(SentOrdersViewModel.class);
 
 
 

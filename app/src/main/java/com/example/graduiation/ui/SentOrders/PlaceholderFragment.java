@@ -29,7 +29,7 @@ public class PlaceholderFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    private PageViewModel pageViewModel;
+    private SentOrdersViewModel pageViewModel;
     private static final String TAG = "PlaceholderFragment";
     private RecyclerView currentOrdersRecyclerView;
     private CurrentOrdersRecyclerAddapter adapter;
@@ -60,7 +60,7 @@ public class PlaceholderFragment extends Fragment {
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_sent_orders_place_holder, container, false);
         currentOrdersRecyclerView = root.findViewById(R.id.current_orders_recycler_view);
-        pageViewModel = ViewModelProviders.of(this).get(PageViewModel.class);
+        pageViewModel = ViewModelProviders.of(this).get(SentOrdersViewModel.class);
         pageViewModel.getMutableLiveDataForOrdeRModelList(FirebaseAuth.getInstance().getUid()).observe(this, new Observer<ArrayList<OrderModel>>() {
             @Override
             public void onChanged(ArrayList<OrderModel> orderModels) {

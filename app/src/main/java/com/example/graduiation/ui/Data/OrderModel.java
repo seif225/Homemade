@@ -70,13 +70,7 @@ public class OrderModel  {
         return cookToken;
     }
 
-    public void setTotalPrice(String totalPrice) {
-        this.totalPrice = totalPrice;
-    }
 
-    public String getTotalPrice() {
-        return totalPrice;
-    }
 
     public void setCookId(String cookId) {
         this.cookId = cookId;
@@ -86,13 +80,7 @@ public class OrderModel  {
         return cookId;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
 
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
@@ -108,9 +96,7 @@ public class OrderModel  {
     }
 
 
-    public void setDurationInUnix(long durationInUnix) {
-        this.durationInUnix = durationInUnix;
-    }
+
 
     public void setListOfFood(ArrayList<FoodModel> listOfFood) {
         this.listOfFood = listOfFood;
@@ -128,9 +114,7 @@ public class OrderModel  {
         return listOfFood;
     }
 
-    public long getDurationInUnix() {
-        return durationInUnix;
-    }
+
 
     public long getOrderPostTimeInUnix() {
         return orderPostTimeInUnix;
@@ -142,6 +126,34 @@ public class OrderModel  {
 
     public String getState() {
         return state;
+    }
+
+
+
+    public long getDurationInUnix() {
+        return durationInUnix;
+    }
+    public void setDurationInUnix(long durationInUnix) {
+        this.durationInUnix = durationInUnix;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    //----------------------------------------------------------
+
+
+    public void setTotalPrice(String totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public String getTotalPrice() {
+        return totalPrice;
     }
 
 

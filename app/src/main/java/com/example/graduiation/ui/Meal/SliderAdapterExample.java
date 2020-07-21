@@ -44,7 +44,6 @@ public class SliderAdapterExample extends SliderViewAdapter<SliderAdapterExample
     }
 
 
-
     @Override
     public SliderAdapterVH onCreateViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(context).inflate(R.layout.image_slider_layout_item, parent

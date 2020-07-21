@@ -29,6 +29,7 @@ public class OrdersHangingFragment extends Fragment {
     private RecyclerView receiverOrdersRecyclerView;
     private static final String TAG = "OrdersReceivedFragment";
     private OrdersRecieivedRecyclerAdapter adapter;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 

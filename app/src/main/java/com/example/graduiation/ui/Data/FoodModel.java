@@ -6,10 +6,16 @@ import android.os.Parcelable;
 import java.util.HashMap;
 
 public class FoodModel implements Parcelable {
-    private String title, describtion, id, category, cookId, price, orderCount, thumbnail, quantity, cookToken, overAllRating;
+
+
+    private String title, describtion, id, category,
+            cookId, price, orderCount,
+            thumbnail, quantity, cookToken, overAllRating;
     private String min, max;
     private long PreparingTime, postTime;
     private HashMap<String, Object> reviewsMap, picsMap, rateMap;
+
+
 
     public FoodModel() {
     }
@@ -38,9 +44,6 @@ public class FoodModel implements Parcelable {
         this.price = price;
     }
 
-    public void setOrderCount(String orderCount) {
-        this.orderCount = orderCount;
-    }
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
@@ -54,9 +57,6 @@ public class FoodModel implements Parcelable {
         this.cookToken = cookToken;
     }
 
-    public void setOverAllRating(String overAllRating) {
-        this.overAllRating = overAllRating;
-    }
 
     public void setMin(String min) {
         this.min = min;
@@ -66,20 +66,9 @@ public class FoodModel implements Parcelable {
         this.max = max;
     }
 
-    public void setPreparingTime(long preparingTime) {
-        PreparingTime = preparingTime;
-    }
 
     public void setPostTime(long postTime) {
         this.postTime = postTime;
-    }
-
-    public void setReviewsMap(HashMap<String, Object> reviewsMap) {
-        this.reviewsMap = reviewsMap;
-    }
-
-    public void setPicsMap(HashMap<String, Object> picsMap) {
-        this.picsMap = picsMap;
     }
 
 
@@ -107,9 +96,6 @@ public class FoodModel implements Parcelable {
         return price;
     }
 
-    public String getOrderCount() {
-        return orderCount;
-    }
 
     public String getThumbnail() {
         return thumbnail;
@@ -123,45 +109,16 @@ public class FoodModel implements Parcelable {
         return cookToken;
     }
 
-    public String getOverAllRating() {
-        return overAllRating;
-    }
-
-    public String getMin() {
-        return min;
-    }
-
-    public String getMax() {
-        return max;
-    }
 
     public long getPreparingTime() {
         return PreparingTime;
-    }
-
-    public long getPostTime() {
-        return postTime;
-    }
-
-    public HashMap<String, Object> getReviewsMap() {
-        return reviewsMap;
-    }
-
-    public HashMap<String, Object> getPicsMap() {
-        return picsMap;
-    }
-
-    public void setRateMap(HashMap<String, Object> rateMap) {
-        this.rateMap = rateMap;
     }
 
     public HashMap<String, Object> getRateMap() {
         return rateMap;
     }
 
-    public static Creator<FoodModel> getCREATOR() {
-        return CREATOR;
-    }
+//----------------------------------------------------------------------
 
     protected FoodModel(Parcel in) {
         title = in.readString();
@@ -215,5 +172,66 @@ public class FoodModel implements Parcelable {
         dest.writeString(max);
         dest.writeLong(PreparingTime);
         dest.writeLong(postTime);
+    }
+
+
+    public HashMap<String, Object> getReviewsMap() {
+        return reviewsMap;
+    }
+
+    public HashMap<String, Object> getPicsMap() {
+        return picsMap;
+    }
+
+
+    public static Creator<FoodModel> getCREATOR() {
+        return CREATOR;
+    }
+
+
+    public long getPostTime() {
+        return postTime;
+    }
+
+    public String getOverAllRating() {
+        return overAllRating;
+    }
+
+    public String getMin() {
+        return min;
+    }
+
+    public String getMax() {
+        return max;
+    }
+
+    public String getOrderCount() {
+        return orderCount;
+    }
+
+    public void setReviewsMap(HashMap<String, Object> reviewsMap) {
+        this.reviewsMap = reviewsMap;
+    }
+
+    public void setPicsMap(HashMap<String, Object> picsMap) {
+        this.picsMap = picsMap;
+    }
+
+    public void setPreparingTime(long preparingTime) {
+        PreparingTime = preparingTime;
+    }
+
+    public void setOrderCount(String orderCount) {
+        this.orderCount = orderCount;
+    }
+
+
+    public void setOverAllRating(String overAllRating) {
+        this.overAllRating = overAllRating;
+    }
+
+
+    public void setRateMap(HashMap<String, Object> rateMap) {
+        this.rateMap = rateMap;
     }
 }

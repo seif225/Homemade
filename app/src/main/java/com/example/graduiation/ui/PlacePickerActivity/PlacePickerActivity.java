@@ -107,18 +107,18 @@ public class PlacePickerActivity extends AppCompatActivity implements DatePicker
     CircularProgressButton done;
     private boolean mLocationPermission = false;
     private GoogleMap mMap;
-    PlacesClient placesClient;
+    private PlacesClient placesClient;
     private CardView myCurrentLocationCardView;
     //widgets
-    AutocompleteSupportFragment autocompleteFragment;
-    private LatLng myCurrentPosition;
-    PlaceLikelihood location;
+    private AutocompleteSupportFragment autocompleteFragment;
+    private PlaceLikelihood location;
     private static final String TAG = "HangOutActivity";
-    List<Uri> listOfPics;
-    FusedLocationProviderClient fusedLocationProviderClient;
-    String date;
-    MarkerOptions markerOptions = new MarkerOptions();
-    LatLng choosenLatlng;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private String date;
+    private MarkerOptions markerOptions = new MarkerOptions();
+    private LatLng choosenLatlng;
+    private Circle geoFenceLimits;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,7 +161,7 @@ public class PlacePickerActivity extends AppCompatActivity implements DatePicker
             public void onClick(View v) {
 
                 if (ActivityCompat.checkSelfPermission(PlacePickerActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( PlacePickerActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(PlacePickerActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)
                         != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
@@ -205,7 +205,6 @@ public class PlacePickerActivity extends AppCompatActivity implements DatePicker
 
 
     }
-
 
     void getPlaces(Context context) {
 
@@ -586,7 +585,6 @@ public class PlacePickerActivity extends AppCompatActivity implements DatePicker
         drawGeoFence();
     }
 
-    Circle geoFenceLimits;
 
     private void drawGeoFence() {
         if (geoFenceLimits != null) {

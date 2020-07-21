@@ -11,7 +11,7 @@ import com.example.graduiation.ui.Data.OrderModel;
 
 import java.util.ArrayList;
 
-public class PageViewModel extends ViewModel {
+public class SentOrdersViewModel extends ViewModel {
 
     private MutableLiveData<ArrayList<OrderModel>> mutableLiveDataForOrdeRModelList = new MutableLiveData<>();
     private FirebaseQueryHelperRepository repo = FirebaseQueryHelperRepository.getInstance();

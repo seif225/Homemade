@@ -6,13 +6,13 @@ import androidx.lifecycle.ViewModel;
 import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
 import com.example.graduiation.ui.Data.UserParentModel;
 
-public class MainViewModel  extends ViewModel {
+public class MainViewModel extends ViewModel {
 
-    FirebaseQueryHelperRepository firebaseQueryHelper = FirebaseQueryHelperRepository.getInstance();
-    private MutableLiveData<UserParentModel> userParentModel=new MutableLiveData<>();
+    private FirebaseQueryHelperRepository firebaseQueryHelper = FirebaseQueryHelperRepository.getInstance();
+    private MutableLiveData<UserParentModel> userParentModel = new MutableLiveData<>();
 
     public MutableLiveData<UserParentModel> getUserParentModel(String id) {
-        firebaseQueryHelper.addUserToMutableLiveData(id,userParentModel);
+        firebaseQueryHelper.addUserToMutableLiveData(id, userParentModel);
         return userParentModel;
     }
 }

@@ -67,6 +67,8 @@ public class AddMealActivity extends AppCompatActivity {
     Button btnDone;
     @BindView(R.id.logout_button)
     Button logoutButton;
+
+    
     Uri photo;
     AddMealViewModel viewModel;
     private static final String TAG = "AddMealActivity";

@@ -51,7 +51,6 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<CartRecyclerVi
         viewModel.getTotalPrice().setValue(overAllPrice);
     }
 
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -152,11 +151,8 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<CartRecyclerVi
         ConstraintLayout constraintLayout;
         ElegantNumberButton elegantNumberButton;
         Button deleteItemButton;
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-
             textView_Name = itemView.findViewById(R.id.textView_Name);
             constraintLayout = itemView.findViewById(R.id.parent);
             imageView_foodImage = itemView.findViewById(R.id.food_image);

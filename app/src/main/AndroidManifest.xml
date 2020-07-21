@@ -16,11 +16,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.SubPayment.SubPaymentActivity">
+
+        </activity>
         <activity
             android:name=".ui.SentOrders.CurrentSentOrdersFragment"
             android:label="@string/title_activity_sent_orders_fragment"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
         <meta-data
             android:name="firebase_performance_logcat_enabled"
             android:value="true" />

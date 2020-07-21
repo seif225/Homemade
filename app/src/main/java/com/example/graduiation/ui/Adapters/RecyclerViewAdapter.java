@@ -108,7 +108,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public void setData(ArrayList<UserParentModel> userParentModels) {
-        this.userParentModelList=userParentModels;
+        userParentModelList = new ArrayList<>();
+        this.userParentModelList.addAll(userParentModels);
 
     }
 

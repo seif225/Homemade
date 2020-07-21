@@ -31,6 +31,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
@@ -62,7 +63,6 @@ public class FirebaseQueryHelperRepository {
         USER_REF.keepSynced(true);
         FOOD_REF.keepSynced(true);
     }
-
 
     public static void getListOfFood(MutableLiveData<ArrayList<FoodModel>> listMutableLiveData, String uid, String category) {
         Observable<String> observable = Observable.just(uid);
@@ -172,7 +172,6 @@ public class FirebaseQueryHelperRepository {
 
     }
 
-
     @Deprecated
     public void SignUp(String email, String password, String confirmPassword, ProgressDialog pB,
                        String phoneNum, String name) throws IllegalArgumentException {
@@ -259,7 +258,6 @@ public class FirebaseQueryHelperRepository {
         }
     }
 
-
     @Deprecated
     public void SignIn(String email, String password, Context context, ProgressDialog progressDialog) {
         progressDialog.setTitle("Please wait");
@@ -295,7 +293,6 @@ public class FirebaseQueryHelperRepository {
         context.startActivity(intro);
 
     }
-
 
     //this methods uploads the users profile picture and updates his JSON tree on the database
     public void uploadUserPic(Uri uri, String uId, ProgressDialog pd, Context context,
@@ -509,6 +506,10 @@ public class FirebaseQueryHelperRepository {
                 if (dataSnapshot.hasChild("token"))
                     model.setToken(dataSnapshot.child("token").getValue().toString());
 
+                if(dataSnapshot.hasChild("dueDate")){
+                    model.setDueDate((long)dataSnapshot.child("dueDate").getValue());
+                }
+
 
                 model.setName(dataSnapshot.child("name").getValue().toString());
                 model.setPhone(dataSnapshot.child("phone").getValue().toString());
@@ -647,7 +648,7 @@ public class FirebaseQueryHelperRepository {
         USER_REF.child(myId).child("following").child(userId).setValue("true");
         USER_REF.child(userId).child("follower").child(myId).setValue("true");
 
-         sendFollowNotification(name, token);
+        sendFollowNotification(name, token);
 
     }
 
@@ -964,7 +965,6 @@ public class FirebaseQueryHelperRepository {
 
     }
 
-
     public void getAcceptedOrders(String id, MutableLiveData<ArrayList<OrderModel>> mutableLiveDataListOfAcceptedOrders) {
         USER_REF.child(id).child("ordersReceived").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -1111,15 +1111,15 @@ public class FirebaseQueryHelperRepository {
     }
 
 
-    public void getFirstChucnkOfData( int n, MutableLiveData<ArrayList<UserParentModel>> foodModelMutableLiveData, String category) {
+    public void getFirstChucnkOfData(int n, MutableLiveData<ArrayList<UserParentModel>> foodModelMutableLiveData, String category) {
 
 
         ArrayList<UserParentModel> listOfKitchens = new ArrayList<>();
 
-       USER_REF.orderByChild("registrationTime").addChildEventListener(new ChildEventListener() {
+        USER_REF.orderByChild("registrationTime").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot d, @Nullable String s) {
-                Log.e(TAG, "onChildfoodModelMutableLiveData.getValue()Added: getMore"+d +"\n \n "  );
+                Log.e(TAG, "onChildfoodModelMutableLiveData.getValue()Added: getMore" + d + "\n \n ");
 
 
                 if (d.hasChild("food")) {
@@ -1145,7 +1145,7 @@ public class FirebaseQueryHelperRepository {
                                     .child("following")
                                     .getChildrenCount() + ""
                             );
-                        Log.e(TAG, "onChildAdded: " +model.getId() );
+                        Log.e(TAG, "onChildAdded: " + model.getId());
                         listOfKitchens.add(model);
 
                     }
@@ -1183,10 +1183,9 @@ public class FirebaseQueryHelperRepository {
     public void getMoreKitchens(long id, MutableLiveData<ArrayList<UserParentModel>> kitchenLiveData, String category, int n) {
 
 
-
         ArrayList<UserParentModel> listOfKitchens = new ArrayList<>();
-        Log.e(TAG, "getMoreKitchens: " + id );
-        Query query =  USER_REF
+        Log.e(TAG, "getMoreKitchens: " + id);
+        Query query = USER_REF
                 .orderByChild("registrationTime")
                 .startAt(id);
 
@@ -1195,35 +1194,34 @@ public class FirebaseQueryHelperRepository {
             @Override
             public void onChildAdded(@NonNull DataSnapshot d, @Nullable String s) {
 
-                    Log.e(TAG, "onChildAdded: getMore"+d +"\n \n "  );
+                Log.e(TAG, "onChildAdded: getMore" + d + "\n \n ");
 
 
-                    if (d.hasChild("food")) {
-                        if (d.child("food").hasChild(category)) {
-                            UserParentModel model = new UserParentModel();
-                            model.setEmail(d.child("email").getValue().toString());
-                            model.setId(d.child("id").getValue().toString());
-                            if (d.hasChild("image"))
-                                model.setImage(d.child("image").getValue().toString() + "");
-                            model.setName(d.child("name").getValue().toString());
-                            model.setPhone(d.child("phone").getValue().toString());
-                            if (d.hasChild("token"))
-                                model.setToken(d.child("token").getValue().toString());
+                if (d.hasChild("food")) {
+                    if (d.child("food").hasChild(category)) {
+                        UserParentModel model = new UserParentModel();
+                        model.setEmail(d.child("email").getValue().toString());
+                        model.setId(d.child("id").getValue().toString());
+                        if (d.hasChild("image"))
+                            model.setImage(d.child("image").getValue().toString() + "");
+                        model.setName(d.child("name").getValue().toString());
+                        model.setPhone(d.child("phone").getValue().toString());
+                        if (d.hasChild("token"))
+                            model.setToken(d.child("token").getValue().toString());
 
-                            if (d.hasChild("ordersReceived"))
-                                model.setNumberOfOrders(d
-                                        .child("ordersReceived")
-                                        .getChildrenCount() + ""
-                                );
+                        if (d.hasChild("ordersReceived"))
+                            model.setNumberOfOrders(d
+                                    .child("ordersReceived")
+                                    .getChildrenCount() + ""
+                            );
 
-                            if (d.hasChild("following"))
-                                model.setNumberOfFollowing(d
-                                        .child("following")
-                                        .getChildrenCount() + ""
-                                );
-                            Log.e(TAG, "onChildAdded: " +model.getId() );
-                            kitchenLiveData.getValue().add(model);
-
+                        if (d.hasChild("following"))
+                            model.setNumberOfFollowing(d
+                                    .child("following")
+                                    .getChildrenCount() + ""
+                            );
+                        Log.e(TAG, "onChildAdded: " + model.getId());
+                        kitchenLiveData.getValue().add(model);
 
 
                     }
@@ -1258,29 +1256,29 @@ public class FirebaseQueryHelperRepository {
 
     public void getNumberOfReceivedOrders(MutableLiveData<Integer> numOfOrders, String id) {
 
-    USER_REF.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            if(dataSnapshot.hasChild("ordersReceived")){
+        USER_REF.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("ordersReceived")) {
 
-                numOfOrders.setValue((int)dataSnapshot.child("ordersReceived").getChildrenCount());
+                    numOfOrders.setValue((int) dataSnapshot.child("ordersReceived").getChildrenCount());
+                }
+
             }
 
-        }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    });
+            }
+        });
 
     }
 
     public void addNewRating(String uid, String cookId, String mealId, float rating) {
 
-        HashMap<String , Object> hash = new HashMap<>();
-        hash.put(uid,rating);
-        Log.e(TAG, "addNewRating: " + uid + " " + cookId + " " +mealId );
+        HashMap<String, Object> hash = new HashMap<>();
+        hash.put(uid, rating);
+        Log.e(TAG, "addNewRating: " + uid + " " + cookId + " " + mealId);
         FOOD_REF.child(cookId).child(mealId).child("rateMap").updateChildren(hash);
 
     }
@@ -1291,7 +1289,7 @@ public class FirebaseQueryHelperRepository {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                if(dataSnapshot.hasChild("rateMap")){
+                if (dataSnapshot.hasChild("rateMap")) {
                     hash[0] = dataSnapshot.child("rateMap").getValue(HashMap.class);
                     rateMapMutableLifeData.setValue(hash[0]);
 
@@ -1304,6 +1302,23 @@ public class FirebaseQueryHelperRepository {
 
             }
         });
+
+    }
+
+    public void updateSubscribion(int price) {
+        int months = 0;
+        if(price==250)months=1;
+        if(price==650)months=3;
+        if(price==1200) months=6;
+        if(price==2100)months=12;
+        Calendar calendar = Calendar.getInstance();
+
+        // Add 8 months to current date
+        calendar.add(Calendar.MONTH, months);
+
+        USER_REF.child(FirebaseAuth.getInstance().getUid()).child("membership").setValue("premium");
+        USER_REF.child(FirebaseAuth.getInstance().getUid()).child("dueDate").setValue(calendar.getTimeInMillis());
+
 
     }
 }

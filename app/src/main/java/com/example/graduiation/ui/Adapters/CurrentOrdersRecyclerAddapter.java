@@ -55,9 +55,13 @@ public class CurrentOrdersRecyclerAddapter extends RecyclerView.Adapter<CurrentO
 
     }
 
+    private void removeItem(int position) {
 
+        listOfAcceptedOrders.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, listOfAcceptedOrders.size());
 
-
+    }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -219,12 +223,5 @@ public class CurrentOrdersRecyclerAddapter extends RecyclerView.Adapter<CurrentO
 
     }
 
-    private void removeItem(int position) {
-
-        listOfAcceptedOrders.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, listOfAcceptedOrders.size());
-
-    }
 
 }

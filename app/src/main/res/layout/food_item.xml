@@ -17,7 +17,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/parent"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="wrap_content"
 
         >
 
@@ -85,12 +85,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:layout_marginBottom="8dp"
-            android:maxLines="2"
+            android:maxLines="3"
             android:text="Name"
             android:textColor="#000000"
             android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/fa_bookmark"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="@id/vert_line2"
             app:layout_constraintTop_toTopOf="@id/card_image_container" />
@@ -100,7 +99,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:maxLines="3"
+            android:maxLines="4"
             android:text="Description"
             android:textSize="16sp"
             android:layout_marginBottom="4dp"
@@ -184,7 +183,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/card_image_container"
             app:layout_constraintStart_toStartOf="@id/vert_line2"
-            app:layout_constraintTop_toBottomOf="@+id/card_image_container" />
+            app:layout_constraintTop_toBottomOf="@+id/textView_Description" />
 
         <TextView
             android:id="@+id/textView_price"

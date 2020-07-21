@@ -2,8 +2,8 @@ package com.example.graduiation.ui.intro;
 
 public class ScreenItem {
 
-    String Title,Description;
-    int ScreenImg;
+   private String Title,Description;
+    private  int ScreenImg;
 
     public ScreenItem(String title, String description, int screenImg) {
         Title = title;

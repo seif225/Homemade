@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -68,8 +69,6 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navigationView;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,24 +91,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
         mAuth = FirebaseAuth.getInstance();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         //  hideItem();
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                int id = menuItem.getItemId();
-                Log.e(TAG, "onNavigationItemSelected: \n \n " );
-                if(id== R.id.nav_log_out){
-
-                    logOut();
-                }
-                return false;
-            }
-        });
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
@@ -121,13 +107,40 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                Log.e(TAG, "onNavigationItemSelected: \n \n ");
+                if (id == R.id.nav_log_out) {
+
+                    logOut();
+                }
+                return false;
+            }
+        });
+
 
         navigationHeader = navigationView.getHeaderView(0);
         navuseRImage = navigationHeader.findViewById(R.id.imageView);
         navUserName = navigationHeader.findViewById(R.id.user_name);
         navUserMail = navigationHeader.findViewById(R.id.nav_user_mail);
 
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                //it's possible to do more actions on several items, if there is a large amount of items I prefer switch(){case} instead of if()
+                if (id == R.id.nav_log_out) {
 
+                }
+                //This is for maintaining the behavior of the Navigation view
+                NavigationUI.onNavDestinationSelected(menuItem, navController);
+                //This is for closing the drawer after acting on it
+                drawer.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
@@ -136,9 +149,12 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(UserParentModel userParentModel) {
                     if (userParentModel != null) {
-
                         navUserName.setText(userParentModel.getName());
                         navUserMail.setText(userParentModel.getEmail());
+                        if (userParentModel.getDueDate() == 0) {
+                            Menu nav_Menu = navigationView.getMenu();
+                            nav_Menu.findItem(R.id.nav_recieved_orders).setVisible(false);
+                        }
 
                         Picasso.get().load(userParentModel.getImage()).networkPolicy(NetworkPolicy.OFFLINE).into(navuseRImage, new Callback() {
                             @Override
@@ -194,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
 
         getMenuInflater().inflate(R.menu.main, menu);
 
+
         return true;
     }
 
@@ -204,15 +221,10 @@ public class MainActivity extends AppCompatActivity {
 
             sendUserToCart();
         }
-        if (item.getItemId() == R.id.nav_log_out) {
-
-            logOut();
-        }
 
 
         return super.onOptionsItemSelected(item);
     }
-
 
 
     private void sendUserToCart() {
@@ -228,11 +240,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        Log.e(TAG, "onSupportNavigateUp: " );
+        Log.e(TAG, "onSupportNavigateUp: ");
         return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
 
     }
@@ -322,7 +333,6 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signOut();
         sendUserToLogin();
     }
-
 
 
 }

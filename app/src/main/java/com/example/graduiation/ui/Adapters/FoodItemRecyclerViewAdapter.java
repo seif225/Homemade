@@ -51,8 +51,6 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
 
     }
 
-
-
     public FoodItemRecyclerViewAdapter(ArrayList<FoodModel> arraylist, Context context, String userName, String userPicture , String userId) {
 
         this.foodModelList = arraylist;
@@ -63,16 +61,12 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
 
     }
 
-
     public void setFoodModelList(List<FoodModel> foodModelList) {
         this.foodModelList = foodModelList;
     }
 
     @Override
     public void onBindViewHolder(@NonNull FoodItemRecyclerViewAdapter.ViewHolder holder, int position) {
-
-
-
         FoodModel foodModel = foodModelList.get(position);
         if(foodModel.getDescribtion()!= null) holder.textView_Description.setText(foodModel.getDescribtion());
         if(foodModel.getTitle()!= null) holder.textView_Name.setText(foodModel.getTitle());

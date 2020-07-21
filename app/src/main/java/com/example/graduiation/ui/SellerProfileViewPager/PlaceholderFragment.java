@@ -24,6 +24,8 @@ public class PlaceholderFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private PageViewModel viewModel;
+    private RecyclerView recycler;
+
 
     public static PlaceholderFragment newInstance(int index, String category, ArrayList<FoodModel> foodModels, UserParentModel userParentModel) {
         PlaceholderFragment fragment = new PlaceholderFragment();
@@ -32,9 +34,9 @@ public class PlaceholderFragment extends Fragment {
         bundle.putSerializable("ARRAYLIST", foodModels);
         bundle.putInt(ARG_SECTION_NUMBER, index);
 
-        bundle.putString("userName",userParentModel.getName());
-        bundle.putString("userPicture",userParentModel.getImage());
-        bundle.putString("userId",userParentModel.getId());
+        bundle.putString("userName", userParentModel.getName());
+        bundle.putString("userPicture", userParentModel.getImage());
+        bundle.putString("userId", userParentModel.getId());
 
         fragment.setArguments(bundle);
 
@@ -51,8 +53,6 @@ public class PlaceholderFragment extends Fragment {
     }
 
 
-    RecyclerView recycler;
-
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
@@ -63,18 +63,16 @@ public class PlaceholderFragment extends Fragment {
         recycler = root.findViewById(R.id.fragment_main_recyclerView);
 
 
-                FoodItemRecyclerViewAdapter foodAdapter = new FoodItemRecyclerViewAdapter((ArrayList<FoodModel>) getArguments().getSerializable("ARRAYLIST")
-                        , getContext() , getArguments().getString("userName"),getArguments().getString("userPicture") , getArguments().getString("userId"));
+        FoodItemRecyclerViewAdapter foodAdapter = new FoodItemRecyclerViewAdapter((ArrayList<FoodModel>) getArguments().getSerializable("ARRAYLIST")
+                , getContext(), getArguments().getString("userName"), getArguments().getString("userPicture"), getArguments().getString("userId"));
 
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext()
-                        , RecyclerView.VERTICAL,
-                        false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext()
+                , RecyclerView.VERTICAL,
+                false);
 
-                recycler.setLayoutManager(linearLayoutManager);
+        recycler.setLayoutManager(linearLayoutManager);
 
-                recycler.setAdapter(foodAdapter);
-
-
+        recycler.setAdapter(foodAdapter);
 
 
         return root;

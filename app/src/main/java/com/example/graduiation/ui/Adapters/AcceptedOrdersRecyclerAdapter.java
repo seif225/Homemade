@@ -45,6 +45,13 @@ public class AcceptedOrdersRecyclerAdapter extends RecyclerView.Adapter<Accepted
                 , false);
         return new ViewHolder(view);
     }
+    private void removeItem(int position) {
+
+        listOfAcceptedOrders.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, listOfAcceptedOrders.size());
+
+    }
 
 
     @Override
@@ -54,10 +61,6 @@ public class AcceptedOrdersRecyclerAdapter extends RecyclerView.Adapter<Accepted
        if(holder.countDownTimer!=null) holder.countDownTimer.cancel();
 
     }
-
-
-
-
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -220,12 +223,5 @@ public class AcceptedOrdersRecyclerAdapter extends RecyclerView.Adapter<Accepted
 
     }
 
-    private void removeItem(int position) {
-
-        listOfAcceptedOrders.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, listOfAcceptedOrders.size());
-
-    }
 
 }

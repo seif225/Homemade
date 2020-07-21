@@ -18,13 +18,16 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -50,6 +53,8 @@ import java.util.List;
 
 import io.reactivex.processors.PublishProcessor;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
 public class CategoriesFragment extends Fragment {
 
     private static final String TAG = "CategoriesFragment";
@@ -66,17 +71,15 @@ public class CategoriesFragment extends Fragment {
     private ArrayList<UserParentModel> listOfKitchens = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
     private LinearLayoutManager linearLayoutManager2;
-
-
     private PublishProcessor<Integer> paginator = PublishProcessor.create();
     private ProgressBar progressBar;
-    private boolean loading = false;
-    private int pageNumber = 1;
-    private final int VISIBLE_THRESHOLD = 1;
-    private int lastVisibleItem, totalItemCount;
     private NestedScrollView scroll;
     private Handler handler;
     private TextView tv;
+    private SearchView searchView;
+
+
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -84,6 +87,9 @@ public class CategoriesFragment extends Fragment {
 
 
         category = getArguments().getString("category");
+        searchView = root.findViewById(R.id.search_view);
+        searchView.setBackgroundResource(R.drawable.searchview_rounded);
+
         Log.e(TAG, "onCreate: current category is " + category);
         recyclerView = root.findViewById(R.id.recyclerView);
         foodRecyclerView = root.findViewById(R.id.food_recyclerView);
@@ -92,7 +98,14 @@ public class CategoriesFragment extends Fragment {
         scroll = root.findViewById(R.id.nested_scroll_view_categories_fragment);
         handler = new Handler();
         tv = root.findViewById(R.id.tv_highly_rated_kitchens_dummy);
-
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchView.setIconified(false);
+                InputMethodManager im = ((InputMethodManager) root.getContext().getSystemService(INPUT_METHOD_SERVICE));
+                im.showSoftInput(searchView, 0);
+            }
+        });
         progressBar = root.findViewById(R.id.spin_kit);
         Sprite doubleBounce = new DoubleBounce();
         progressBar.setIndeterminateDrawable(doubleBounce);
@@ -131,6 +144,19 @@ public class CategoriesFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         foodRecyclerView.setAdapter(foodAdapter);
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                foodAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+
 
         return root;
     }
@@ -149,11 +175,6 @@ public class CategoriesFragment extends Fragment {
                 if (userParentModels.size() > 0) {
                     exThread th = new exThread(1.25, userParentModels);
                     th.start();
-                   /* adapter.setData(userParentModels);
-                    adapter.notifyDataSetChanged();
-                    foodAdapter.setData(userParentModels);
-                    foodAdapter.notifyDataSetChanged();
-                    listOfKitchens = userParentModels;*/
 
                 }
             }
@@ -211,29 +232,6 @@ public class CategoriesFragment extends Fragment {
                                 })
                         ;
 
-                        // progressBar.setVisibility(View.GONE);
-
-                       /* adapter.setData(userParentModels);
-                        adapter.notifyDataSetChanged();
-                        foodAdapter.setData(userParentModels);
-                        foodAdapter.notifyDataSetChanged();
-                        listOfKitchens = userParentModels;
-                        categoryTv.setVisibility(View.VISIBLE);
-                        tv.setVisibility(View.VISIBLE);
-*/
-                       /* progressBar.startAnimation(anim);
-                        progressBar.animate()
-                                .alpha(0f)
-                                .setDuration(1000)
-                                .setListener(new AnimatorListenerAdapter() {
-                                    @Override
-                                    public void onAnimationEnd(Animator animation) {
-                                        progressBar.setVisibility(View.GONE);
-
-
-                                    }
-                                });*/
-
 
                     }
                 });
@@ -245,9 +243,12 @@ public class CategoriesFragment extends Fragment {
         }
     }
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();
 
     }
+
+
 }
