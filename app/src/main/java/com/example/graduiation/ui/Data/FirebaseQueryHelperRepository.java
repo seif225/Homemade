@@ -64,7 +64,7 @@ public class FirebaseQueryHelperRepository {
         FOOD_REF.keepSynced(true);
     }
 
-    public static void getListOfFood(MutableLiveData<ArrayList<FoodModel>> listMutableLiveData, String uid, String category) {
+    public static void getListOfFoodForParticularCateegory(MutableLiveData<ArrayList<FoodModel>> listMutableLiveData, String uid, String category) {
         Observable<String> observable = Observable.just(uid);
         Observer<String> observer = new Observer<String>() {
             @Override
@@ -506,8 +506,8 @@ public class FirebaseQueryHelperRepository {
                 if (dataSnapshot.hasChild("token"))
                     model.setToken(dataSnapshot.child("token").getValue().toString());
 
-                if(dataSnapshot.hasChild("dueDate")){
-                    model.setDueDate((long)dataSnapshot.child("dueDate").getValue());
+                if (dataSnapshot.hasChild("dueDate")) {
+                    model.setDueDate((long) dataSnapshot.child("dueDate").getValue());
                 }
 
 
@@ -1307,10 +1307,10 @@ public class FirebaseQueryHelperRepository {
 
     public void updateSubscribion(int price) {
         int months = 0;
-        if(price==250)months=1;
-        if(price==650)months=3;
-        if(price==1200) months=6;
-        if(price==2100)months=12;
+        if (price == 250) months = 1;
+        if (price == 650) months = 3;
+        if (price == 1200) months = 6;
+        if (price == 2100) months = 12;
         Calendar calendar = Calendar.getInstance();
 
         // Add 8 months to current date
@@ -1318,6 +1318,55 @@ public class FirebaseQueryHelperRepository {
 
         USER_REF.child(FirebaseAuth.getInstance().getUid()).child("membership").setValue("premium");
         USER_REF.child(FirebaseAuth.getInstance().getUid()).child("dueDate").setValue(calendar.getTimeInMillis());
+
+
+    }
+
+    public void getListOfFoodSearchModels(MutableLiveData<ArrayList<FoodSearchModel>> allMealsMutableLiveData) {
+
+        ArrayList<FoodSearchModel> list = new ArrayList<>();
+
+        FOOD_REF.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
+                    for (DataSnapshot d1 : d.getChildren()) {
+                        Log.e(TAG, "getListOfFoodSearchModels" + d1);
+                        FoodSearchModel model = new FoodSearchModel();
+                        if (d1.hasChild("title"))
+                            model.setMealName(d1.child("title").getValue().toString());
+                        if (d1.hasChild("thumbnail"))
+                            model.setMealImage(d1.child("thumbnail").getValue().toString());
+                        model.setPrice(d1.child("price").getValue().toString());
+                        model.setId(d1.child("cookId").getValue().toString());
+                        model.setMealId(d1.getKey());
+
+                        USER_REF.child(d1.child("cookId").getValue().toString()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                model.setKitchenName(dataSnapshot.getValue().toString());
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                        list.add(model);
+
+                    }
+
+
+                }
+                allMealsMutableLiveData.setValue(list);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
     }

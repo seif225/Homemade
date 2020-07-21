@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -15,14 +16,20 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.graduiation.R;
+import com.example.graduiation.ui.Adapters.AutoCompleteMealAdapter;
+import com.example.graduiation.ui.Data.FoodModel;
+import com.example.graduiation.ui.Data.FoodSearchModel;
 import com.example.graduiation.ui.MealCategories.CategoriesFragment;
 
 import net.colindodd.gradientlayout.GradientLinearLayout;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -37,6 +44,7 @@ public class HomeFragment extends Fragment  {
     private CardView dessert;
     private NavController navController ;
     private String category;
+    private AutoCompleteTextView autoCompleteTextView;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -44,6 +52,7 @@ public class HomeFragment extends Fragment  {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+
 
         cooked = root.findViewById(R.id.well_cooked_layout);
         navController = Navigation.findNavController(container);
@@ -57,6 +66,26 @@ public class HomeFragment extends Fragment  {
 
             }
         });
+
+        autoCompleteTextView = root.findViewById(R.id.meal_auto_complete_search);
+            autoCompleteTextView.setBackgroundResource(R.drawable.searchview_rounded);
+               homeViewModel.getListOfFoodModels().observe(getActivity(), new Observer<ArrayList<FoodSearchModel>>() {
+                   @Override
+                   public void onChanged(ArrayList<FoodSearchModel> foodSearchModels) {
+                       for (FoodSearchModel model: foodSearchModels) {
+                           Log.e(TAG, "getListOfFoodModels " + model.getMealName() );
+                           autoCompleteTextView = root.findViewById(R.id.meal_auto_complete_search);
+                           AutoCompleteMealAdapter adapter = new AutoCompleteMealAdapter(getContext(), foodSearchModels);
+                           autoCompleteTextView.setAdapter(adapter);
+
+                       }
+                   }
+               });
+
+
+       /* autoCompleteTextView = root.findViewById(R.id.meal_auto_complete_search);
+        AutoCompleteMealAdapter adapter = new AutoCompleteMealAdapter(this, countryList);
+        autoCompleteTextView.setAdapter(adapter);*/
 
 
         semiCooked = root.findViewById(R.id.semi_card);

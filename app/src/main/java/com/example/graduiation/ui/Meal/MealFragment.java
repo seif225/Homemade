@@ -136,6 +136,7 @@ public class MealFragment extends AppCompatActivity {
 
     private void initializeFields() {
         String foodModelString = getIntent().getExtras().getString("meal");
+        //TODO: here we send the food model class
         model = new Gson().fromJson(foodModelString, FoodModel.class);
 
         userName = getIntent().getExtras().getString("userName");

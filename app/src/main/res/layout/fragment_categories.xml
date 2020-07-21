@@ -97,9 +97,6 @@
                 android:queryHint="search here .."
                 android:layout_margin="8dp"
                 android:autofillHints="search here .."
-
-
-
                 app:layout_constraintTop_toTopOf="parent" />
 
 

@@ -26,7 +26,7 @@ public class StoryDetailsViewModel extends ViewModel {
     }
 
     public MutableLiveData<ArrayList<FoodModel>> getListMutableLiveData() {
-        FirebaseQueryHelperRepository.getListOfFood(listMutableLiveData,uid,category);
+        FirebaseQueryHelperRepository.getListOfFoodForParticularCateegory(listMutableLiveData,uid,category);
         return listMutableLiveData;
     }
 
