@@ -1,6 +1,7 @@
 package com.example.graduiation.ui.DataStructuresAndAlgos;
 
 import com.example.graduiation.ui.Data.FoodModel;
+import com.example.graduiation.ui.Data.FoodSearchModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,15 +44,15 @@ public class FoodSort {
 //merge sort algo
     //ascending
 
-    private static List<FoodModel> Ascaux;
+    private static List<FoodSearchModel> Ascaux;
 
-    public static void AscendingMergeSort(List<FoodModel> a) {
+    public static void AscendingMergeSort(List<FoodSearchModel> a) {
         Ascaux = new ArrayList<>(a.size());
         Ascaux.addAll(a);
         AscendingMergeSort(a, 0, a.size() - 1);
     }
 
-    private static void AscendingMergeSort(List<FoodModel> a, int lo, int hi) {
+    private static void AscendingMergeSort(List<FoodSearchModel> a, int lo, int hi) {
         if (lo >= hi) return;
         int mid = lo + (hi - lo) / 2;
         AscendingMergeSort(a, lo, mid);
@@ -59,7 +60,7 @@ public class FoodSort {
         AscendingMerge(a, lo, mid, hi);
     }
 
-    private static void AscendingMerge(List<FoodModel> a, int lo, int mid, int hi) {
+    private static void AscendingMerge(List<FoodSearchModel> a, int lo, int mid, int hi) {
         int i = lo;
         int j = mid + 1;
         for (int k = lo; k <= hi; k++) Ascaux.set(k, a.get(k));
@@ -74,15 +75,15 @@ public class FoodSort {
 //-----------------------------------------------------------------------------------------
     //Descending mergesort
 
-    private static ArrayList<FoodModel> Desaux;
+    private static ArrayList<FoodSearchModel> Desaux;
 
-    public static void DesMergeSort(List<FoodModel> a) {
+    public static void DesMergeSort(List<FoodSearchModel> a) {
         Desaux = new ArrayList<>(a.size());
         Desaux.addAll(a);
         DesMergeSort(a, 0, a.size() - 1);
     }
 
-    private static void DesMergeSort(List<FoodModel> a, int lo, int hi) {
+    private static void DesMergeSort(List<FoodSearchModel> a, int lo, int hi) {
         if (lo >= hi) return;
         int mid = lo + (hi - lo) / 2;
         DesMergeSort(a, lo, mid);
@@ -90,7 +91,7 @@ public class FoodSort {
         DesMerge(a, lo, mid, hi);
     }
 
-    private static void DesMerge(List<FoodModel> a, int lo, int mid, int hi) {
+    private static void DesMerge(List<FoodSearchModel> a, int lo, int mid, int hi) {
         int i = lo;
         int j = mid + 1;
         for (int k = lo; k <= hi; k++) Desaux.set(k, a.get(k));
