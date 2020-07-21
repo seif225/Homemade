@@ -16,9 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.SubPayment.SubPaymentActivity">
-
-        </activity>
+        <activity android:name=".ui.EditUserData.EditUserData"></activity>
+        <activity android:name=".ui.SubPayment.SubPaymentActivity"></activity>
         <activity
             android:name=".ui.SentOrders.CurrentSentOrdersFragment"
             android:label="@string/title_activity_sent_orders_fragment"

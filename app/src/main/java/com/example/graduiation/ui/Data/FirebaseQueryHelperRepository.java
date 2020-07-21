@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.graduiation.R;
+import com.example.graduiation.ui.EditUserData.Executable;
 import com.example.graduiation.ui.intro.IntroActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.Continuation;
@@ -219,8 +220,8 @@ public class FirebaseQueryHelperRepository {
         return uploadUserDataDisposable;
     }
 
-    private void sendUsersDataToDatabase(String name, String email, String password,
-                                         String phoneNum) {
+    public void sendUsersDataToDatabase(String name, String email, String password,
+                                        String phoneNum) {
         UserParentModel model = new UserParentModel();
         String id = mAuth.getUid();
         if (id != null) {
@@ -259,6 +260,39 @@ public class FirebaseQueryHelperRepository {
             //TODO(1): Handle this Exception if the user id is null
         }
     }
+
+    public void sendUsersDataToDatabase(UserParentModel model, Executable executable) {
+
+
+        io.reactivex.Observable<UserParentModel> observable = Observable.just(model);
+        Observer observer = new Observer() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                uploadUserDataDisposable = d;
+            }
+
+            @Override
+            public void onNext(Object o) {
+                USER_REF.child(model.getId()).setValue(o);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+            executable.execute();
+            }
+        };
+
+        observable.subscribeOn(Schedulers.io()).observeOn(Schedulers.computation()).
+                subscribe(observer);
+    }
+
+
+
 
     @Deprecated
     public void SignIn(String email, String password, Context context, ProgressDialog progressDialog) {

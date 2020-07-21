@@ -11,12 +11,16 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
+
 import com.example.graduiation.R;
+import com.example.graduiation.ui.EditUserData.EditUserData;
 import com.example.graduiation.ui.intro.IntroActivity;
 import com.example.graduiation.ui.register.RegisterActivity;
 
@@ -32,6 +36,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,11 +54,10 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.cirLoginButton)
     CircularProgressButton cirLoginButton;
     LoginViewModel viewModel;
-    ImageView googleLoginImage;
-   
-    private int RC_SIGN_IN=999;
-    private static final String TAG = "LoginActivity";
+    Button googleLoginImage;
 
+    private int RC_SIGN_IN = 999;
+    private static final String TAG = "LoginActivity";
 
 
     @Override
@@ -79,12 +83,12 @@ public class LoginActivity extends AppCompatActivity {
         cirLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isNetworkConnected()){
-                String mail, password;
-                mail = editTextEmail.getText().toString();
-                password = editTextPassword.getText().toString();
-                viewModel.authenticate(mail, password, getBaseContext() , pd);}
-                else {
+                if (isNetworkConnected()) {
+                    String mail, password;
+                    mail = editTextEmail.getText().toString();
+                    password = editTextPassword.getText().toString();
+                    viewModel.authenticate(mail, password, getBaseContext(), pd);
+                } else {
                     Toast.makeText(LoginActivity.this, "it looks like there is no internet connection", Toast.LENGTH_SHORT).show();
 
                 }
@@ -96,6 +100,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 // Configure Google Sign In
+
                 GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestIdToken(getString(R.string.default_web_client_id))
                         .requestEmail()
@@ -108,6 +113,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -119,17 +125,27 @@ public class LoginActivity extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
-                firebaseAuthWithGoogle(account.getIdToken());
+
+
+                if(task.isSuccessful()){
+                    firebaseAuthWithGoogle(account.getIdToken());
+
+                }
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
                 // ...
             }
+            if(task.isSuccessful()){
+
+            }
         }
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
-        viewModel.loginWithGoogle(idToken);
+        Intent i = new Intent(this, EditUserData.class);
+        i.putExtra("idToken", idToken);
+        startActivity(i);
     }
 
 
@@ -149,7 +165,6 @@ public class LoginActivity extends AppCompatActivity {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
-
 
 
 }
