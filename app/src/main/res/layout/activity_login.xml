@@ -153,6 +153,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
+                    android:id="@+id/login_with_google"
                     android:src="@drawable/ic_google_plus" />
             </LinearLayout>
 

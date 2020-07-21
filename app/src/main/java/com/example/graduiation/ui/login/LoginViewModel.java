@@ -14,4 +14,8 @@ public class LoginViewModel extends ViewModel {
         firebaseQueryHelper.SignIn(mail,password,context,progressDialog);
     }
 
+    public void loginWithGoogle(String string){
+        firebaseQueryHelper.loginWithGoogle(string);
+    }
+
 }

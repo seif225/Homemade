@@ -64,10 +64,16 @@
 
     <Button
         android:id="@+id/payButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Pay"
+        android:text="Proceed payment"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="16sp"
+        android:textColor="#fefefe"
+        android:textAllCaps="false"
+        android:background="@drawable/btn_gradient_style"
         app:layout_constraintEnd_toEndOf="@+id/cardInputWidget"
         app:layout_constraintStart_toStartOf="@+id/cardInputWidget"
         app:layout_constraintTop_toBottomOf="@+id/cardInputWidget" />

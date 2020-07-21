@@ -11,7 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.graduiation.R;
 import com.example.graduiation.ui.intro.IntroActivity;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -1368,6 +1370,10 @@ public class FirebaseQueryHelperRepository {
             }
         });
 
+
+    }
+
+    public void loginWithGoogle(String string) {
 
     }
 }
