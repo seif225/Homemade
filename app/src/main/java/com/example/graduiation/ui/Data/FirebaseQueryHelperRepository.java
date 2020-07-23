@@ -1341,7 +1341,7 @@ public class FirebaseQueryHelperRepository {
 
     }
 
-    public void updateSubscribion(int price) {
+    public void updateSubscribion(int price, Context applicationContext) {
         int months = 0;
         if (price == 250) months = 1;
         if (price == 650) months = 3;
@@ -1353,7 +1353,13 @@ public class FirebaseQueryHelperRepository {
         calendar.add(Calendar.MONTH, months);
 
         USER_REF.child(FirebaseAuth.getInstance().getUid()).child("membership").setValue("premium");
-        USER_REF.child(FirebaseAuth.getInstance().getUid()).child("dueDate").setValue(calendar.getTimeInMillis());
+
+        USER_REF.child(FirebaseAuth.getInstance().getUid()).child("dueDate").setValue(calendar.getTimeInMillis()).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+            }
+        });
 
 
     }

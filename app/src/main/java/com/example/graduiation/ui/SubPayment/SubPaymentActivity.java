@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -48,11 +49,13 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.Optional;
+import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.internal.Constants;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -63,6 +66,7 @@ public class SubPaymentActivity extends AppCompatActivity {
     RadioButton genderradioButton;
     RadioGroup radioGroup;
     int price=0;
+    int flag = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +99,12 @@ public class SubPaymentActivity extends AppCompatActivity {
 
 
                 payButton.setOnClickListener((View view) -> {
+                    ProgressDialog pd = new ProgressDialog(view.getContext());
+                    pd.setTitle("your transaction is processing");
+                    pd.setMessage("this will take a few seconds ...");
+                    pd.setCancelable(false);
+                    pd.setCanceledOnTouchOutside(false);
+                    pd.show();
                     // Get the card details from the card widget
                     Card card = cardInputWidget.getCard();
                     if (card != null) {
@@ -112,8 +122,8 @@ public class SubPaymentActivity extends AppCompatActivity {
                                 PaymentModel paymentModel = new PaymentModel();
                                 paymentModel.setAmount(price);
                                 paymentModel.setDescription("this is a describtion from android studio for testing");
-                                paymentModel.setStripeToken(tokenID);
 
+                                paymentModel.setStripeToken(tokenID);
 
 
 
@@ -134,24 +144,35 @@ public class SubPaymentActivity extends AppCompatActivity {
                                     @Override
                                     public void onError(Throwable e) {
                                         Log.e(TAG, "onError: "+e.getMessage() );
+                                        pd.dismiss();
+                                        flag = 0;
+
                                     }
 
                                     @Override
                                     public void onComplete() {
                                         Log.e(TAG, "onComplete: done" );
+                                        flag = 1 ;
                                         FirebaseQueryHelperRepository repo = FirebaseQueryHelperRepository.getInstance();
-                                        repo.updateSubscribion(price);
+                                        repo.updateSubscribion(price,getApplicationContext());
+                                        pd.dismiss();
+
+
                                     }
                                 };
 
 
                                 observable.subscribe(observer);
+                                Toast.makeText(SubPaymentActivity.this, "successful payment", Toast.LENGTH_LONG).show();
 
                             }
+
 
                             @Override
                             public void onError(@NonNull Exception e) {
                                 // Handle error
+                                Toast.makeText(SubPaymentActivity.this, "something went wrong , please try again later", Toast.LENGTH_LONG).show();
+
                             }
                         });
                     }

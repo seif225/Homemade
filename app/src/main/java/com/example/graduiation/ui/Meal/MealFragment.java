@@ -3,6 +3,7 @@ package com.example.graduiation.ui.Meal;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -177,6 +178,14 @@ public class MealFragment extends AppCompatActivity {
         progressRing.setAnimationDuration(800);
         progressRing.setProgress(0.0f);
         rate.setRating(0f);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModel.addToCart(getBaseContext() , FirebaseAuth.getInstance().getUid() , model);
+
+
+            }
+        });
 
        /* rate.setOnRatingChangeListener(new BaseRatingBar.OnRatingChangeListener() {
             @Override

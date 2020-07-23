@@ -1,9 +1,13 @@
 package com.example.graduiation.ui.Meal;
 
+import android.content.Context;
+import android.view.View;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
+import com.example.graduiation.ui.Data.FoodModel;
 
 import java.util.HashMap;
 
@@ -18,5 +22,9 @@ public class MealViewModel extends ViewModel {
     public MutableLiveData<HashMap<String,Object>> getMapOfRatings(String cookId, String id) {
         repo.getMapOfRatings(cookId,id,rateMapMutableLifeData);
         return rateMapMutableLifeData;
+    }
+
+    public void addToCart(Context onClickListener, String uid, FoodModel model) {
+        repo.addItemToCart(onClickListener , uid , model);
     }
 }

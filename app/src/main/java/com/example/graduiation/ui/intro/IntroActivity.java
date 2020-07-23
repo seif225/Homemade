@@ -78,9 +78,9 @@ public class IntroActivity extends AppCompatActivity {
         mList.add(new ScreenItem("Fresh Food",
                 "Fresh food , made with love ", R.drawable.img1));
         mList.add(new ScreenItem("Fast Delivery",
-                "food delivery sare3 fash5 ", R.drawable.img2));
+                "fast food delivery ", R.drawable.img2));
         mList.add(new ScreenItem("Easy Payment",
-                "visa card payment w kda , wala3 yaba ", R.drawable.img3));
+                "visa card payment", R.drawable.img3));
 
         // setup viewpager
         screenPager = findViewById(R.id.screen_viewpager);
