@@ -13,8 +13,6 @@ import com.google.gson.Gson;
 public class AddingActionsOnOrdersWorkManager extends Worker {
     public AddingActionsOnOrdersWorkManager(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
-
-
     }
 
     @NonNull
@@ -25,11 +23,6 @@ public class AddingActionsOnOrdersWorkManager extends Worker {
         if(model.getState().equals("4")){
 
             //TODO:  notify user every quarter
-
-
-
-
-
         }
 
         FirebaseQueryHelperRepository.getInstance().addActionsOnOrder(model,getInputData().getString("name"));

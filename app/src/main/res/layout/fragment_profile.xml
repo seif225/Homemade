@@ -13,31 +13,31 @@
         android:layout_height="match_parent"
         android:elevation="8dp">
 
-        <net.colindodd.gradientlayout.GradientRelativeLayout xmlns:gl="http://schemas.android.com/apk/res-auto"
+        <ImageView
             android:id="@+id/coverProfile"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-
+            android:layout_height="290dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            gl:end_color="@color/gradientLightBlue"
-            gl:orientation="TOP_BOTTOM"
-            gl:start_color="@color/gradientLightGreen" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/subscribe_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/accept_btn_background"
-            android:text="subscribe"
-            app:layout_constraintHorizontal_bias="0.9"
+            android:background="@drawable/btn_gradient_style"
+            android:text="Subscribe"
             android:textAllCaps="false"
+            android:textColor="#fefefe"
             app:layout_constraintBottom_toTopOf="@+id/tvBio"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.9"
             app:layout_constraintStart_toEndOf="@+id/tvUserName"
             app:layout_constraintTop_toTopOf="@+id/tvUserName" />
+
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileImage"
             android:layout_width="96dp"
@@ -56,11 +56,11 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="NAME HERE"
-            app:layout_constraintHorizontal_bias="0"
             android:textColor="@android:color/black"
             android:textSize="20sp"
             android:textStyle="bold|italic"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="@+id/profileImage"
             app:layout_constraintTop_toBottomOf="@+id/add_profile_picture" />
 
@@ -77,10 +77,10 @@
             android:id="@+id/tvFollowers"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:drawableStart="@drawable/ic_person_outline_black_24dp"
             android:text="0 Followers"
             android:textSize="16sp"
-            android:layout_marginTop="8dp"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="@id/tvUserName"
             app:layout_constraintTop_toBottomOf="@id/tvBio" />
@@ -90,8 +90,8 @@
             android:id="@+id/tvMeals"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/mumz"
             android:layout_marginStart="8dp"
+            android:drawableStart="@drawable/mumz"
             android:text="0 orders "
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@id/tvFollowers"
@@ -102,8 +102,8 @@
             android:id="@+id/due_date_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintEnd_toEndOf="@+id/textView3"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/tvFollowers"
             app:layout_constraintTop_toBottomOf="@+id/tvFollowers" />
 
@@ -131,9 +131,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_file_upload_black_24dp"
+            app:elevation="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/coverProfile"
             app:layout_constraintEnd_toEndOf="parent"
-            app:elevation="16dp"
             app:layout_constraintHorizontal_bias="0.9"
             app:layout_constraintStart_toEndOf="@+id/add_profile_picture"
             app:layout_constraintTop_toBottomOf="@+id/coverProfile" />
@@ -142,19 +142,19 @@
             android:id="@+id/add_profile_picture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:elevation="14dp"
-            app:elevation="16dp"
             android:src="@drawable/ic_camera_alt_black_24dp"
+            app:elevation="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/profileImage"
             app:layout_constraintEnd_toEndOf="@+id/profileImage"
-            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintHorizontal_bias="5.0"
             app:layout_constraintStart_toEndOf="@+id/profileImage"
             app:layout_constraintTop_toBottomOf="@+id/profileImage"
-            app:layout_constraintVertical_bias="0.8" />
-
-
+            app:layout_constraintVertical_bias="1.0" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.core.widget.NestedScrollView>

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,14 +51,13 @@ public class AddMealActivity extends AppCompatActivity {
     TextView tvMealCategory;
     @BindView(R.id.spinnerGenre)
     Spinner spinnerGenre;
-    @BindView(R.id.tv_mealPhoto)
-    TextView tvMealPhoto;
+
     @BindView(R.id.tv_min)
     TextView tvMin;
     @BindView(R.id.tv_max)
     TextView tvMax;
     @BindView(R.id.img_bookPhoto)
-    CircleImageView imgBookPhoto;
+    ImageView imgBookPhoto;
     @BindView(R.id.btn_upload_bookPhoto)
     FloatingActionButton btnUploadBookPhoto;
     @BindView(R.id.tv_Description)
@@ -65,10 +66,8 @@ public class AddMealActivity extends AppCompatActivity {
     EditText etDescription;
     @BindView(R.id.btn_done)
     Button btnDone;
-    @BindView(R.id.logout_button)
-    Button logoutButton;
 
-    
+
     Uri photo;
     AddMealViewModel viewModel;
     private static final String TAG = "AddMealActivity";
@@ -79,13 +78,7 @@ public class AddMealActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_meal);
         ButterKnife.bind(this);
 
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                sendUserToLogin();
-            }
-        });
+
         viewModel = ViewModelProviders.of(this).get(AddMealViewModel.class);
         ProgressDialog pd = new ProgressDialog(this);
         btnUploadBookPhoto.setOnClickListener(new View.OnClickListener() {
@@ -125,11 +118,9 @@ public class AddMealActivity extends AppCompatActivity {
                 } else if (des.isEmpty()) {
                     etDescription.requestFocus();
                     etDescription.setError("you can't leave this field empty");
-                }
-                else if (photo==null){
+                } else if (photo == null) {
                     Toast.makeText(AddMealActivity.this, "you must upload a photo first", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     FoodModel model = new FoodModel();
                     model.setTitle(title);
                     model.setPrice(price);

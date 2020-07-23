@@ -651,7 +651,6 @@ public class FirebaseQueryHelperRepository {
 
                 if (dataSnapshot.hasChild("following")) {
                     if (dataSnapshot.child("following").hasChild(userId)) {
-                        //  Log.e(TAG, "onDataChange: " + " \n \n \n the flag should be true here  \n \n \n ");
                         mutableFlag.setValue(true);
 
                     } else {
@@ -660,9 +659,7 @@ public class FirebaseQueryHelperRepository {
                         mutableFlag.setValue(false);
 
                     }
-                    // Log.e(TAG, "onDataChange: " + "if the user has following list check");
                 } else {
-                    //  Log.e(TAG, "flag: " + "false");
                     USER_REF.child(myId).child("following").child("createFollowingList").setValue("true");
                     mutableFlag.setValue(false);
 

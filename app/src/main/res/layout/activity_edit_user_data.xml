@@ -4,33 +4,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F5F5"
     tools:context=".ui.EditUserData.EditUserData">
 
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/settings_profile_image"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/profile_round"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_menu_camera"
+        android:backgroundTint="@color/gradientLightBlue"
+        app:layout_constraintBottom_toBottomOf="@+id/settings_profile_image"
+        app:layout_constraintEnd_toEndOf="@+id/settings_profile_image"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/settings_profile_image"
+        app:layout_constraintTop_toBottomOf="@+id/settings_profile_image"
+        app:layout_constraintTop_toTopOf="@id/settings_profile_image"
+        app:layout_constraintVertical_bias="0.65999997" />
 
     <TextView
         android:id="@+id/user_name_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="name:*"
-        app:layout_constraintVertical_bias="0.1"
-        android:textColor="@color/colorAccent"
+        android:text="NAME:*"
+        android:textColor="@color/blackTextColor"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.021"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@id/user_name_et"
+        app:layout_constraintTop_toBottomOf="@id/settings_profile_image"
+        app:layout_constraintVertical_bias="0.1" />
 
-            <EditText
-                android:id="@+id/user_name_et"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:hint="user name"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintLeft_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/user_name_profile" />
-
+    <EditText
+        android:id="@+id/user_name_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:hint="Full name"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_name_profile" />
 
     <TextView
         android:id="@+id/phone_tv"
@@ -38,32 +62,65 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:layout_marginStart="8dp"
-        android:text="phone:*"
-        android:textColor="@color/colorAccent"
+        android:text="PHONE:*"
+        android:textColor="@color/blackTextColor"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/user_name_et"
+        app:layout_constraintTop_toBottomOf="@+id/user_name_et" />
+
+    <EditText
+        android:id="@+id/phone_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:inputType="phone"
+        android:layout_marginBottom="8dp"
+        android:hint="0123-456-7890"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_name_et" />
-
-            <EditText
-                android:id="@+id/phone_et"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:inputType="phone"
-                android:layout_marginBottom="8dp"
-                android:hint="phone number"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/phone_tv"
-                app:layout_constraintVertical_bias="0.004" />
-
+        app:layout_constraintTop_toBottomOf="@id/phone_tv"
+        app:layout_constraintVertical_bias="0.004" />
+    <TextView
+        android:id="@+id/address_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Full Address:*"
+        android:textColor="@color/blackTextColor"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/user_name_et"
+        app:layout_constraintTop_toBottomOf="@+id/phone_et" />
+    <EditText
+        android:id="@+id/address_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:inputType="text"
+        android:layout_marginBottom="8dp"
+        android:hint="501 Dream Land City"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/address_tv"
+        app:layout_constraintVertical_bias="0.004" />
 
     <Button
         android:id="@+id/update_data_button"
@@ -73,22 +130,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/btn_gradient_style"
-        android:text="update"
+        android:text="Update your info"
+        android:padding="8dp"
         android:textAllCaps="false"
         android:textColor="#fefefe"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phone_et"
-        app:layout_constraintVertical_bias="0.1" />
-
-
-
-
-
-
-
-
-
+        app:layout_constraintTop_toBottomOf="@+id/address_et" />
 </androidx.constraintlayout.widget.ConstraintLayout>
