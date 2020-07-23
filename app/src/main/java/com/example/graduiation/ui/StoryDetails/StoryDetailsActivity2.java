@@ -203,6 +203,8 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
                                         Picasso.get().load(userParentModel.getImage()).into(profilePicture);
                                     }
                                 });
+
+                        tvMeals.setText(userParentModel.getNumberOfOrders() + " Orders");
                     }
                     tvUserName.setText(userParentModel.getName() + "");
                     if (userParentModel.getBio() != null)
@@ -216,6 +218,10 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
                             if (integer == 1) tvFollowers.setText(integer + " Follower");
                             else tvFollowers.setText(integer + " Followers");
                         }
+
+
+
+
                     });
 
                     viewModel.getListMutableLiveData().observe(StoryDetailsActivity2.this, new Observer<ArrayList<FoodModel>>() {

@@ -6,24 +6,30 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduiation.R;
+import com.example.graduiation.ui.Data.FoodSearchModel;
 import com.example.graduiation.ui.Data.UserParentModel;
+import com.example.graduiation.ui.DataStructuresAndAlgos.FoodSort;
 import com.example.graduiation.ui.StoryDetails.StoryDetailsActivity2;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>  {
     private List<UserParentModel> userParentModelList;
     private Context context;
     private static final String TAG = "RecyclerViewAdapter";
@@ -110,8 +116,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void setData(ArrayList<UserParentModel> userParentModels) {
         userParentModelList = new ArrayList<>();
         this.userParentModelList.addAll(userParentModels);
+        sortByRate(userParentModelList);
 
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         CircleImageView imgStory;
@@ -122,5 +130,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             imgStory = itemView.findViewById(R.id.imgStory);
             tvName = itemView.findViewById(R.id.tvName);
         }
+    }
+
+    public static void sortByRate(List<UserParentModel> userParentModelList) {
+        FoodSort.DesBubbleSortByRate(userParentModelList);
     }
 }

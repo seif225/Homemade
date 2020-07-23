@@ -615,6 +615,11 @@ public class FirebaseQueryHelperRepository {
                         if (dataSnapshot.hasChild("bio"))
                             model.setBio(dataSnapshot.child("bio").getValue().toString());
 
+                        if(dataSnapshot.hasChild("ordersReceived")){
+                            model.setNumberOfOrders(dataSnapshot.child("ordersReceived").getChildrenCount() + "");
+                        }
+
+
                         if (dataSnapshot.hasChild("token"))
                             model.setToken(dataSnapshot.child("token").getValue().toString());
                         userParentModelMutableLiveData.setValue(model);
@@ -1173,11 +1178,43 @@ public class FirebaseQueryHelperRepository {
                                     .getChildrenCount() + ""
                             );
 
-                        if (d.hasChild("following"))
-                            model.setNumberOfFollowing(d
-                                    .child("following")
+                        if (d.hasChild("follower"))
+                            model.setNumberOfFollower(d
+                                    .child("follower")
                                     .getChildrenCount() + ""
                             );
+                        final float[] totalCount = {0};
+                        final float[] accumlative = {0};
+                        FOOD_REF.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if(dataSnapshot.hasChild(model.getId())){
+
+                                    for (DataSnapshot d : dataSnapshot.child(model.getId()).getChildren()) {
+                                        if (d.hasChild("rateMap")) {
+                                            totalCount[0] = totalCount[0] + d.child("rateMap").getChildrenCount();
+                                            for (DataSnapshot d1:d.child("rateMap").getChildren()) {
+                                                accumlative[0] = (long) (accumlative[0] + (Float.parseFloat(d1.getValue().toString())));
+                                            }
+                                        }
+                                        else model.setRate(0);
+
+
+                                    }
+
+
+                                }
+
+                                model.setRate(accumlative[0] / totalCount[0]);
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
                         Log.e(TAG, "onChildAdded: " + model.getId());
                         listOfKitchens.add(model);
 
@@ -1413,4 +1450,7 @@ public class FirebaseQueryHelperRepository {
     public void loginWithGoogle(String string) {
 
     }
+
+
+
 }

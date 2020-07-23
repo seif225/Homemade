@@ -171,8 +171,14 @@ public class CategoriesFragment extends Fragment {
             public void onChanged(ArrayList<UserParentModel> userParentModels) {
 
 
+                for (UserParentModel model : userParentModels) {
+                    Log.e(TAG, "onChanged:  Rate on Category" + model.getRate() );
+
+                }
+
                 listSize = userParentModels.size();
                 if (userParentModels.size() > 0) {
+
                     exThread th = new exThread(1.25, userParentModels);
                     th.start();
 

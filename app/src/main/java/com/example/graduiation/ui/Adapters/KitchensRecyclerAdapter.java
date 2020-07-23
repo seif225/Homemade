@@ -73,9 +73,9 @@ public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecycl
             }
         });
 
-       if(model.getNumberOfFollowing()!=null) holder.followTv.setText(model.getNumberOfFollowing()+ " Followers") ;
+       if(model.getNumberOfFollower()!=null) holder.followTv.setText(model.getNumberOfFollower()+ " Followers") ;
         if(model.getNumberOfOrders()!=null) holder.ordersTv.setText(model.getNumberOfOrders()+ " Orders");
-        if(model.getRate()!=null) holder.ratingBar.setRating(Float.parseFloat(model.getRate()));
+        if(model.getRate()>0) holder.ratingBar.setRating(Float.parseFloat(model.getRate()+""));
         if(position==listOfKitchens.size()-1){
             RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(
                     RecyclerView.LayoutParams.WRAP_CONTENT,

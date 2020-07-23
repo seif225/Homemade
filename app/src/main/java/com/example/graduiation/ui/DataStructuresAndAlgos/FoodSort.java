@@ -2,8 +2,11 @@ package com.example.graduiation.ui.DataStructuresAndAlgos;
 
 import com.example.graduiation.ui.Data.FoodModel;
 import com.example.graduiation.ui.Data.FoodSearchModel;
+import com.example.graduiation.ui.Data.UserParentModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class FoodSort {
@@ -76,6 +79,7 @@ public class FoodSort {
     //Descending mergesort
 
     private static ArrayList<FoodSearchModel> Desaux;
+    private static ArrayList<UserParentModel> DesauxRate;
 
     public static void DesMergeSort(List<FoodSearchModel> a) {
         Desaux = new ArrayList<>(a.size());
@@ -104,4 +108,49 @@ public class FoodSort {
         }
     }
 
+
+
+    //------------------------------------------------------
+    public static void DesBubbleSortByRate(List<UserParentModel> a){
+        for (int i = 0; i <a.size() ; i++) {
+            for (int j = i+1; j <a.size() ; j++) {
+                if(a.get(i).getRate()<a.get(j).getRate()){
+                    UserParentModel temp = a.get(j);
+                    a.set(j, a.get(i));
+                    a.set(i, temp);
+
+                }
+            }
+        }
+    }
+   //----------------------------------------------------------------------------
+   public static void DesMergeSortByRate(List<UserParentModel> a) {
+       DesauxRate = new ArrayList<>(a.size());
+       DesauxRate.addAll(a);
+       DesMergeSortByRate(a, 0, a.size() - 1);
+   }
+
+    private static void DesMergeSortByRate(List<UserParentModel> a, int lo, int hi) {
+        if (lo >= hi) return;
+        int mid = lo + (hi - lo) / 2;
+        DesMergeSortByRate(a, lo, mid);
+        DesMergeSortByRate(a, mid + 1, hi);
+        DesMergeByRate(a, lo, mid, hi);
+    }
+
+    private static void DesMergeByRate(List<UserParentModel> a, int lo, int mid, int hi) {
+        int i = lo;
+        int j = mid + 1;
+        for (int k = lo; k <= hi; k++) DesauxRate.set(k, a.get(k));
+        for (int k = lo; k <= hi; k++) {
+            if (i > mid) a.set(k, DesauxRate.get(j++));
+            else if (j > hi) a.set(k, DesauxRate.get(i++));
+            else if (DesauxRate.get(j).getRate() > DesauxRate.get(i).getRate())
+                a.set(k, DesauxRate.get(j++));
+            else a.set(k, DesauxRate.get(i++));
+        }
+    }
+
+
+    //---------------------------------------------------------------------------
 }

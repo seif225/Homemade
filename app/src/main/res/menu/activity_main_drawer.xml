@@ -15,11 +15,11 @@
             android:title="@string/title_activity_profile" />
         <item
             android:id="@+id/nav_recieved_orders"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/orders_recieved" />
+            android:icon="@drawable/ic_baseline_import_export_24"
+            android:title="Orders Requests" />
         <item
             android:id="@+id/navi_sent_orders"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_baseline_fastfood_24"
             android:title="@string/sent_orders" />
 
 
@@ -33,8 +33,8 @@
                 android:title="@string/menu_share" />
             <item
                 android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/menu_send" />
+                android:icon="@drawable/ic_baseline_contact_support_24"
+                android:title="Support" />
 
         </menu>
     </item>
