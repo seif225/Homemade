@@ -24,6 +24,9 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+    dataBinding{
+        enabled=true
+    }
 }
 
 dependencies {
@@ -57,7 +60,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.3.0'
 
     // Add the Firebase SDK for Crashlytics.
-    implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta04'
+    implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
 
 
     //Circle Image & Picasso

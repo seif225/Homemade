@@ -40,7 +40,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+@Deprecated
 public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.editTextEmail)
@@ -74,7 +74,6 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        googleLoginImage = findViewById(R.id.login_with_google);
         ProgressDialog pd = new ProgressDialog(this);
         pd.setCancelable(false);
         pd.setCanceledOnTouchOutside(false);
@@ -95,22 +94,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        googleLoginImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                // Configure Google Sign In
-
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(getString(R.string.default_web_client_id))
-                        .requestEmail()
-                        .build();
-                GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getBaseContext(), gso);
-                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-                startActivityForResult(signInIntent, RC_SIGN_IN);
-
-            }
-        });
 
     }
 
