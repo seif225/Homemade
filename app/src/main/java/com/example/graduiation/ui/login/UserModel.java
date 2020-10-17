@@ -20,6 +20,23 @@ public class UserModel {
     @SerializedName("updatedAt")
     private String mUpdatedAt;
 
+    public UserModel(String mId, String mName, String mPhone) {
+        this.mId = mId;
+        this.mName = mName;
+        this.mPhone = mPhone;
+    }
+
+    public UserModel() {
+        this.mCreatedAt = "";
+        mId="";
+        mName="";
+        mPhone="";
+        mSubType=(long)0;
+        mUpdatedAt="";
+        mTokens="";
+
+    }
+
     public String getCreatedAt() {
         return mCreatedAt;
     }

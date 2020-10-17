@@ -1,5 +1,6 @@
 package com.example.graduiation.ui.login;
 
+import android.content.Intent;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -18,6 +19,10 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ViewModel extends androidx.lifecycle.ViewModel {
 
     MutableLiveData<String> phoneNumberMutableLiveData= new MutableLiveData<>();
@@ -25,10 +30,11 @@ public class ViewModel extends androidx.lifecycle.ViewModel {
     private PhoneAuthProvider.ForceResendingToken mToken;
     private String mVerificationId;
     FirebaseAuth mAuth;
+    Ilogin ilogin;
     ViewModel(Ilogin ilogin){
 
         mAuth=FirebaseAuth.getInstance();
-        ilogin.verifyPhoneNumber();
+        this.ilogin=ilogin;
         mCallbacks=new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
@@ -37,7 +43,7 @@ public class ViewModel extends androidx.lifecycle.ViewModel {
 
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
-
+                Log.e("onField",e.getMessage()+"");
             }
             @Override
             public void onCodeSent(@NonNull String verificationId,
@@ -51,6 +57,7 @@ public class ViewModel extends androidx.lifecycle.ViewModel {
             }
 
         };
+
     }
 
     void  signInWithCredential(PhoneAuthCredential phoneAuthCredential){
@@ -60,6 +67,9 @@ public class ViewModel extends androidx.lifecycle.ViewModel {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Log.e("Samra", "Great job");
+                            sendUserToServer(mAuth.getCurrentUser().getUid(),mAuth.getCurrentUser().getPhoneNumber());
+                            ilogin.enterHomePage();
+
                         }else{
                             Log.e("Samra","great job also");
                         }
@@ -67,5 +77,21 @@ public class ViewModel extends androidx.lifecycle.ViewModel {
                 });
     }
 
+    void sendUserToServer(String id,String phone){
+        UserModel user=new UserModel(id,"Mohamed",phone);
+        Call<UserModel> call=ApiManager.getAPIS().postUser(user);
+        call.enqueue(new Callback<UserModel>() {
+            @Override
+            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                Log.e("Send User To Server",response.body()+"");
+            }
+
+            @Override
+            public void onFailure(Call<UserModel> call, Throwable t) {
+                Log.e("Send User To Server","field");
+
+            }
+        });
+    }
 }
 

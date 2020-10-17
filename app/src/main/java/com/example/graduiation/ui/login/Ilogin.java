@@ -7,6 +7,6 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 public interface Ilogin {
 
-    void verifyPhoneNumber();
     void codeVerify(String verificationId, PhoneAuthProvider.ForceResendingToken token);
+    void enterHomePage();
 }
