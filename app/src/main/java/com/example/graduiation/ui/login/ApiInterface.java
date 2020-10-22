@@ -7,5 +7,5 @@ import retrofit2.http.POST;
 public interface ApiInterface {
 
     @POST("createUser")
-    public Call<UserModel>postUser(@Body UserModel user);
+     Call<UserModel>postUser(@Body UserModel user);
 }

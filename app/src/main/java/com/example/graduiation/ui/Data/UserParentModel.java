@@ -18,7 +18,9 @@ public class UserParentModel implements Parcelable {
     private HashMap<String ,String> follower , following;
 
 
-    public UserParentModel(){}
+    public UserParentModel(){
+
+    }
 
 
     protected UserParentModel(Parcel in) {

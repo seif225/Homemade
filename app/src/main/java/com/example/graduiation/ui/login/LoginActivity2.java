@@ -30,7 +30,7 @@ public class LoginActivity2 extends AppCompatActivity implements Ilogin{
 
         binding = DataBindingUtil.setContentView(this,R.layout.activity_login);
 
-        viewModel=new ViewModel(this);
+        viewModel=new ViewModel(getApplication(),this , ()-> sendUserToMain());
         binding.cirLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,21 +48,27 @@ public class LoginActivity2 extends AppCompatActivity implements Ilogin{
             public void onClick(View view) {
                 PhoneAuthCredential credential= PhoneAuthProvider.getCredential(id,
                         binding.editTextPhoneNumber.getText().toString());
-                viewModel.signInWithCredential(credential);
+
+                viewModel.signInWithCredential(credential , ()-> sendUserToMain());
             }
         });
 
     }
 
+    private void sendUserToMain() {
+        Intent i = new Intent(this,MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
 
 
     public void verifyPhoneNumber() {
         Log.e("VerifyPh","done sec");
-            PhoneAuthProvider.getInstance().verifyPhoneNumber(phoneNumber,
-                    60,
-                    TimeUnit.SECONDS,
-                    this,
-                    viewModel.mCallbacks);
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(phoneNumber,
+                60,
+                TimeUnit.SECONDS,
+                this,
+                viewModel.mCallbacks);
 
     }
 

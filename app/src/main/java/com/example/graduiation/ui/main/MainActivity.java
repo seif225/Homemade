@@ -44,6 +44,7 @@ import com.example.graduiation.ui.UserCart.UserCartActivity;
 import com.example.graduiation.ui.WorkManagers.UploadUserTokenWorkManagerToFirebase;
 import com.example.graduiation.ui.addMeal.AddMealActivity;
 import com.example.graduiation.ui.login.LoginActivity;
+import com.example.graduiation.ui.login.LoginActivity2;
 import com.example.graduiation.ui.profileTEST.ProfileTesting;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
@@ -76,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseApp.initializeApp(this);
 
+       /* navUserName.setOnClickListener(view -> {
+
+        });*/
 
         Toolbar toolbar = findViewById(R
 
@@ -255,7 +259,10 @@ public class MainActivity extends AppCompatActivity {
 
         //Log.e(TAG, "\n \n \n onStart: TOKEN \n \n \n "+ FirebaseInstanceId.getInstance().getToken() );
 
-        if (mAuth.getCurrentUser() == null) {
+        SharedPreferences sharedPref = getSharedPreferences(
+                "userFile", Context.MODE_PRIVATE);
+        Log.e(TAG, "onStart: "+sharedPref.getString("userToken","") );
+        if (sharedPref.getString("userToken","")==null ||sharedPref.getString("userToken","").isEmpty()) {
             sendUserToLogin();
         } else {
 
@@ -299,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendUserToLogin() {
-        Intent i = new Intent(this, LoginActivity.class);
+        Intent i = new Intent(this, LoginActivity2.class);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
     }

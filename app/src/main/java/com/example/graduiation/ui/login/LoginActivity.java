@@ -40,7 +40,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-@Deprecated
+
 public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.editTextEmail)
@@ -73,26 +73,27 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
+       // ButterKnife.bind(this);
         ProgressDialog pd = new ProgressDialog(this);
         pd.setCancelable(false);
         pd.setCanceledOnTouchOutside(false);
         getSupportActionBar().hide();
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-        cirLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isNetworkConnected()) {
-                    String mail, password;
-                    mail = editTextEmail.getText().toString();
-                    password = editTextPassword.getText().toString();
-                    viewModel.authenticate(mail, password, getBaseContext(), pd);
-                } else {
-                    Toast.makeText(LoginActivity.this, "it looks like there is no internet connection", Toast.LENGTH_SHORT).show();
 
-                }
-            }
-        });
+//        cirLoginButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (isNetworkConnected()) {
+//                    String mail, password;
+//                    mail = editTextEmail.getText().toString();
+//                    password = editTextPassword.getText().toString();
+//                    viewModel.authenticate(mail, password, getBaseContext(), pd);
+//                } else {
+//                    Toast.makeText(LoginActivity.this, "it looks like there is no internet connection", Toast.LENGTH_SHORT).show();
+//
+//                }
+//            }
+//        });
 
 
     }
@@ -144,10 +145,10 @@ public class LoginActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
-    private boolean isNetworkConnected() {
+   /* private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
-    }
+    }*/
 
 
 }

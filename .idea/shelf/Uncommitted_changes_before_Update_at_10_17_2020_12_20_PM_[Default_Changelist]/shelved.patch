@@ -1,0 +1,255 @@
+Index: app/src/main/java/com/example/graduiation/ui/main/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.graduiation.ui.main;\r\n\r\n\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.content.SharedPreferences;\r\nimport android.graphics.Color;\r\nimport android.net.Uri;\r\nimport android.os.Build;\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.Menu;\r\nimport android.view.MenuItem;\r\nimport android.view.View;\r\nimport android.view.Window;\r\nimport android.view.WindowManager;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.annotation.Nullable;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.appcompat.widget.Toolbar;\r\nimport androidx.core.view.GravityCompat;\r\nimport androidx.drawerlayout.widget.DrawerLayout;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.fragment.app.FragmentTransaction;\r\nimport androidx.lifecycle.Observer;\r\nimport androidx.lifecycle.ViewModelProviders;\r\nimport androidx.navigation.NavController;\r\nimport androidx.navigation.Navigation;\r\nimport androidx.navigation.ui.AppBarConfiguration;\r\nimport androidx.navigation.ui.NavigationUI;\r\nimport androidx.work.OneTimeWorkRequest;\r\nimport androidx.work.WorkManager;\r\n\r\nimport com.example.graduiation.R;\r\nimport com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;\r\nimport com.example.graduiation.ui.Data.UserParentModel;\r\nimport com.example.graduiation.ui.OrdersHanging.OrdersHangingFragment;\r\nimport com.example.graduiation.ui.OrdersReceived.OrdersRecievedPlaceHolder;\r\nimport com.example.graduiation.ui.UserCart.UserCartActivity;\r\nimport com.example.graduiation.ui.WorkManagers.UploadUserTokenWorkManagerToFirebase;\r\nimport com.example.graduiation.ui.addMeal.AddMealActivity;\r\nimport com.example.graduiation.ui.login.LoginActivity;\r\nimport com.example.graduiation.ui.profileTEST.ProfileTesting;\r\nimport com.google.android.material.navigation.NavigationView;\r\nimport com.google.firebase.FirebaseApp;\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.iid.FirebaseInstanceId;\r\nimport com.squareup.picasso.Callback;\r\nimport com.squareup.picasso.NetworkPolicy;\r\nimport com.squareup.picasso.Picasso;\r\nimport com.theartofdev.edmodo.cropper.CropImage;\r\n\r\nimport de.hdodenhof.circleimageview.CircleImageView;\r\n\r\npublic class MainActivity extends AppCompatActivity {\r\n\r\n\r\n    private AppBarConfiguration mAppBarConfiguration;\r\n    private FirebaseAuth mAuth;\r\n    private static final String TAG = \"MainActivity\";\r\n    private View navigationHeader;\r\n    private CircleImageView navuseRImage;\r\n    private TextView navUserName, navUserMail;\r\n    private MainViewModel viewModel;\r\n    NavigationView navigationView;\r\n\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_main);\r\n\r\n        FirebaseApp.initializeApp(this);\r\n\r\n\r\n        Toolbar toolbar = findViewById(R\r\n\r\n                .id.toolbar);\r\n        setSupportActionBar(toolbar);\r\n\r\n        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {\r\n            Window window = getWindow();\r\n            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);\r\n            window.setStatusBarColor(Color.TRANSPARENT);\r\n            window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));\r\n            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);\r\n        }\r\n\r\n\r\n        mAuth = FirebaseAuth.getInstance();\r\n        DrawerLayout drawer = findViewById(R.id.drawer_layout);\r\n        navigationView = findViewById(R.id.nav_view);\r\n        //  hideItem();\r\n\r\n\r\n        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);\r\n\r\n        mAppBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph())\r\n                .setDrawerLayout(drawer)\r\n                .build();\r\n\r\n\r\n        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);\r\n        NavigationUI.setupWithNavController(navigationView, navController);\r\n\r\n        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {\r\n            @Override\r\n            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {\r\n                int id = menuItem.getItemId();\r\n                Log.e(TAG, \"onNavigationItemSelected: \\n \\n \");\r\n                if (id == R.id.nav_log_out) {\r\n\r\n                    logOut();\r\n                }\r\n                return false;\r\n            }\r\n        });\r\n\r\n\r\n        navigationHeader = navigationView.getHeaderView(0);\r\n        navuseRImage = navigationHeader.findViewById(R.id.imageView);\r\n        navUserName = navigationHeader.findViewById(R.id.user_name);\r\n        navUserMail = navigationHeader.findViewById(R.id.nav_user_mail);\r\n\r\n        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {\r\n            @Override\r\n            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {\r\n                int id = menuItem.getItemId();\r\n                //it's possible to do more actions on several items, if there is a large amount of items I prefer switch(){case} instead of if()\r\n                if (id == R.id.nav_log_out) {\r\n\r\n                }\r\n                //This is for maintaining the behavior of the Navigation view\r\n                NavigationUI.onNavDestinationSelected(menuItem, navController);\r\n                //This is for closing the drawer after acting on it\r\n                drawer.closeDrawer(GravityCompat.START);\r\n                return true;\r\n            }\r\n        });\r\n\r\n        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);\r\n        if (FirebaseAuth.getInstance().getCurrentUser() != null) {\r\n\r\n            viewModel.getUserParentModel(FirebaseAuth.getInstance().getUid()).observe(this, new Observer<UserParentModel>() {\r\n                @Override\r\n                public void onChanged(UserParentModel userParentModel) {\r\n                    if (userParentModel != null) {\r\n                        navUserName.setText(userParentModel.getName());\r\n                        navUserMail.setText(userParentModel.getEmail());\r\n                        if (userParentModel.getDueDate() == 0) {\r\n                            Menu nav_Menu = navigationView.getMenu();\r\n                            nav_Menu.findItem(R.id.nav_recieved_orders).setVisible(false);\r\n                        }\r\n\r\n                        Picasso.get().load(userParentModel.getImage()).networkPolicy(NetworkPolicy.OFFLINE).into(navuseRImage, new Callback() {\r\n                            @Override\r\n                            public void onSuccess() {\r\n\r\n                            }\r\n\r\n                            @Override\r\n                            public void onError(Exception e) {\r\n                                Picasso.get().load(userParentModel.getImage()).into(navuseRImage);\r\n\r\n                            }\r\n                        });\r\n\r\n\r\n                    }\r\n                }\r\n            });\r\n\r\n        }\r\n\r\n        String flag = getIntent().getStringExtra(\"flag\");\r\n        if (flag != null) {\r\n\r\n\r\n            if (flag.equals(\"orderReceived\")) {\r\n\r\n                transactFragmnetWithActions();\r\n\r\n            }\r\n\r\n        }\r\n\r\n    }\r\n\r\n    private void transactFragmnetWithActions() {\r\n\r\n        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_nav_home_to_nav_recieved_orders);\r\n\r\n\r\n    }\r\n\r\n    @Override\r\n    public void onBackPressed() {\r\n        super.onBackPressed();\r\n\r\n\r\n    }\r\n\r\n    @Override\r\n    public boolean onCreateOptionsMenu(Menu menu) {\r\n        // Inflate the menu; this adds items to the action bar if it is present.\r\n\r\n        getMenuInflater().inflate(R.menu.main, menu);\r\n\r\n\r\n        return true;\r\n    }\r\n\r\n    @Override\r\n    public boolean onOptionsItemSelected(@NonNull MenuItem item) {\r\n\r\n        if (item.getItemId() == R.id.cart_button) {\r\n\r\n            sendUserToCart();\r\n        }\r\n\r\n\r\n        return super.onOptionsItemSelected(item);\r\n    }\r\n\r\n\r\n    private void sendUserToCart() {\r\n        Intent i = new Intent(this, UserCartActivity.class);\r\n        startActivity(i);\r\n    }\r\n\r\n    private void sendUserToTestingProfile() {\r\n        Intent i = new Intent(this, ProfileTesting.class);\r\n        startActivity(i);\r\n\r\n\r\n    }\r\n\r\n\r\n    @Override\r\n    public boolean onSupportNavigateUp() {\r\n        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);\r\n        Log.e(TAG, \"onSupportNavigateUp: \");\r\n        return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();\r\n\r\n    }\r\n\r\n\r\n    @Override\r\n    protected void onStart() {\r\n        super.onStart();\r\n\r\n        //Log.e(TAG, \"\\n \\n \\n onStart: TOKEN \\n \\n \\n \"+ FirebaseInstanceId.getInstance().getToken() );\r\n\r\n        if (mAuth.getCurrentUser() == null) {\r\n            sendUserToLogin();\r\n        } else {\r\n\r\n            if (getSharedPreferences(\"userData\", Context.MODE_PRIVATE).getString(\"token\", null) == null) {\r\n                OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(UploadUserTokenWorkManagerToFirebase.class).build();\r\n                WorkManager.getInstance(MainActivity.this).enqueue(oneTimeWorkRequest);\r\n\r\n                viewModel.getUserParentModel(mAuth.getUid()).observe(this, new Observer<UserParentModel>() {\r\n                    @Override\r\n                    public void onChanged(UserParentModel userParentModel) {\r\n                        Log.e(TAG, \"onChanged: \" + userParentModel.getToken());\r\n                        Log.e(TAG, \"onChanged: \" + userParentModel.getId());\r\n                        Log.e(TAG, \"onChanged: \" + userParentModel.getName());\r\n\r\n                        if (userParentModel.getName() != null && userParentModel.getId() != null && userParentModel.getToken() != null) {\r\n                            SharedPreferences sharedPreferences = getSharedPreferences(\"userData\", Context.MODE_PRIVATE);\r\n                            SharedPreferences.Editor editor = sharedPreferences.edit();\r\n\r\n                            editor.putString(\"id\", userParentModel.getId());\r\n                            editor.putString(\"token\", userParentModel.getToken());\r\n                            editor.putString(\"name\", userParentModel.getName());\r\n                            editor.apply();\r\n\r\n\r\n                        }\r\n                    }\r\n                });\r\n\r\n\r\n                Log.e(TAG, \"onStart: \" + mAuth.getUid());\r\n\r\n            }\r\n        }\r\n\r\n    }\r\n\r\n    private void sendUserToAddMeal() {\r\n        Intent i = new Intent(this, AddMealActivity.class);\r\n        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);\r\n        startActivity(i);\r\n    }\r\n\r\n    private void sendUserToLogin() {\r\n        Intent i = new Intent(this, LoginActivity.class);\r\n        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);\r\n        startActivity(i);\r\n    }\r\n\r\n\r\n    private void hideItem() {\r\n        navigationView = (NavigationView) findViewById(R.id.nav_view);\r\n        Menu nav_Menu = navigationView.getMenu();\r\n\r\n    }\r\n\r\n    @Override\r\n    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {\r\n        super.onActivityResult(requestCode, resultCode, data);\r\n\r\n        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {\r\n            CropImage.ActivityResult result = CropImage.getActivityResult(data);\r\n            if (resultCode == RESULT_OK) {\r\n                Uri photo = result.getUri();\r\n                FirebaseQueryHelperRepository.getInstance().uploadUserProfilePic(FirebaseAuth.getInstance().getUid(), photo);\r\n            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {\r\n                Exception error = result.getError();\r\n                Toast.makeText(this, error.getMessage(), Toast.LENGTH_SHORT).show();\r\n            }\r\n        }\r\n\r\n\r\n    }\r\n\r\n    private void logOut() {\r\n        FirebaseAuth.getInstance().signOut();\r\n        sendUserToLogin();\r\n    }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/graduiation/ui/main/MainActivity.java	(revision 0c3863f318a854fc705a840f95f586f6547954d3)
++++ app/src/main/java/com/example/graduiation/ui/main/MainActivity.java	(date 1602878014805)
+@@ -44,6 +44,7 @@
+ import com.example.graduiation.ui.WorkManagers.UploadUserTokenWorkManagerToFirebase;
+ import com.example.graduiation.ui.addMeal.AddMealActivity;
+ import com.example.graduiation.ui.login.LoginActivity;
++import com.example.graduiation.ui.login.LoginActivity2;
+ import com.example.graduiation.ui.profileTEST.ProfileTesting;
+ import com.google.android.material.navigation.NavigationView;
+ import com.google.firebase.FirebaseApp;
+@@ -76,6 +77,9 @@
+ 
+         FirebaseApp.initializeApp(this);
+ 
++       /* navUserName.setOnClickListener(view -> {
++
++        });*/
+ 
+         Toolbar toolbar = findViewById(R
+ 
+Index: app/src/main/java/com/example/graduiation/ui/login/LoginActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.graduiation.ui.login;\r\n\r\nimport android.app.ProgressDialog;\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.graphics.Color;\r\nimport android.net.ConnectivityManager;\r\nimport android.os.Build;\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.View;\r\nimport android.view.Window;\r\nimport android.view.WindowManager;\r\nimport android.widget.Button;\r\nimport android.widget.EditText;\r\nimport android.widget.ImageView;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.lifecycle.ViewModelProviders;\r\n\r\nimport com.example.graduiation.R;\r\nimport com.example.graduiation.ui.EditUserData.EditUserData;\r\nimport com.example.graduiation.ui.intro.IntroActivity;\r\nimport com.example.graduiation.ui.register.RegisterActivity;\r\n\r\n\r\nimport com.google.android.gms.auth.api.signin.GoogleSignIn;\r\nimport com.google.android.gms.auth.api.signin.GoogleSignInAccount;\r\n\r\nimport com.google.android.gms.auth.api.signin.GoogleSignInClient;\r\nimport com.google.android.gms.auth.api.signin.GoogleSignInOptions;\r\n\r\nimport com.google.android.gms.common.api.Api;\r\nimport com.google.android.gms.common.api.ApiException;\r\nimport com.google.android.gms.common.api.GoogleApiClient;\r\nimport com.google.android.gms.tasks.Task;\r\nimport com.google.android.material.textfield.TextInputLayout;\r\n\r\nimport br.com.simplepass.loadingbutton.customViews.CircularProgressButton;\r\nimport butterknife.BindView;\r\nimport butterknife.ButterKnife;\r\n@Deprecated\r\npublic class LoginActivity extends AppCompatActivity {\r\n\r\n    @BindView(R.id.editTextEmail)\r\n    EditText editTextEmail;\r\n    @BindView(R.id.textInputEmail)\r\n    TextInputLayout textInputEmail;\r\n    @BindView(R.id.editTextPassword)\r\n    EditText editTextPassword;\r\n    @BindView(R.id.textInputPassword)\r\n    TextInputLayout textInputPassword;\r\n    @BindView(R.id.cirLoginButton)\r\n    CircularProgressButton cirLoginButton;\r\n    LoginViewModel viewModel;\r\n    Button googleLoginImage;\r\n\r\n    private int RC_SIGN_IN = 999;\r\n    private static final String TAG = \"LoginActivity\";\r\n\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n\r\n        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {\r\n            Window window = getWindow();\r\n            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);\r\n            window.setStatusBarColor(Color.TRANSPARENT);\r\n            window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));\r\n            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);\r\n        }\r\n\r\n        setContentView(R.layout.activity_login);\r\n        ButterKnife.bind(this);\r\n        ProgressDialog pd = new ProgressDialog(this);\r\n        pd.setCancelable(false);\r\n        pd.setCanceledOnTouchOutside(false);\r\n        getSupportActionBar().hide();\r\n        viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);\r\n        cirLoginButton.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                if (isNetworkConnected()) {\r\n                    String mail, password;\r\n                    mail = editTextEmail.getText().toString();\r\n                    password = editTextPassword.getText().toString();\r\n                    viewModel.authenticate(mail, password, getBaseContext(), pd);\r\n                } else {\r\n                    Toast.makeText(LoginActivity.this, \"it looks like there is no internet connection\", Toast.LENGTH_SHORT).show();\r\n\r\n                }\r\n            }\r\n        });\r\n\r\n\r\n    }\r\n\r\n    @Override\r\n    public void onActivityResult(int requestCode, int resultCode, Intent data) {\r\n        super.onActivityResult(requestCode, resultCode, data);\r\n\r\n        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);\r\n        if (requestCode == RC_SIGN_IN) {\r\n            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);\r\n            try {\r\n                // Google Sign In was successful, authenticate with Firebase\r\n                GoogleSignInAccount account = task.getResult(ApiException.class);\r\n                Log.d(TAG, \"firebaseAuthWithGoogle:\" + account.getId());\r\n\r\n\r\n                if(task.isSuccessful()){\r\n                    firebaseAuthWithGoogle(account.getIdToken());\r\n\r\n                }\r\n            } catch (ApiException e) {\r\n                // Google Sign In failed, update UI appropriately\r\n                Log.w(TAG, \"Google sign in failed\", e);\r\n                // ...\r\n            }\r\n            if(task.isSuccessful()){\r\n\r\n            }\r\n        }\r\n    }\r\n\r\n    private void firebaseAuthWithGoogle(String idToken) {\r\n        Intent i = new Intent(this, EditUserData.class);\r\n        i.putExtra(\"idToken\", idToken);\r\n        startActivity(i);\r\n    }\r\n\r\n\r\n    private void sendUserToMainActivity() {\r\n        Intent i = new Intent(this, IntroActivity.class);\r\n        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);\r\n        startActivity(i);\r\n        overridePendingTransition(R.anim.slide_in_right, R.anim.stay);\r\n    }\r\n\r\n    public void onLoginClick(View View) {\r\n        startActivity(new Intent(this, RegisterActivity.class));\r\n        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);\r\n    }\r\n\r\n    private boolean isNetworkConnected() {\r\n        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);\r\n        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();\r\n    }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/graduiation/ui/login/LoginActivity.java	(revision 0c3863f318a854fc705a840f95f586f6547954d3)
++++ app/src/main/java/com/example/graduiation/ui/login/LoginActivity.java	(date 1602930056798)
+@@ -40,7 +40,7 @@
+ import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
+ import butterknife.BindView;
+ import butterknife.ButterKnife;
+-@Deprecated
++
+ public class LoginActivity extends AppCompatActivity {
+ 
+     @BindView(R.id.editTextEmail)
+@@ -73,26 +73,27 @@
+         }
+ 
+         setContentView(R.layout.activity_login);
+-        ButterKnife.bind(this);
++       // ButterKnife.bind(this);
+         ProgressDialog pd = new ProgressDialog(this);
+         pd.setCancelable(false);
+         pd.setCanceledOnTouchOutside(false);
+         getSupportActionBar().hide();
+         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+-        cirLoginButton.setOnClickListener(new View.OnClickListener() {
+-            @Override
+-            public void onClick(View v) {
+-                if (isNetworkConnected()) {
+-                    String mail, password;
+-                    mail = editTextEmail.getText().toString();
+-                    password = editTextPassword.getText().toString();
+-                    viewModel.authenticate(mail, password, getBaseContext(), pd);
+-                } else {
+-                    Toast.makeText(LoginActivity.this, "it looks like there is no internet connection", Toast.LENGTH_SHORT).show();
+-
+-                }
+-            }
+-        });
++
++//        cirLoginButton.setOnClickListener(new View.OnClickListener() {
++//            @Override
++//            public void onClick(View v) {
++//                if (isNetworkConnected()) {
++//                    String mail, password;
++//                    mail = editTextEmail.getText().toString();
++//                    password = editTextPassword.getText().toString();
++//                    viewModel.authenticate(mail, password, getBaseContext(), pd);
++//                } else {
++//                    Toast.makeText(LoginActivity.this, "it looks like there is no internet connection", Toast.LENGTH_SHORT).show();
++//
++//                }
++//            }
++//        });
+ 
+ 
+     }
+@@ -144,10 +145,10 @@
+         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+     }
+ 
+-    private boolean isNetworkConnected() {
++   /* private boolean isNetworkConnected() {
+         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+-    }
++    }*/
+ 
+ 
+ }
+Index: app/src/main/java/com/example/graduiation/ui/Data/FirebaseCloudApi.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.graduiation.ui.Data;\r\n\r\nimport io.reactivex.Observable;\r\nimport retrofit2.http.Body;\r\nimport retrofit2.http.Headers;\r\nimport retrofit2.http.POST;\r\n\r\npublic interface FirebaseCloudApi {\r\n\r\n            @Headers({\r\n                \"Content-Type:application/json\",\r\n                \"Authorization:key=AAAAu_2Vngs:APA91bE03BZxcRZp1BjKavBDwUZvB0Gc6B0uBr5uF2ssiDFHttSdwvMRiUP2gfUKimAGrLjRIp9z1g8CxGPc0jpEIHM1V9a5bAEKqxt8zENJnYbLSfmx81jpkDQiy7nvLbFUVcwBJKMY\"\r\n            })\r\n             @POST(\"send\")\r\n             public Observable<PostModel> sendNotification(@Body PostModel postModel);\r\n\r\n\r\n            }\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/graduiation/ui/Data/FirebaseCloudApi.java	(revision 0c3863f318a854fc705a840f95f586f6547954d3)
++++ app/src/main/java/com/example/graduiation/ui/Data/FirebaseCloudApi.java	(date 1602619588901)
+@@ -12,7 +12,7 @@
+                 "Authorization:key=AAAAu_2Vngs:APA91bE03BZxcRZp1BjKavBDwUZvB0Gc6B0uBr5uF2ssiDFHttSdwvMRiUP2gfUKimAGrLjRIp9z1g8CxGPc0jpEIHM1V9a5bAEKqxt8zENJnYbLSfmx81jpkDQiy7nvLbFUVcwBJKMY"
+             })
+              @POST("send")
+-             public Observable<PostModel> sendNotification(@Body PostModel postModel);
++              Observable<PostModel> sendNotification(@Body PostModel postModel);
+ 
+ 
+             }
+Index: app/src/main/java/com/example/graduiation/ui/Data/UserParentModel.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.graduiation.ui.Data;\r\n\r\nimport android.os.Parcel;\r\nimport android.os.Parcelable;\r\n\r\nimport java.util.HashMap;\r\n\r\npublic class UserParentModel implements Parcelable {\r\n\r\n    private String name, id, phone,\r\n            image, numberOfFollowing,numberOfFollower, subType,\r\n            email, password , membership,bio ,token , numberOfOrders;\r\n\r\n    private long dueDate;\r\n    private WalletModel wallet;\r\n    private float rate;\r\n    private long registrationTime;\r\n    private HashMap<String ,String> follower , following;\r\n\r\n\r\n    public UserParentModel(){}\r\n\r\n\r\n    protected UserParentModel(Parcel in) {\r\n        name = in.readString();\r\n        id = in.readString();\r\n        phone = in.readString();\r\n        image = in.readString();\r\n        numberOfFollowing = in.readString();\r\n        numberOfFollower = in.readString();\r\n        subType = in.readString();\r\n        email = in.readString();\r\n        password = in.readString();\r\n        membership = in.readString();\r\n        bio = in.readString();\r\n        token = in.readString();\r\n        numberOfOrders = in.readString();\r\n        dueDate = in.readLong();\r\n        rate = in.readFloat();\r\n        registrationTime = in.readLong();\r\n    }\r\n\r\n    public static final Creator<UserParentModel> CREATOR = new Creator<UserParentModel>() {\r\n        @Override\r\n        public UserParentModel createFromParcel(Parcel in) {\r\n            return new UserParentModel(in);\r\n        }\r\n\r\n        @Override\r\n        public UserParentModel[] newArray(int size) {\r\n            return new UserParentModel[size];\r\n        }\r\n    };\r\n\r\n    public void setName(String name) {\r\n        this.name = name;\r\n    }\r\n\r\n    public void setId(String id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public void setPhone(String phone) {\r\n        this.phone = phone;\r\n    }\r\n\r\n    public void setImage(String image) {\r\n        this.image = image;\r\n    }\r\n\r\n    public void setNumberOfFollowing(String numberOfFollowing) {\r\n        this.numberOfFollowing = numberOfFollowing;\r\n    }\r\n\r\n    public void setNumberOfFollower(String numberOfFollower) {\r\n        this.numberOfFollower = numberOfFollower;\r\n    }\r\n\r\n    public void setSubType(String subType) {\r\n        this.subType = subType;\r\n    }\r\n\r\n    public void setEmail(String email) {\r\n        this.email = email;\r\n    }\r\n\r\n    public void setPassword(String password) {\r\n        this.password = password;\r\n    }\r\n\r\n    public void setMembership(String membership) {\r\n        this.membership = membership;\r\n    }\r\n\r\n    public void setBio(String bio) {\r\n        this.bio = bio;\r\n    }\r\n\r\n    public void setToken(String token) {\r\n        this.token = token;\r\n    }\r\n\r\n    public void setNumberOfOrders(String numberOfOrders) {\r\n        this.numberOfOrders = numberOfOrders;\r\n    }\r\n\r\n    public void setDueDate(long dueDate) {\r\n        this.dueDate = dueDate;\r\n    }\r\n\r\n    public void setWallet(WalletModel wallet) {\r\n        this.wallet = wallet;\r\n    }\r\n\r\n    public void setRate(float rate) {\r\n        this.rate = rate;\r\n    }\r\n\r\n    public void setRegistrationTime(long registrationTime) {\r\n        this.registrationTime = registrationTime;\r\n    }\r\n\r\n    public void setFollower(HashMap<String, String> follower) {\r\n        this.follower = follower;\r\n    }\r\n\r\n    public void setFollowing(HashMap<String, String> following) {\r\n        this.following = following;\r\n    }\r\n\r\n    public String getName() {\r\n        return name;\r\n    }\r\n\r\n    public String getId() {\r\n        return id;\r\n    }\r\n\r\n    public String getPhone() {\r\n        return phone;\r\n    }\r\n\r\n    public String getImage() {\r\n        return image;\r\n    }\r\n\r\n    public String getNumberOfFollowing() {\r\n        return numberOfFollowing;\r\n    }\r\n\r\n    public String getNumberOfFollower() {\r\n        return numberOfFollower;\r\n    }\r\n\r\n    public String getSubType() {\r\n        return subType;\r\n    }\r\n\r\n    public String getEmail() {\r\n        return email;\r\n    }\r\n\r\n    public String getPassword() {\r\n        return password;\r\n    }\r\n\r\n    public String getMembership() {\r\n        return membership;\r\n    }\r\n\r\n    public String getBio() {\r\n        return bio;\r\n    }\r\n\r\n    public String getToken() {\r\n        return token;\r\n    }\r\n\r\n    public String getNumberOfOrders() {\r\n        return numberOfOrders;\r\n    }\r\n\r\n    public long getDueDate() {\r\n        return dueDate;\r\n    }\r\n\r\n    public WalletModel getWallet() {\r\n        return wallet;\r\n    }\r\n\r\n    public float getRate() {\r\n        return rate;\r\n    }\r\n\r\n    public long getRegistrationTime() {\r\n        return registrationTime;\r\n    }\r\n\r\n    public HashMap<String, String> getFollower() {\r\n        return follower;\r\n    }\r\n\r\n    public HashMap<String, String> getFollowing() {\r\n        return following;\r\n    }\r\n\r\n    @Override\r\n    public int describeContents() {\r\n        return 0;\r\n    }\r\n\r\n    @Override\r\n    public void writeToParcel(Parcel dest, int flags) {\r\n        dest.writeString(name);\r\n        dest.writeString(id);\r\n        dest.writeString(phone);\r\n        dest.writeString(image);\r\n        dest.writeString(numberOfFollowing);\r\n        dest.writeString(numberOfFollower);\r\n        dest.writeString(subType);\r\n        dest.writeString(email);\r\n        dest.writeString(password);\r\n        dest.writeString(membership);\r\n        dest.writeString(bio);\r\n        dest.writeString(token);\r\n        dest.writeString(numberOfOrders);\r\n        dest.writeLong(dueDate);\r\n        dest.writeFloat(rate);\r\n        dest.writeLong(registrationTime);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/graduiation/ui/Data/UserParentModel.java	(revision 0c3863f318a854fc705a840f95f586f6547954d3)
++++ app/src/main/java/com/example/graduiation/ui/Data/UserParentModel.java	(date 1602619578854)
+@@ -18,7 +18,9 @@
+     private HashMap<String ,String> follower , following;
+ 
+ 
+-    public UserParentModel(){}
++    public UserParentModel(){
++
++    }
+ 
+ 
+     protected UserParentModel(Parcel in) {
+Index: .idea/.name
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/.name	(date 1602619588919)
++++ .idea/.name	(date 1602619588919)
+@@ -0,0 +1,1 @@
++graduiation
+\ No newline at end of file
+Index: app/src/main/java/com/example/graduiation/ui/login/LoginActivity2.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.graduiation.ui.login;\r\n\r\n\r\nimport android.os.Bundle;\r\nimport android.view.View;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.databinding.DataBindingUtil;\r\n\r\nimport com.example.graduiation.R;\r\nimport com.example.graduiation.databinding.ActivityLoginBinding;\r\nimport com.google.firebase.auth.PhoneAuthCredential;\r\nimport com.google.firebase.auth.PhoneAuthProvider;\r\n\r\nimport java.util.concurrent.TimeUnit;\r\n\r\npublic class LoginActivity2 extends AppCompatActivity implements Ilogin{\r\n    String phoneNumber;\r\n    ViewModel viewModel;\r\n    String id;\r\n    ActivityLoginBinding binding;\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n\r\n        binding = DataBindingUtil.setContentView(this,R.layout.activity_login);\r\n\r\n        viewModel=new ViewModel(this);\r\n        binding.cirLoginButton.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                if(!binding.editTextPhoneNumber.getText().toString().trim().isEmpty()) {\r\n                    phoneNumber = binding.editTextPhoneNumber.getText().toString();\r\n                    verifyPhoneNumber();\r\n                }else{\r\n                    Toast.makeText(LoginActivity2.this,\"Please Enter Your Phone Number\",Toast.LENGTH_LONG).show();\r\n                }\r\n            }\r\n        });\r\n        binding.send.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                PhoneAuthCredential credential= PhoneAuthProvider.getCredential(id,\r\n                        binding.editTextPhoneNumber.getText().toString());\r\n                viewModel.signInWithCredential(credential);\r\n            }\r\n        });\r\n\r\n    }\r\n\r\n\r\n    @Override\r\n    public void verifyPhoneNumber() {\r\n        if(phoneNumber.charAt(0)=='0'&&phoneNumber.charAt(1)=='1'){\r\n            PhoneAuthProvider.getInstance().verifyPhoneNumber(phoneNumber,\r\n                    60,\r\n                    TimeUnit.SECONDS,\r\n                    this,\r\n                    viewModel.mCallbacks);\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void codeVerify(String verificationId, PhoneAuthProvider.ForceResendingToken token) {\r\n        binding.editTextPhoneNumber.setHint(\"Enter Code\");\r\n       binding.send.setVisibility(View.VISIBLE);\r\n       binding.cirLoginButton.setVisibility(View.GONE);\r\n        id=verificationId;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/graduiation/ui/login/LoginActivity2.java	(revision 0c3863f318a854fc705a840f95f586f6547954d3)
++++ app/src/main/java/com/example/graduiation/ui/login/LoginActivity2.java	(date 1602877027059)
+@@ -2,6 +2,7 @@
+ 
+ 
+ import android.os.Bundle;
++import android.util.Log;
+ import android.view.View;
+ import android.widget.Toast;
+ 
+@@ -16,21 +17,27 @@
+ 
+ import java.util.concurrent.TimeUnit;
+ 
++import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
++
+ public class LoginActivity2 extends AppCompatActivity implements Ilogin{
+     String phoneNumber;
+     ViewModel viewModel;
+     String id;
+     ActivityLoginBinding binding;
++    CircularProgressButton loginBtn;
++    private static final String TAG = "LoginActivity2";
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+ 
+         binding = DataBindingUtil.setContentView(this,R.layout.activity_login);
++    loginBtn = findViewById(R.id.cirLoginButton);
++       // viewModel=new ViewModel(this);
+ 
+-        viewModel=new ViewModel(this);
+-        binding.cirLoginButton.setOnClickListener(new View.OnClickListener() {
++        loginBtn.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
++                Log.e(TAG, "onClick: " + "button works" );
+                 if(!binding.editTextPhoneNumber.getText().toString().trim().isEmpty()) {
+                     phoneNumber = binding.editTextPhoneNumber.getText().toString();
+                     verifyPhoneNumber();
+@@ -53,13 +60,14 @@
+ 
+     @Override
+     public void verifyPhoneNumber() {
+-        if(phoneNumber.charAt(0)=='0'&&phoneNumber.charAt(1)=='1'){
++
+             PhoneAuthProvider.getInstance().verifyPhoneNumber(phoneNumber,
+                     60,
+                     TimeUnit.SECONDS,
+                     this,
+                     viewModel.mCallbacks);
+-        }
++            Toast.makeText(this, "on it", Toast.LENGTH_LONG).show();
++
+     }
+ 
+     @Override
+Index: app/src/main/java/com/example/graduiation/ui/EditUserData/EditUserData.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.graduiation.ui.EditUserData;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.view.View;\r\nimport android.widget.Button;\r\nimport android.widget.EditText;\r\nimport android.widget.TextView;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport com.example.graduiation.R;\r\nimport com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;\r\nimport com.example.graduiation.ui.Data.UserParentModel;\r\nimport com.example.graduiation.ui.main.MainActivity;\r\nimport com.google.android.material.floatingactionbutton.FloatingActionButton;\r\nimport com.google.firebase.auth.FirebaseAuth;\r\n\r\nimport java.util.Objects;\r\n\r\nimport butterknife.BindView;\r\nimport butterknife.ButterKnife;\r\nimport de.hdodenhof.circleimageview.CircleImageView;\r\n\r\npublic class EditUserData extends AppCompatActivity {\r\n\r\n    @BindView(R.id.user_name_profile)\r\n    TextView userNameProfile;\r\n    @BindView(R.id.user_name_et)\r\n    EditText userNameEt;\r\n    @BindView(R.id.phone_tv)\r\n    TextView phoneTv;\r\n    @BindView(R.id.phone_et)\r\n    EditText phoneEt;\r\n\r\n    @BindView(R.id.update_data_button)\r\n    Button updateDataButton;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_edit_user_data);\r\n        ButterKnife.bind(this);\r\n        updateDataButton.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                String userName = userNameEt.getText().toString();\r\n                String phoneNumber = phoneEt.getText().toString();\r\n\r\n\r\n                UserParentModel model = new UserParentModel();\r\n                if(userName.isEmpty()){\r\n                    userNameEt.setError(\"you can't leave this field empty\");\r\n                }\r\n                else  if(phoneNumber.isEmpty()){\r\n                    phoneEt.setError(\"you can't leave this field empty\");\r\n                }\r\n\r\n                else {\r\n                    FirebaseQueryHelperRepository repo = FirebaseQueryHelperRepository.getInstance();\r\n                    model.setName(userName);\r\n                    //model.setEmail(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail());\r\n                    model.setId(FirebaseAuth.getInstance().getCurrentUser().getUid());\r\n                    model.setPhone(phoneNumber);\r\n                    String token = getIntent().getStringExtra(\"idToken\");\r\n                    model.setToken(token);\r\n                    repo.sendUsersDataToDatabase(model , new Executable() {\r\n                        @Override\r\n                        public void execute() {\r\n                            sendUserToMainActivity();\r\n\r\n                        }\r\n                    });\r\n\r\n\r\n                }\r\n\r\n            }\r\n        });\r\n\r\n\r\n    }\r\n\r\n    private void sendUserToMainActivity() {\r\n    Intent i= new Intent(this , MainActivity.class);\r\n    startActivity(i);\r\n\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/graduiation/ui/EditUserData/EditUserData.java	(revision 0c3863f318a854fc705a840f95f586f6547954d3)
++++ app/src/main/java/com/example/graduiation/ui/EditUserData/EditUserData.java	(date 1602619578867)
+@@ -64,13 +64,7 @@
+                     model.setPhone(phoneNumber);
+                     String token = getIntent().getStringExtra("idToken");
+                     model.setToken(token);
+-                    repo.sendUsersDataToDatabase(model , new Executable() {
+-                        @Override
+-                        public void execute() {
+-                            sendUserToMainActivity();
+-
+-                        }
+-                    });
++                    repo.sendUsersDataToDatabase(model , () -> sendUserToMainActivity());
+ 
+ 
+                 }
+Index: gradle/wrapper/gradle-wrapper.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>#Tue Oct 13 14:43:09 EET 2020\r\ndistributionBase=GRADLE_USER_HOME\r\ndistributionPath=wrapper/dists\r\nzipStoreBase=GRADLE_USER_HOME\r\nzipStorePath=wrapper/dists\r\ndistributionUrl=https\\://services.gradle.org/distributions/gradle-6.5-bin.zip\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>windows-1252
+===================================================================
+--- gradle/wrapper/gradle-wrapper.properties	(revision 0c3863f318a854fc705a840f95f586f6547954d3)
++++ gradle/wrapper/gradle-wrapper.properties	(date 1602874761945)
+@@ -1,6 +1,6 @@
+-#Tue Oct 13 14:43:09 EET 2020
++#Fri Oct 16 20:59:21 EET 2020
+ distributionBase=GRADLE_USER_HOME
+ distributionPath=wrapper/dists
+ zipStoreBase=GRADLE_USER_HOME
+ zipStorePath=wrapper/dists
+-distributionUrl=https\://services.gradle.org/distributions/gradle-6.5-bin.zip
++distributionUrl=https\://services.gradle.org/distributions/gradle-6.5-all.zip

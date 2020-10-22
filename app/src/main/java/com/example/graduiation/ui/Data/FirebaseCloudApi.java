@@ -12,7 +12,7 @@ public interface FirebaseCloudApi {
                 "Authorization:key=AAAAu_2Vngs:APA91bE03BZxcRZp1BjKavBDwUZvB0Gc6B0uBr5uF2ssiDFHttSdwvMRiUP2gfUKimAGrLjRIp9z1g8CxGPc0jpEIHM1V9a5bAEKqxt8zENJnYbLSfmx81jpkDQiy7nvLbFUVcwBJKMY"
             })
              @POST("send")
-             public Observable<PostModel> sendNotification(@Body PostModel postModel);
+              Observable<PostModel> sendNotification(@Body PostModel postModel);
 
 
             }

@@ -64,13 +64,7 @@ public class EditUserData extends AppCompatActivity {
                     model.setPhone(phoneNumber);
                     String token = getIntent().getStringExtra("idToken");
                     model.setToken(token);
-                    repo.sendUsersDataToDatabase(model , new Executable() {
-                        @Override
-                        public void execute() {
-                            sendUserToMainActivity();
-
-                        }
-                    });
+                    repo.sendUsersDataToDatabase(model , () -> sendUserToMainActivity());
 
 
                 }
