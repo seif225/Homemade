@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Adapters.KitchensRecyclerAdapter;
 import com.example.graduiation.ui.Adapters.RecyclerViewAdapter;
+import com.example.graduiation.ui.Data.UserModel;
 import com.example.graduiation.ui.LegacyData.UserParentModel;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.DoubleBounce;
@@ -137,7 +139,7 @@ public class CategoriesFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                foodAdapter.getFilter().filter(newText);
+               // foodAdapter.getFilter().filter(newText);
                 return true;
             }
         });
@@ -150,94 +152,49 @@ public class CategoriesFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
-        viewModel.getFirstChunkOfKitchens(6, category).observe(this, new Observer<ArrayList<UserParentModel>>() {
+        viewModel.getUsersInCategory(category,0,getActivity()).observe(getActivity(), new Observer<ArrayList<UserModel>>() {
             @Override
-            public void onChanged(ArrayList<UserParentModel> userParentModels) {
+            public void onChanged(ArrayList<UserModel> userModels) {
+                if(userModels!=null){
+                    for (UserModel user:userModels) {
+                        Log.e(TAG, "onChanged: " + user );
+                    }
+                    progressBar.animate().setDuration(200).alpha(0.05f)
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+                                    super.onAnimationStart(animation);
 
-
-                for (UserParentModel model : userParentModels) {
-                    Log.e(TAG, "onChanged:  Rate on Category" + model.getRate() );
+                                }
+                            })
+                            .withEndAction(new Runnable() {
+                                @Override
+                                public void run() {
+                                    scroll.setVisibility(View.GONE);
+                                    //adapter.setData(userModels);
+                                    adapter.notifyDataSetChanged();
+                                    foodAdapter.setData(userModels);
+                                    foodAdapter.notifyDataSetChanged();
+                                    Animation fadeOut = new AlphaAnimation(0, 1);
+                                    fadeOut.setInterpolator(new AccelerateInterpolator());
+                                    fadeOut.setStartOffset(700);
+                                    fadeOut.setDuration(250);
+                                    scroll.setVisibility(View.VISIBLE);
+                                    scroll.setAnimation(fadeOut);
+                                    //listOfKitchens = userParentModels;
+                                    progressBar.setVisibility(View.GONE);
+                                    if(userModels.size()>0)Toast.makeText(getActivity(),userModels.get(0).getName() , Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                    ;
 
                 }
 
-                listSize = userParentModels.size();
-                if (userParentModels.size() > 0) {
 
-                    exThread th = new exThread(1.25, userParentModels);
-                    th.start();
-
-                }
             }
         });
 
 
-    }
-
-    class exThread extends Thread {
-        double sec;
-        ArrayList<UserParentModel> userParentModels;
-
-        exThread(double sec, ArrayList<UserParentModel> userParentModels) {
-            this.sec = sec * 1000;
-            this.userParentModels = userParentModels;
-        }
-
-        @Override
-        public void run() {
-            super.run();
-            try {
-                Thread.sleep((int) sec);
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        /*AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
-                        anim.setDuration(1000);
-                        progressBar.startAnimation(anim);*/
-
-                        progressBar.animate().setDuration(400).alpha(0.05f)
-                                .setListener(new AnimatorListenerAdapter() {
-                                    @Override
-                                    public void onAnimationStart(Animator animation) {
-                                        super.onAnimationStart(animation);
-
-                                    }
-                                })
-                                .withEndAction(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        scroll.setVisibility(View.GONE);
-                                        adapter.setData(userParentModels);
-                                        adapter.notifyDataSetChanged();
-                                        foodAdapter.setData(userParentModels);
-                                        foodAdapter.notifyDataSetChanged();
-                                        Animation fadeOut = new AlphaAnimation(0, 1);
-                                        fadeOut.setInterpolator(new AccelerateInterpolator()); //and this
-                                        fadeOut.setStartOffset(1000);
-                                        fadeOut.setDuration(400);
-                                        scroll.setVisibility(View.VISIBLE);
-                                        scroll.setAnimation(fadeOut);
-                                        listOfKitchens = userParentModels;
-                                        progressBar.setVisibility(View.GONE);
-                                    }
-                                })
-                        ;
-
-
-                    }
-                });
-
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
 
     }
 

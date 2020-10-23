@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduiation.R;
+import com.example.graduiation.ui.Data.UserModel;
 import com.example.graduiation.ui.LegacyData.UserParentModel;
 import com.example.graduiation.ui.StoryDetails.StoryDetailsActivity2;
 import com.squareup.picasso.Callback;
@@ -24,15 +25,15 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecyclerAdapter.ViewHolder> implements Filterable {
-    private List<UserParentModel> listOfKitchens;
+public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecyclerAdapter.ViewHolder>  {
+    private List<UserModel> listOfKitchens;
     private String category;
     private Integer page = 5;
     private boolean last = false;
     private static final String TAG = "KitchensRecyclerAdapter";
-    private List<UserParentModel> exampleListFull;
+    private List<UserModel> exampleListFull;
 
-    public KitchensRecyclerAdapter(ArrayList<UserParentModel> listOfKitchens, String category) {
+    public KitchensRecyclerAdapter(ArrayList<UserModel> listOfKitchens, String category) {
         this.listOfKitchens = listOfKitchens;
         this.category=category;
     }
@@ -57,10 +58,10 @@ public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecycl
 
 
 
-        UserParentModel model = listOfKitchens.get(position);
+        UserModel model = listOfKitchens.get(position);
 
         holder.userNameTv.setText(model.getName());
-       if (model.getImage()!=null) Picasso.get().load(model.getImage())
+       /*if (model.getImage()!=null) Picasso.get().load(model.getImage())
                .fit().networkPolicy(NetworkPolicy.OFFLINE).into(holder.userPic, new Callback() {
             @Override
             public void onSuccess() {
@@ -75,7 +76,7 @@ public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecycl
 
        if(model.getNumberOfFollower()!=null) holder.followTv.setText(model.getNumberOfFollower()+ " Followers") ;
         if(model.getNumberOfOrders()!=null) holder.ordersTv.setText(model.getNumberOfOrders()+ " Orders");
-        if(model.getRate()>0) holder.ratingBar.setRating(Float.parseFloat(model.getRate()+""));
+        if(model.getRate()>0) holder.ratingBar.setRating(Float.parseFloat(model.getRate()+""));*/
         if(position==listOfKitchens.size()-1){
             RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(
                     RecyclerView.LayoutParams.WRAP_CONTENT,
@@ -94,9 +95,9 @@ public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecycl
                 i.putExtra("userName" , model.getName());
                 i.putExtra("uid", model.getId());
                 i.putExtra("category", category);
-                i.putExtra("token", model.getToken());
+               /* i.putExtra("token", model.getToken());
                 if(model.getToken()!=null)
-                    i.putExtra("token" , model.getToken());
+                    i.putExtra("token" , model.getToken());*/
                 holder.itemView.getContext().startActivity(i);
 
 
@@ -117,10 +118,10 @@ public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecycl
         //notifyDataSetChanged();
     }
 
-    @Override
+    /*@Override
     public Filter getFilter() {
         return kitchenFilter;
-    }
+    }*/
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView userPic;
@@ -136,15 +137,15 @@ public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecycl
         }
     }
 
-    public void setData(List<UserParentModel> listOfKitchens){
+    public void setData(List<UserModel> listOfKitchens){
         this.listOfKitchens=listOfKitchens;
-        exampleListFull = new ArrayList<>(listOfKitchens);
+        exampleListFull = new ArrayList<UserModel>(listOfKitchens);
 
     }
 
-    public long getLastItemDate() {
+   /* public long getLastItemDate() {
         return listOfKitchens.get(listOfKitchens.size()-1).getRegistrationTime();
-    }
+    }*/
     public String getLastItemId() {
         return listOfKitchens.get(listOfKitchens.size()-1).getId();
     }
@@ -154,6 +155,7 @@ public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecycl
     }
 
 
+/*
 
     private Filter kitchenFilter = new Filter() {
         @Override
@@ -180,5 +182,6 @@ public class KitchensRecyclerAdapter extends RecyclerView.Adapter<KitchensRecycl
             notifyDataSetChanged();
         }
     };
+*/
 
 }

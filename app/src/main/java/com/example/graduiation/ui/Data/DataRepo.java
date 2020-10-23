@@ -13,6 +13,7 @@ import java.util.HashMap;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -47,7 +48,7 @@ public class DataRepo {
     public void addMeal(String token, MealModel meal) {
         HashMap<String, String> tokenHash = new HashMap();
         tokenHash.put("Authorization", "Bearer " + token);
-        Observable<MealModel> observable = client.addMeal(tokenHash, meal).subscribeOn(Schedulers.computation());
+        Observable<MealModel> observable = client.addMeal(tokenHash, meal).subscribeOn(Schedulers.io());
         Observer<MealModel> observer = new Observer<MealModel>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
@@ -81,7 +82,8 @@ public class DataRepo {
     }
 
     public void getUsersInCategory(String category, int page, Context c, MutableLiveData<ArrayList<UserModel>> userLiveData){
-        Observable<ArrayList<UserModel>> observable = client.getUsersInCategory(category,page,getAuth(c)).subscribeOn(Schedulers.computation());
+        Observable<ArrayList<UserModel>> observable = client.getUsersInCategory(category,page,getAuth(c)).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
         Observer<ArrayList<UserModel>> observer = new Observer<ArrayList<UserModel>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
