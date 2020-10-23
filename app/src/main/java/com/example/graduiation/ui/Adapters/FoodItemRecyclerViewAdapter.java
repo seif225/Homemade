@@ -15,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduiation.R;
+import com.example.graduiation.ui.Data.MealModel;
 import com.example.graduiation.ui.LegacyData.FirebaseQueryHelperRepository;
 import com.example.graduiation.ui.LegacyData.FoodModel;
 import com.example.graduiation.ui.Meal.MealFragment;
@@ -30,7 +31,7 @@ import java.util.List;
 public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
         <FoodItemRecyclerViewAdapter.ViewHolder> {
 
-    private List<FoodModel> foodModelList;
+    private List<MealModel> foodModelList;
     private Context context;
     private static final String TAG = "FoodItemRecyclerViewAda";
     private String userName,userPicture , userId;
@@ -44,13 +45,13 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
         return new ViewHolder(view);
     }
 
-    public FoodItemRecyclerViewAdapter(List<FoodModel> buyerModels, Context context ) {
+    public FoodItemRecyclerViewAdapter(List<MealModel> buyerModels, Context context ) {
         this.foodModelList = buyerModels;
         this.context = context;
 
     }
 
-    public FoodItemRecyclerViewAdapter(ArrayList<FoodModel> arraylist, Context context, String userName, String userPicture , String userId) {
+    public FoodItemRecyclerViewAdapter(ArrayList<MealModel> arraylist, Context context, String userName, String userPicture , String userId) {
 
         this.foodModelList = arraylist;
         this.context = context;
@@ -60,17 +61,17 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
 
     }
 
-    public void setFoodModelList(List<FoodModel> foodModelList) {
+    public void setFoodModelList(List<MealModel> foodModelList) {
         this.foodModelList = foodModelList;
     }
 
     @Override
     public void onBindViewHolder(@NonNull FoodItemRecyclerViewAdapter.ViewHolder holder, int position) {
-        FoodModel foodModel = foodModelList.get(position);
-        if(foodModel.getDescribtion()!= null) holder.textView_Description.setText(foodModel.getDescribtion());
+        MealModel foodModel = foodModelList.get(position);
+        if(foodModel.getDescription()!= null) holder.textView_Description.setText(foodModel.getDescription());
         if(foodModel.getTitle()!= null) holder.textView_Name.setText(foodModel.getTitle());
-        if(foodModel.getDescribtion()!= null) Log.e(TAG, "onBindViewHolder:FOOD " + foodModel.getDescribtion());;
-        if(foodModel.getThumbnail()!= null) {Picasso.get().load(foodModel.getThumbnail())
+        if(foodModel.getDescription()!= null) Log.e(TAG, "onBindViewHolder:FOOD " + foodModel.getDescription());;
+        /*if(foodModel.getThumbnail()!= null) {Picasso.get().load(foodModel.getThumbnail())
                 .networkPolicy(NetworkPolicy.OFFLINE).into(holder.imageView_foodImage, new Callback() {
                     @Override
                     public void onSuccess() {
@@ -84,23 +85,23 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
                     }
                 });
 
-        }
+        }*/
         if(foodModel.getPrice()!= null) holder.price_tv.setText(foodModel.getPrice()+" EGP");
 
         holder.addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseQueryHelperRepository.getInstance().addItemToCart(
+                /*FirebaseQueryHelperRepository.getInstance().addItemToCart(
                         context
                         ,FirebaseAuth.getInstance().getUid()
                         ,foodModel
-                );
+                );*/
 
 
             }
         });
 
-        if(foodModel.getCookId().equals(FirebaseAuth.getInstance().getUid())) {
+        if(foodModel.getUserId().equals(FirebaseAuth.getInstance().getUid())) {
             holder.addToCartButton.setVisibility(View.GONE);
         }
 
@@ -108,13 +109,7 @@ public class FoodItemRecyclerViewAdapter extends RecyclerView.Adapter
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, MealFragment.class);
-                String gsonMeal = new Gson().toJson(foodModel);
-                i.putExtra("meal"  , gsonMeal);
-
-                i.putExtra("userName"  , userName);
-                i.putExtra("userPicture"  , userPicture);
-                i.putExtra("userId",userId);
-
+                i.putExtra("mealId"  , foodModel.getId());
                 context.startActivity(i);
             }
         });

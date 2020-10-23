@@ -16,9 +16,17 @@ import retrofit2.http.Query;
 
 public interface IMatba5Api {
 
+    //endpoint for adding meals
     @POST("addMeal")
     Observable<MealModel> addMeal(@HeaderMap HashMap<String,String> token, @Body MealModel mealModel);
+   //endpoint for getting all users in a particualr category that you provide as parameter
     @GET("getUsersInCategory")
     Observable<ArrayList<UserModel>> getUsersInCategory(@Query("category") String category , @Query("page") int page, @HeaderMap HashMap<String, String> token);
+    //get all meals for a particular user providing his id
+    @GET("getMealsByUserId")
+    Observable<ArrayList<MealModel>> getMealsByUserId(@Query("userId") String userId , @HeaderMap HashMap<String, String> token);
+    @GET("getUserById")
+    Observable<UserModel> getUserById(@Query("userId") String userId, @HeaderMap HashMap<String, String> token );
+
 
 }

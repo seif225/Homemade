@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.graduiation.ui.LegacyData.FoodModel;
-import com.example.graduiation.ui.LegacyData.UserParentModel;
+import com.example.graduiation.ui.Data.MealModel;
+import com.example.graduiation.ui.Data.UserModel;
 import com.example.graduiation.ui.SellerProfileViewPager.PlaceholderFragment;
 
 import java.util.ArrayList;
@@ -19,11 +19,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     private String[] tabTitles;
     private final Context mContext;
-    UserParentModel userParentModel;
-    ArrayList<FoodModel> foodModels;
+    UserModel userParentModel;
+    ArrayList<MealModel> foodModels;
 
 
-    public SectionsPagerAdapter(Context context, FragmentManager fm, String[] tabs, ArrayList<FoodModel> foodModels, UserParentModel userParentModel) {
+    public SectionsPagerAdapter(Context context, FragmentManager fm, String[] tabs, ArrayList<MealModel> foodModels, UserModel userParentModel) {
         super(fm);
         tabTitles = tabs;
         mContext = context;
@@ -35,8 +35,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
-        ArrayList<FoodModel> categoryModels = new ArrayList<>();
-        for (FoodModel model : foodModels) {
+        ArrayList<MealModel> categoryModels = new ArrayList<>();
+        for (MealModel model : foodModels) {
             if (model.getCategory().equals(tabTitles[position])) {
                 categoryModels.add(model);
             }

@@ -17,7 +17,6 @@ public class MealModel {
     @NonNull
     @SerializedName("description")
     private String mDescription;
-
     @SerializedName("id")
     private String mId;
     @NonNull

@@ -19,17 +19,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.graduiation.R;
-import com.example.graduiation.ui.LegacyData.FoodModel;
-import com.example.graduiation.ui.LegacyData.UserParentModel;
+import com.example.graduiation.ui.Data.MealModel;
 import com.example.graduiation.ui.Adapters.FoodItemRecyclerViewAdapter;
 import com.example.graduiation.ui.Adapters.SectionsPagerAdapter;
+import com.example.graduiation.ui.Data.UserModel;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -77,7 +74,7 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
     private CircleImageView profilePicture;
     private String token;
     private String userName;
-    private UserParentModel userParentModel;
+    private UserModel userParentModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,17 +166,17 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
             });
 
 
-            viewModel.getUserParentModelMutableLiveData().observe(this, new Observer<UserParentModel>() {
+            viewModel.getUserById( getApplicationContext(), uid).observe(this, new Observer<UserModel>() {
 
                 @Override
-                public void onChanged(UserParentModel userParentModel) {
-                    Log.e(TAG, "onChanged: " + userParentModel.getName());
+                public void onChanged(UserModel userModel) {
+                    Log.e(TAG, "onChanged: " + userModel.getName());
 
 
-                    if (userParentModel.getImage() != null) {
+                    if (userModel.getName() != null) {
 
-                        StoryDetailsActivity2.this.userParentModel=userParentModel;
-                        Picasso.get().load(userParentModel.getImage()).networkPolicy(NetworkPolicy.OFFLINE)
+                        StoryDetailsActivity2.this.userParentModel=userModel;
+                      /*  Picasso.get().load(userModel.getImage()).networkPolicy(NetworkPolicy.OFFLINE)
                                 .into((ImageView) findViewById(R.id.backdrop), new Callback() {
                                     @Override
                                     public void onSuccess() {
@@ -188,10 +185,10 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
 
                                     @Override
                                     public void onError(Exception e) {
-                                        Picasso.get().load(userParentModel.getImage()).into((ImageView) findViewById(R.id.backdrop));
+                                        Picasso.get().load(userModel.getImage()).into((ImageView) findViewById(R.id.backdrop));
                                     }
                                 });
-                        Picasso.get().load(userParentModel.getImage()).networkPolicy(NetworkPolicy.OFFLINE)
+                        Picasso.get().load(userModel.getImage()).networkPolicy(NetworkPolicy.OFFLINE)
                                 .into(profilePicture, new Callback() {
                                     @Override
                                     public void onSuccess() {
@@ -200,19 +197,19 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
 
                                     @Override
                                     public void onError(Exception e) {
-                                        Picasso.get().load(userParentModel.getImage()).into(profilePicture);
+                                        Picasso.get().load(userModel.getImage()).into(profilePicture);
                                     }
-                                });
+                                });*/
 
-                        tvMeals.setText(userParentModel.getNumberOfOrders() + " Orders");
+                        //tvMeals.setText(userModel.getNumberOfOrders() + " Orders");
                     }
-                    tvUserName.setText(userParentModel.getName() + "");
-                    if (userParentModel.getBio() != null)
-                        tvBio.setText(userParentModel.getBio() + "");
+                    tvUserName.setText(userModel.getName() + "");
+                    if (userModel.getBio() != null)
+                        tvBio.setText(userModel.getBio() + "");
                     else
                         tvBio.setVisibility(View.GONE);
-                    textView.setText(userParentModel.getName() + "'s " + category + " menu");
-                    viewModel.getFollowersCount(userParentModel.getId()).observe(StoryDetailsActivity2.this, new Observer<Integer>() {
+                    textView.setText(userModel.getName() + "'s " + category + " menu");
+                 /*   viewModel.getFollowersCount(userModel.getId()).observe(StoryDetailsActivity2.this, new Observer<Integer>() {
                         @Override
                         public void onChanged(Integer integer) {
                             if (integer == 1) tvFollowers.setText(integer + " Follower");
@@ -222,60 +219,65 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
 
 
 
-                    });
-
-                    viewModel.getListMutableLiveData().observe(StoryDetailsActivity2.this, new Observer<ArrayList<FoodModel>>() {
-                        @Override
-                        public void onChanged(ArrayList<FoodModel> foodModels) {
-
-                            Log.e(TAG, "onChanged: " + foodModels.get(0).getTitle());
+                    });*/
 
 
-                            HashSet<String> hashset = new HashSet<>();
-
-
-                            for (int i = 0; i < foodModels.size(); i++) {
-                                hashset.add(foodModels.get(i).getCategory());
-                            }
-                            Log.e(TAG, "" + hashset.size());
-                            String[] tabsArray;
-                            tabsArray = new String[hashset.size()];
-                            int k = 0;
-                            for (String s : hashset) {
-                                tabsArray[k] = s;
-                                k++;
-                            }
-
-                            for (int i = 1; i < tabsArray.length; i++) {
-                                if (tabsArray[i].equals(category)) {
-                                    String temp;
-                                    temp = tabsArray[0];
-                                    tabsArray[0] = tabsArray[i];
-                                    tabsArray[i] = temp;
-                                    break;
-                                }
-                            }
-
-                            SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(
-                                    StoryDetailsActivity2.this
-                                    , getSupportFragmentManager()
-                                    , tabsArray
-                                    , foodModels
-                                    ,userParentModel
-                            );
-                            ViewPager viewPager = findViewById(R.id.current_orders_view_pager);
-                            viewPager.setAdapter(sectionsPagerAdapter);
-                            TabLayout tabs = findViewById(R.id.current_orders_tabs);
-                            tabs.setupWithViewPager(viewPager);
-
-
-                        }
-
-
-                    });
 
                 }
             });
+
+
+            //getting meals from user ID
+            viewModel.getListOfMealsByUserId(this , uid).observe(StoryDetailsActivity2.this, new Observer<ArrayList<MealModel>>() {
+                @Override
+                public void onChanged(ArrayList<MealModel> foodModels) {
+
+                    Log.e(TAG, "onChanged: " + foodModels.get(0).getTitle());
+
+
+                    HashSet<String> hashset = new HashSet<>();
+
+
+                    for (int i = 0; i < foodModels.size(); i++) {
+                        hashset.add(foodModels.get(i).getCategory());
+                    }
+                    Log.e(TAG, "" + hashset.size());
+                    String[] tabsArray;
+                    tabsArray = new String[hashset.size()];
+                    int k = 0;
+                    for (String s : hashset) {
+                        tabsArray[k] = s;
+                        k++;
+                    }
+
+                    for (int i = 1; i < tabsArray.length; i++) {
+                        if (tabsArray[i].equals(category)) {
+                            String temp;
+                            temp = tabsArray[0];
+                            tabsArray[0] = tabsArray[i];
+                            tabsArray[i] = temp;
+                            break;
+                        }
+                    }
+
+                    SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(
+                            StoryDetailsActivity2.this
+                            , getSupportFragmentManager()
+                            , tabsArray
+                            , foodModels
+                            ,userParentModel
+                    );
+                    ViewPager viewPager = findViewById(R.id.current_orders_view_pager);
+                    viewPager.setAdapter(sectionsPagerAdapter);
+                    TabLayout tabs = findViewById(R.id.current_orders_tabs);
+                    tabs.setupWithViewPager(viewPager);
+
+
+                }
+
+
+            });
+
 
 
 

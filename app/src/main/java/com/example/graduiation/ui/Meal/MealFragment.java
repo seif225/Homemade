@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.graduiation.R;
+import com.example.graduiation.ui.Data.MealModel;
 import com.example.graduiation.ui.LegacyData.FoodModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,10 +37,7 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import flepsik.github.com.progress_ring.ProgressRingView;
 
-
 public class MealFragment extends AppCompatActivity {
-
-
     @BindView(R.id.remove_product_button)
     Button removeProductButton;
     @BindView(R.id.edit_product)
@@ -79,7 +77,7 @@ public class MealFragment extends AppCompatActivity {
     TextView numberOfRatings;
 
     private MealViewModel mViewModel;
-    FoodModel model;
+    MealModel model;
     String userName, userPicture, userId;
     private static final String TAG = "MealFragment";
     private static DecimalFormat df2 = new DecimalFormat("#.##");
@@ -92,25 +90,18 @@ public class MealFragment extends AppCompatActivity {
         mViewModel = ViewModelProviders.of(MealFragment.this).get(MealViewModel.class);
         initializeFields();
 
-        rate.setOnRatingChangeListener(new BaseRatingBar.OnRatingChangeListener() {
+      /*  rate.setOnRatingChangeListener(new BaseRatingBar.OnRatingChangeListener() {
             @Override
             public void onRatingChange(BaseRatingBar ratingBar, float rating, boolean fromUser) {
-                /* Log.e(TAG, "onRatingChange: " + userId , model.getCookId() );*/
-                mViewModel.addNewRating(FirebaseAuth.getInstance().getUid(), model.getCookId(), model.getId(), rating);
+                *//* Log.e(TAG, "onRatingChange: " + userId , model.getCookId() );*//*
+                //mViewModel.addNewRating(FirebaseAuth.getInstance().getUid(), model.getUserId(), model.getId(), rating);
             }
         });
 
-
-       /* mViewModel.getMapOfRatings(model.getCookId(),model.getId()).observe(this, new Observer<HashMap<String, Object>>() {
-            @Override
-            public void onChanged(HashMap<String, Object> stringObjectHashMap) {
-                Log.e(TAG, "onChanged: HASH"+ stringObjectHashMap.size());
-            }
-        });
 */
 
 
-        if (model.getRateMap() != null) {
+       /* if (model.getRateMap() != null) {
             Log.e(TAG, "onCreate: " + model.getRateMap().size());
             double accRate = 0;
             Iterator<HashMap.Entry<String, Object>> it = model.getRateMap().entrySet().iterator();
@@ -132,30 +123,21 @@ public class MealFragment extends AppCompatActivity {
 
         } else {
             Log.e(TAG, "onCreate:: NO HASH");
-        }
+        }*/
     }
 
     private void initializeFields() {
-        String foodModelString = getIntent().getExtras().getString("meal");
+        String mealId = getIntent().getExtras().getString("mealId");
         //TODO: here we send the food model class
-        model = new Gson().fromJson(foodModelString, FoodModel.class);
-
-        userName = getIntent().getExtras().getString("userName");
-        userPicture = getIntent().getExtras().getString("userPicture");
-        userId = getIntent().getExtras().getString("userId");
-
-
         rate = findViewById(R.id.rate);
-        Log.e(TAG, "onCreate: " + userName);
-        Log.e(TAG, "onCreate: " + userPicture);
-        Log.e(TAG, "onCreate: " + userId);
+        Log.e(TAG, "onCreate: meal id:" + mealId);
 
 
-        SliderView sliderView = findViewById(R.id.imageSlider);
+       /* SliderView sliderView = findViewById(R.id.imageSlider);
         SliderAdapterExample adapter = new SliderAdapterExample(this);
-        adapter.addItem(model);
-        sliderView.setSliderAdapter(adapter);
-        sliderView.setIndicatorAnimation(IndicatorAnimations.WORM);
+        //adapter.addItem(model);
+        //sliderView.setSliderAdapter(adapter);
+        //sliderView.setIndicatorAnimation(IndicatorAnimations.WORM);
         floatingActionButton.setScaleType(ImageView.ScaleType.CENTER);
         //set indicator animation by using SliderLayout.IndicatorAnimations.
         // :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
@@ -164,64 +146,33 @@ public class MealFragment extends AppCompatActivity {
         sliderView.setIndicatorSelectedColor(Color.parseColor("#11CFC5"));
         sliderView.setIndicatorUnselectedColor(Color.WHITE);
         sliderView.setScrollTimeInSec(2); //set scroll delay in seconds :
-        sliderView.startAutoCycle();
-        userNameInProductActivity.setText(userName);
+        sliderView.startAutoCycle();*/
+
+        /*if (userPicture != null)
+            Picasso.get().load(userPicture).into(profilePictureInProductActivity);*/
+       //-------------------------------------------------------
+       /* userNameInProductActivity.setText(userName);
         TextView mealTitle = findViewById(R.id.meal_title);
         mealTitle.setText(model.getTitle());
-        if (userPicture != null)
-            Picasso.get().load(userPicture).into(profilePictureInProductActivity);
         productCodeTv.setText(model.getId());
         productCategoryTv.setText(model.getCategory());
-        productDescribtionTv.setText(model.getDescribtion());
-        productPriceTv.setText((Double.parseDouble((model.getPrice())) + (Double.parseDouble(model.getPrice()) * 0.12)) + " EGP");
-        progressRing.setAnimated(true);
+        productDescribtionTv.setText(model.getDescription());
+        productPriceTv.setText((model.getPrice() + (model.getPrice() * 0.12)) + " EGP"); */
+        //-----------------------------------------------------------------------
+        /*progressRing.setAnimated(true);
         progressRing.setAnimationDuration(800);
         progressRing.setProgress(0.0f);
         rate.setRating(0f);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mViewModel.addToCart(getBaseContext() , FirebaseAuth.getInstance().getUid() , model);
+                //mViewModel.addToCart(getBaseContext() , FirebaseAuth.getInstance().getUid() , model);
 
 
             }
-        });
-
-       /* rate.setOnRatingChangeListener(new BaseRatingBar.OnRatingChangeListener() {
-            @Override
-            public void onRatingChange(BaseRatingBar ratingBar, float rating, boolean fromUser) {
-                Log.e(TAG, "onRatingChanged: " + rating);
-                progressRing.setProgress(rating / 5);
-                accumlatedRate.setText(df2.format(((rating) / 5 * 100)) + "%");
-                if (rating < 0.5) {
-                    progressRing.setProgress(0.0f);
-                    Log.e(TAG, "onRatingChanged: " + " its ZEROOOO !! ");
-                }
-
-                if (rating <= 1) {
-
-                    progressRing.setProgressColor(Color.RED);
-
-                } else if (rating <= 2) {
-                    progressRing.setProgressColor(Color.parseColor("#ff8000"));
-
-                } else if (rating <= 3) {
-                    progressRing.setProgressColor(Color.parseColor("#FFEB3B"));
-
-
-                } else if (rating <= 4) {
-                    progressRing.setProgressColor(Color.parseColor("#83b735"));
-
-
-                } else if (rating > 4) {
-
-                    progressRing.setProgressColor(Color.GREEN);
-
-                }
-
-            }
-
         });*/
+
+
 
     }
 

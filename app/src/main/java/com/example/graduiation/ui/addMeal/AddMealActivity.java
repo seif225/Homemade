@@ -126,7 +126,7 @@ public class AddMealActivity extends AppCompatActivity {
                     model.setMax(max);
                     //TODO : set model id in view model ==> model.setId(getUserId);
                     model.setDescription(des);
-                    model.setPostTime(System.currentTimeMillis());
+                    model.setPostTime((long)1);
                     viewModel.uploadMeal(getApplicationContext(),model);
 
                     //viewModel.uploadFoodDataWork(model, getBaseContext(), photo);

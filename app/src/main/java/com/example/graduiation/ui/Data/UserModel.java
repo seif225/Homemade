@@ -1,6 +1,7 @@
 
 package com.example.graduiation.ui.Data;
 
+import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -14,12 +15,16 @@ public class UserModel {
     private String mCreatedAt;
     @SerializedName("id")
     private String mId;
+    @SerializedName("Meals")
+    private List<MealModel> mMeals;
     @SerializedName("name")
     private String mName;
     @SerializedName("phone")
     private String mPhone;
     @SerializedName("subType")
     private Long mSubType;
+    @SerializedName("tokens")
+    private String mTokens;
     @SerializedName("updatedAt")
     private String mUpdatedAt;
 
@@ -47,6 +52,14 @@ public class UserModel {
         mId = id;
     }
 
+    public List<MealModel> getMeals() {
+        return mMeals;
+    }
+
+    public void setMeals(List<MealModel> meals) {
+        mMeals = meals;
+    }
+
     public String getName() {
         return mName;
     }
@@ -69,6 +82,14 @@ public class UserModel {
 
     public void setSubType(Long subType) {
         mSubType = subType;
+    }
+
+    public String getTokens() {
+        return mTokens;
+    }
+
+    public void setTokens(String tokens) {
+        mTokens = tokens;
     }
 
     public String getUpdatedAt() {

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.graduiation.R;
+import com.example.graduiation.ui.Data.MealModel;
 import com.example.graduiation.ui.LegacyData.FoodModel;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 import com.squareup.picasso.Callback;
@@ -22,13 +23,13 @@ import java.util.List;
 public class SliderAdapterExample extends SliderViewAdapter<SliderAdapterExample.SliderAdapterVH> {
 
     private Context context;
-    private List<FoodModel> mSliderItems = new ArrayList<>();
+    private List<MealModel> mSliderItems = new ArrayList<>();
 
     public SliderAdapterExample(Context context) {
         this.context = context;
     }
 
-    public void renewItems(List<FoodModel> sliderItems) {
+    public void renewItems(List<MealModel> sliderItems) {
         this.mSliderItems = sliderItems;
         notifyDataSetChanged();
     }
@@ -38,7 +39,7 @@ public class SliderAdapterExample extends SliderViewAdapter<SliderAdapterExample
         notifyDataSetChanged();
     }
 
-    public void addItem(FoodModel sliderItem) {
+    public void addItem(MealModel sliderItem) {
         this.mSliderItems.add(sliderItem);
         notifyDataSetChanged();
     }
@@ -53,14 +54,14 @@ public class SliderAdapterExample extends SliderViewAdapter<SliderAdapterExample
 
     @Override
     public void onBindViewHolder(SliderAdapterVH viewHolder, final int position) {
-        FoodModel sliderItem = mSliderItems.get(0);
+        MealModel sliderItem = mSliderItems.get(0);
 
         if(position>0){
 
         viewHolder.textViewDescription.setText(sliderItem.getTitle());
         viewHolder.textViewDescription.setTextSize(16);
         viewHolder.textViewDescription.setTextColor(Color.WHITE);
-        Picasso.get().load(sliderItem.getThumbnail())
+        /*Picasso.get().load(sliderItem.getThumbnail())
                 .fit()
                 .networkPolicy(NetworkPolicy.OFFLINE)
                 .into(viewHolder.imageViewBackground, new Callback() {
@@ -73,7 +74,7 @@ public class SliderAdapterExample extends SliderViewAdapter<SliderAdapterExample
                     public void onError(Exception e) {
                         Picasso.get().load(sliderItem.getThumbnail()).fit().into(viewHolder.imageViewBackground);
                     }
-                });
+                });*/
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

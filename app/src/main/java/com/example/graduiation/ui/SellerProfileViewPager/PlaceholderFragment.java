@@ -12,9 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduiation.R;
+import com.example.graduiation.ui.Data.MealModel;
+import com.example.graduiation.ui.Data.UserModel;
 import com.example.graduiation.ui.LegacyData.FoodModel;
 import com.example.graduiation.ui.Adapters.FoodItemRecyclerViewAdapter;
-import com.example.graduiation.ui.LegacyData.UserParentModel;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,7 @@ public class PlaceholderFragment extends Fragment {
     private RecyclerView recycler;
 
 
-    public static PlaceholderFragment newInstance(int index, String category, ArrayList<FoodModel> foodModels, UserParentModel userParentModel) {
+    public static PlaceholderFragment newInstance(int index, String category, ArrayList<MealModel> foodModels, UserModel userParentModel) {
         PlaceholderFragment fragment = new PlaceholderFragment();
         Bundle bundle = new Bundle();
         bundle.putString("category", category);
@@ -34,7 +35,7 @@ public class PlaceholderFragment extends Fragment {
         bundle.putInt(ARG_SECTION_NUMBER, index);
 
         bundle.putString("userName", userParentModel.getName());
-        bundle.putString("userPicture", userParentModel.getImage());
+        //bundle.putString("userPicture", userParentModel.getImage());
         bundle.putString("userId", userParentModel.getId());
 
         fragment.setArguments(bundle);
@@ -62,7 +63,7 @@ public class PlaceholderFragment extends Fragment {
         recycler = root.findViewById(R.id.fragment_main_recyclerView);
 
 
-        FoodItemRecyclerViewAdapter foodAdapter = new FoodItemRecyclerViewAdapter((ArrayList<FoodModel>) getArguments().getSerializable("ARRAYLIST")
+        FoodItemRecyclerViewAdapter foodAdapter = new FoodItemRecyclerViewAdapter((ArrayList<MealModel>) getArguments().getSerializable("ARRAYLIST")
                 , getContext(), getArguments().getString("userName"), getArguments().getString("userPicture"), getArguments().getString("userId"));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext()
