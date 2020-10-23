@@ -25,23 +25,19 @@ public class DataRepo {
     private static DataRepo repo;
     private static IMatba5Api client = Matba5ApiClient.getApi();
     private static final String TAG = "DataRepo";
-
     private DataRepo(){}
-
     public static DataRepo getInstance() {
         if (repo == null) repo = new DataRepo();
         return repo;
     }
 
     public String getToken(Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences(
-                "userFile", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = context.getSharedPreferences("userFile", Context.MODE_PRIVATE);
         return sharedPref.getString("userToken", "");
     }
 
     public String getUserId(Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences(
-                "userFile", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = context.getSharedPreferences("userFile", Context.MODE_PRIVATE);
         return sharedPref.getString("userId", "empty user Id");
     }
 
@@ -66,9 +62,7 @@ public class DataRepo {
                 .observeOn(AndroidSchedulers.mainThread());
         observable.subscribe((o)-> userLiveData.setValue(o)
                             ,(e) -> Log.e(TAG, "getUsersInCategory: "+e ) );
-
-
-    };
+    }
 
     @SuppressLint("CheckResult")
     public void getAllMealsById(Context c , String id , MutableLiveData<ArrayList<MealModel>> list){
@@ -83,4 +77,11 @@ public class DataRepo {
         Observable<UserModel> observable = client.getUserById(uid,getAuth(c)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
         observable.subscribe((o)->userModelMutableLiveData.setValue(o) , (e)->Log.e(TAG, "onError: " + e));
     }
+
+    @SuppressLint("CheckResult")
+    public void getUserWithMealsById(Context c, String uid, MutableLiveData<UserModel> userModelMutableLiveData){
+        Observable<UserModel> observable = client.getUserWithMealsById(uid,getAuth(c)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        observable.subscribe((o)->userModelMutableLiveData.setValue(o) , (e)->Log.e(TAG, "onError: " + e));
+    }
+
 }

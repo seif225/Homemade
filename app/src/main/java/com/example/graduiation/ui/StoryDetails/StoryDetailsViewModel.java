@@ -87,4 +87,9 @@ public class StoryDetailsViewModel extends ViewModel {
         return userModelMutableLiveData;
     }
 
+    public MutableLiveData<UserModel> getUserWithMealsById(Context c, String uid) {
+        MutableLiveData<UserModel>  userModelMutableLiveData = new MutableLiveData<>();
+        repo.getUserWithMealsById(c,uid,userModelMutableLiveData);
+        return userModelMutableLiveData;
+    }
 }
