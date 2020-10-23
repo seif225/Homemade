@@ -5,6 +5,8 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.graduiation.ui.Data.DataRepo;
+import com.example.graduiation.ui.Data.MealModel;
 import com.example.graduiation.ui.LegacyData.FirebaseQueryHelperRepository;
 import com.example.graduiation.ui.LegacyData.FoodModel;
 
@@ -14,6 +16,8 @@ public class MealViewModel extends ViewModel {
 
     private FirebaseQueryHelperRepository repo = FirebaseQueryHelperRepository.getInstance();
     private MutableLiveData<HashMap<String,Object>> rateMapMutableLifeData = new MutableLiveData<>();
+    private static DataRepo repos = DataRepo.getInstance();
+    private MutableLiveData<MealModel> mealMutableLiveData = new MutableLiveData<>();
     public void addNewRating(String userId, String cookId, String mealId, float rating) {
         repo.addNewRating(userId,cookId,mealId,rating);
     }
@@ -26,4 +30,11 @@ public class MealViewModel extends ViewModel {
     public void addToCart(Context onClickListener, String uid, FoodModel model) {
         repo.addItemToCart(onClickListener , uid , model);
     }
+
+    public MutableLiveData<MealModel> getOneMealById(Context c , String uid){
+        repos.getOneMealById(c,uid,mealMutableLiveData);
+        return mealMutableLiveData;
+
+    }
+
 }

@@ -6,9 +6,11 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 
 @SuppressWarnings("unused")
-public class MealModel {
+public class MealModel implements Serializable {
     @NonNull
     @SerializedName("category")
     private String mCategory;

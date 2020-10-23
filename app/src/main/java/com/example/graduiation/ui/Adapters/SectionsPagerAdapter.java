@@ -12,6 +12,7 @@ import com.example.graduiation.ui.Data.UserModel;
 import com.example.graduiation.ui.SellerProfileViewPager.PlaceholderFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -20,10 +21,10 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     private String[] tabTitles;
     private final Context mContext;
     UserModel userParentModel;
-    ArrayList<MealModel> foodModels;
+    List<MealModel> foodModels;
 
 
-    public SectionsPagerAdapter(Context context, FragmentManager fm, String[] tabs, ArrayList<MealModel> foodModels, UserModel userParentModel) {
+    public SectionsPagerAdapter(Context context, FragmentManager fm, String[] tabs, List<MealModel> foodModels, UserModel userParentModel) {
         super(fm);
         tabTitles = tabs;
         mContext = context;

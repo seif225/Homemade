@@ -84,4 +84,9 @@ public class DataRepo {
         observable.subscribe((o)->userModelMutableLiveData.setValue(o) , (e)->Log.e(TAG, "onError: " + e));
     }
 
+    @SuppressLint("CheckResult")
+    public void getOneMealById(Context c, String uid, MutableLiveData<MealModel> mealMutableLiveData) {
+        Observable<MealModel> observable = client.getOneMealWithId(uid,getAuth(c)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        observable.subscribe((o)->mealMutableLiveData.setValue(o) , (e)->Log.e(TAG, "onError: " + e));
+    }
 }

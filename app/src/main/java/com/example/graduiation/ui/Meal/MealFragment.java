@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.graduiation.R;
@@ -151,13 +152,21 @@ public class MealFragment extends AppCompatActivity {
         /*if (userPicture != null)
             Picasso.get().load(userPicture).into(profilePictureInProductActivity);*/
        //-------------------------------------------------------
-       /* userNameInProductActivity.setText(userName);
-        TextView mealTitle = findViewById(R.id.meal_title);
-        mealTitle.setText(model.getTitle());
-        productCodeTv.setText(model.getId());
-        productCategoryTv.setText(model.getCategory());
-        productDescribtionTv.setText(model.getDescription());
-        productPriceTv.setText((model.getPrice() + (model.getPrice() * 0.12)) + " EGP"); */
+
+        mViewModel.getOneMealById(this,mealId).observe(this, new Observer<MealModel>() {
+            @Override
+            public void onChanged(MealModel mealModel) {
+                Log.e(TAG, "onChanged: meal model " +  mealModel.getTitle() );
+                userNameInProductActivity.setText(userName);
+                TextView mealTitle = findViewById(R.id.meal_title);
+                mealTitle.setText(mealModel.getTitle());
+                productCodeTv.setText(mealModel.getId());
+                productCategoryTv.setText(mealModel.getCategory());
+                productDescribtionTv.setText(mealModel.getDescription());
+                productPriceTv.setText((mealModel.getPrice() + (mealModel.getPrice() * 0.12)) + " EGP");
+            }
+        });
+
         //-----------------------------------------------------------------------
         /*progressRing.setAnimated(true);
         progressRing.setAnimationDuration(800);

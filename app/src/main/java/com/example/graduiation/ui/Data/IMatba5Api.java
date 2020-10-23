@@ -31,6 +31,7 @@ public interface IMatba5Api {
     //get user with array list of his meals
     @GET("getUserWithMeals")
     Observable<UserModel> getUserWithMealsById(@Query("userId") String userId ,@HeaderMap HashMap<String, String> token) ;
-
-
+    //get only one meal with its id
+    @GET("getOneMealById")
+    Observable<MealModel> getOneMealWithId(@Query("mealId") String mealId ,@HeaderMap HashMap<String, String> token);
 }

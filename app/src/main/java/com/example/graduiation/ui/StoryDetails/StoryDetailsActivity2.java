@@ -72,15 +72,77 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
     private FoodItemRecyclerViewAdapter foodAdapter;
     private TextView textView;
     private CircleImageView profilePicture;
-    private String token;
-    private String userName;
-    private UserModel userParentModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story_details2);
-
         ButterKnife.bind(this);
+        handleUi();
+        String uid = getIntent().getStringExtra("uid");
+        String category = getIntent().getStringExtra("category");
+
+
+        Log.e(TAG, "onCreate: " + uid + " " + category);
+
+        if (uid != null && category != null) {
+            viewModel = ViewModelProviders.of(this).get(StoryDetailsViewModel.class);
+            viewModel.getUserWithMealsById(this,uid).observe(this, new Observer<UserModel>() {
+                @Override
+                public void onChanged(UserModel userModel) {
+                    Log.e(TAG, "onChanged: meals object" + userModel.getMeals() );
+                    Log.e(TAG, "onChanged: userName" +userModel.getName() );
+                    tvUserName.setText(userModel.getName()+"");
+                    tvBio.setText(userModel.getBio()+"");
+                    //TODO: i think the best way to do it is to make a network call for each category on its own.
+                    HashSet<String> hashset = new HashSet<>();
+
+
+                    for (int i = 0; i < userModel.getMeals().size(); i++) {
+                        hashset.add(userModel.getMeals().get(i).getCategory());
+                    }
+                    Log.e(TAG, "" + hashset.size());
+                    String[] tabsArray;
+                    tabsArray = new String[hashset.size()];
+                    int k = 0;
+                    for (String s : hashset) {
+                        tabsArray[k] = s;
+                        k++;
+                    }
+
+                    for (int i = 1; i < tabsArray.length; i++) {
+                        if (tabsArray[i].equals(category)) {
+                            String temp;
+                            temp = tabsArray[0];
+                            tabsArray[0] = tabsArray[i];
+                            tabsArray[i] = temp;
+                            break;
+                        }
+                    }
+                    SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(
+                            StoryDetailsActivity2.this
+                            , getSupportFragmentManager()
+                            , tabsArray
+                            , userModel.getMeals()
+                            ,userModel
+                    );
+                    ViewPager viewPager = findViewById(R.id.current_orders_view_pager);
+                    viewPager.setAdapter(sectionsPagerAdapter);
+                    TabLayout tabs = findViewById(R.id.current_orders_tabs);
+                    tabs.setupWithViewPager(viewPager);
+
+                }
+            });
+
+
+
+        }
+
+
+    }
+
+    private void handleUi() {
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         profilePicture = findViewById(R.id.profile_image_details);
@@ -89,10 +151,9 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
         //collapsingToolbar.setTitleEnabled(false);
 
 
-        String uid = getIntent().getStringExtra("uid");
-        String category = getIntent().getStringExtra("category");
+
         String userName = getIntent().getStringExtra("userName");
-        token = getIntent().getStringExtra("token");
+        //token = getIntent().getStringExtra("token");
         String userNameFromSharedPref = getSharedPreferences("userData", Context.MODE_PRIVATE).getString("name" , "folan");
 
         collapsingToolbar.setTitle(userName + "");
@@ -115,174 +176,6 @@ public class StoryDetailsActivity2 extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
-
-        Log.e(TAG, "onCreate: " + uid + " " + category);
-
-        if (uid != null && category != null) {
-
-            viewModel = ViewModelProviders.of(this).get(StoryDetailsViewModel.class);
-            viewModel.setCategoryAndId(uid, category);
-
-            if (!FirebaseAuth.getInstance().getUid().equals(uid))
-                followButton.setVisibility(View.VISIBLE);
-
-
-            viewModel.isFollowed(FirebaseAuth.getInstance().getUid(), uid).observe(this, new Observer<Boolean>() {
-                @Override
-                public void onChanged(Boolean aBoolean) {
-
-
-                    if (aBoolean) {
-                        //true , set TextUnfollow
-                        setUnfollowedState();
-
-                    } else {
-                        //false , set Follow statement
-                        setFollowedState();
-
-                    }
-
-                }
-            });
-
-
-            String finalUserName = userNameFromSharedPref;
-            followButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                   if( followButton.getText().toString().equals("Unfollow")){
-                       viewModel.unFollow(FirebaseAuth.getInstance().getUid(), uid);
-                       setFollowedState();
-                   }
-                   else {
-                       viewModel.follow(FirebaseAuth.getInstance().getUid(), uid , finalUserName, token);
-                       setUnfollowedState();
-                       viewModel.pushNotification(finalUserName , token);
-
-                   }
-
-                }
-            });
-
-
-            viewModel.getUserById( getApplicationContext(), uid).observe(this, new Observer<UserModel>() {
-
-                @Override
-                public void onChanged(UserModel userModel) {
-                    Log.e(TAG, "onChanged: " + userModel.getName());
-
-
-                    if (userModel.getName() != null) {
-
-                        StoryDetailsActivity2.this.userParentModel=userModel;
-                      /*  Picasso.get().load(userModel.getImage()).networkPolicy(NetworkPolicy.OFFLINE)
-                                .into((ImageView) findViewById(R.id.backdrop), new Callback() {
-                                    @Override
-                                    public void onSuccess() {
-
-                                    }
-
-                                    @Override
-                                    public void onError(Exception e) {
-                                        Picasso.get().load(userModel.getImage()).into((ImageView) findViewById(R.id.backdrop));
-                                    }
-                                });
-                        Picasso.get().load(userModel.getImage()).networkPolicy(NetworkPolicy.OFFLINE)
-                                .into(profilePicture, new Callback() {
-                                    @Override
-                                    public void onSuccess() {
-
-                                    }
-
-                                    @Override
-                                    public void onError(Exception e) {
-                                        Picasso.get().load(userModel.getImage()).into(profilePicture);
-                                    }
-                                });*/
-
-                        //tvMeals.setText(userModel.getNumberOfOrders() + " Orders");
-                    }
-                    tvUserName.setText(userModel.getName() + "");
-                    if (userModel.getBio() != null)
-                        tvBio.setText(userModel.getBio() + "");
-                    else
-                        tvBio.setVisibility(View.GONE);
-                    textView.setText(userModel.getName() + "'s " + category + " menu");
-                 /*   viewModel.getFollowersCount(userModel.getId()).observe(StoryDetailsActivity2.this, new Observer<Integer>() {
-                        @Override
-                        public void onChanged(Integer integer) {
-                            if (integer == 1) tvFollowers.setText(integer + " Follower");
-                            else tvFollowers.setText(integer + " Followers");
-                        }
-
-
-
-
-                    });*/
-
-
-
-                }
-            });
-
-
-            //getting meals from user ID
-            viewModel.getListOfMealsByUserId(this , uid).observe(StoryDetailsActivity2.this, new Observer<ArrayList<MealModel>>() {
-                @Override
-                public void onChanged(ArrayList<MealModel> foodModels) {
-
-                    Log.e(TAG, "onChanged: " + foodModels.get(0).getTitle());
-
-
-                    HashSet<String> hashset = new HashSet<>();
-
-
-                    for (int i = 0; i < foodModels.size(); i++) {
-                        hashset.add(foodModels.get(i).getCategory());
-                    }
-                    Log.e(TAG, "" + hashset.size());
-                    String[] tabsArray;
-                    tabsArray = new String[hashset.size()];
-                    int k = 0;
-                    for (String s : hashset) {
-                        tabsArray[k] = s;
-                        k++;
-                    }
-
-                    for (int i = 1; i < tabsArray.length; i++) {
-                        if (tabsArray[i].equals(category)) {
-                            String temp;
-                            temp = tabsArray[0];
-                            tabsArray[0] = tabsArray[i];
-                            tabsArray[i] = temp;
-                            break;
-                        }
-                    }
-
-                    SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(
-                            StoryDetailsActivity2.this
-                            , getSupportFragmentManager()
-                            , tabsArray
-                            , foodModels
-                            ,userParentModel
-                    );
-                    ViewPager viewPager = findViewById(R.id.current_orders_view_pager);
-                    viewPager.setAdapter(sectionsPagerAdapter);
-                    TabLayout tabs = findViewById(R.id.current_orders_tabs);
-                    tabs.setupWithViewPager(viewPager);
-
-
-                }
-
-
-            });
-
-
-
-
-        }
-
 
     }
 
