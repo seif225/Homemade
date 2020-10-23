@@ -23,7 +23,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.example.graduiation.R;
-import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
+import com.example.graduiation.ui.LegacyData.FirebaseQueryHelperRepository;
 import com.example.graduiation.ui.WorkManagers.OrderTimeOutNotificationWorkManager;
 import com.example.graduiation.ui.main.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;

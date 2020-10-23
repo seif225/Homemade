@@ -1,41 +1,21 @@
 package com.example.graduiation.ui.SubPayment;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.braintreepayments.cardform.view.CardForm;
 import com.example.graduiation.R;
-import com.example.graduiation.ui.Data.ApiClient;
-import com.example.graduiation.ui.Data.ApiClientForPayment;
-import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
-import com.example.graduiation.ui.Data.PaymentModel;
-import com.example.graduiation.ui.Data.PostModel;
-import com.example.graduiation.ui.main.MainActivity;
-import com.google.android.gms.wallet.PaymentsClient;
-import com.google.android.gms.wallet.Wallet;
-import com.google.android.gms.wallet.WalletConstants;
-import com.hbb20.CountryCodePicker;
+import com.example.graduiation.ui.LegacyData.ApiClientForPayment;
+import com.example.graduiation.ui.LegacyData.FirebaseQueryHelperRepository;
+import com.example.graduiation.ui.LegacyData.PaymentModel;
 import com.stripe.android.ApiResultCallback;
 import com.stripe.android.PaymentConfiguration;
 import com.stripe.android.Stripe;
@@ -43,19 +23,10 @@ import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
 import com.stripe.android.view.CardInputWidget;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.lang.ref.WeakReference;
-import java.util.Optional;
-import java.util.concurrent.Executor;
-import java.util.concurrent.TimeUnit;
 
-import butterknife.internal.Constants;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 

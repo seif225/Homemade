@@ -8,26 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Animators.Fx;
-import com.example.graduiation.ui.Data.FoodModel;
-import com.example.graduiation.ui.Data.OrderModel;
+import com.example.graduiation.ui.LegacyData.FoodModel;
+import com.example.graduiation.ui.LegacyData.OrderModel;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-
-import static android.graphics.BlendMode.COLOR;
 
 public class CurrentOrdersRecyclerAddapter extends RecyclerView.Adapter<CurrentOrdersRecyclerAddapter.ViewHolder> {
 

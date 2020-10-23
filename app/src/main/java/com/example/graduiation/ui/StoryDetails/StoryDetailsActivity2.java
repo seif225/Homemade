@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.graduiation.R;
-import com.example.graduiation.ui.Data.FoodModel;
-import com.example.graduiation.ui.Data.UserParentModel;
+import com.example.graduiation.ui.LegacyData.FoodModel;
+import com.example.graduiation.ui.LegacyData.UserParentModel;
 import com.example.graduiation.ui.Adapters.FoodItemRecyclerViewAdapter;
 import com.example.graduiation.ui.Adapters.SectionsPagerAdapter;
 import com.google.android.material.appbar.AppBarLayout;

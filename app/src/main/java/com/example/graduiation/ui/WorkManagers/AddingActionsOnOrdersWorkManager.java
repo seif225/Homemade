@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
-import com.example.graduiation.ui.Data.OrderModel;
+import com.example.graduiation.ui.LegacyData.FirebaseQueryHelperRepository;
+import com.example.graduiation.ui.LegacyData.OrderModel;
 import com.google.gson.Gson;
 
 public class AddingActionsOnOrdersWorkManager extends Worker {

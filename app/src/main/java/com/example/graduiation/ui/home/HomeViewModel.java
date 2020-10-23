@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
-import com.example.graduiation.ui.Data.FoodModel;
-import com.example.graduiation.ui.Data.FoodSearchModel;
+import com.example.graduiation.ui.LegacyData.FirebaseQueryHelperRepository;
+import com.example.graduiation.ui.LegacyData.FoodSearchModel;
 
 import java.util.ArrayList;
 

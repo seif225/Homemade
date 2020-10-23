@@ -3,12 +3,10 @@ package com.example.graduiation.ui.UserCart;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.graduiation.ui.Data.CartItemModel;
-import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
-import com.example.graduiation.ui.Data.FoodModel;
+import com.example.graduiation.ui.LegacyData.FirebaseQueryHelperRepository;
+import com.example.graduiation.ui.LegacyData.FoodModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class UserCartViewModel extends ViewModel {
 

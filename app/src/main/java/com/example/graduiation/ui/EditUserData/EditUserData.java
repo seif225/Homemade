@@ -10,17 +10,13 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.graduiation.R;
-import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
-import com.example.graduiation.ui.Data.UserParentModel;
+import com.example.graduiation.ui.LegacyData.FirebaseQueryHelperRepository;
+import com.example.graduiation.ui.LegacyData.UserParentModel;
 import com.example.graduiation.ui.main.MainActivity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EditUserData extends AppCompatActivity {
 

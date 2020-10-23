@@ -15,9 +15,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduiation.R;
-import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
-import com.example.graduiation.ui.Data.FoodModel;
-import com.example.graduiation.ui.Data.UserParentModel;
+import com.example.graduiation.ui.LegacyData.FirebaseQueryHelperRepository;
+import com.example.graduiation.ui.LegacyData.FoodModel;
 import com.example.graduiation.ui.Meal.MealFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;

@@ -5,7 +5,7 @@ import android.content.Context;
 
 import androidx.lifecycle.ViewModel;
 
-import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
+import com.example.graduiation.ui.LegacyData.FirebaseQueryHelperRepository;
 
 public class LoginViewModel extends ViewModel {
 

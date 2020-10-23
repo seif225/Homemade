@@ -13,7 +13,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.graduiation.R;
-import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
 
 public class GalleryFragment extends Fragment {
 

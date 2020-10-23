@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -17,7 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.graduiation.R;
-import com.example.graduiation.ui.Data.FoodModel;
+import com.example.graduiation.ui.Data.MealModel;
+import com.example.graduiation.ui.LegacyData.FoodModel;
 import com.example.graduiation.ui.login.LoginActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,7 +30,6 @@ import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AddMealActivity extends AppCompatActivity {
 
@@ -91,50 +90,47 @@ public class AddMealActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String title = etMealName.getText().toString();
-                String price = etBookPrice.getText().toString();
+                long price = Long.parseLong(etBookPrice.getText().toString());
                 String category = spinnerGenre.getSelectedItem().toString();
-                String min = etMin.getText().toString();
-                String max = etMax.getText().toString();
+                long min = Long.parseLong(etMin.getText().toString());
+                long max = Long.parseLong(etMax.getText().toString());
                 String des = etDescription.getText().toString();
-                String foodId = UUID.randomUUID().toString();
-                String userId = FirebaseAuth.getInstance().getUid();
-                String idToken = FirebaseInstanceId.getInstance().getToken();
+                //String foodId = UUID.randomUUID().toString();
 
                 //Log.e(TAG, "onClick: " + category);
                 if (title.isEmpty()) {
                     etMealName.requestFocus();
                     etMealName.setError("you can't leave this field empty");
-                } else if (price.isEmpty()) {
+                } else if (price<=0) {
                     etBookPrice.requestFocus();
                     etBookPrice.setError("you can't leave this field empty");
                 } else if (category.isEmpty()) {
                     Toast.makeText(AddMealActivity.this, "you should choose a category", Toast.LENGTH_SHORT).show();
-                } else if (min.isEmpty()) {
+                } else if (min<=0) {
                     etMin.requestFocus();
                     etMin.setError("you can't leave this field empty");
-                } else if (max.isEmpty()) {
+                } else if (max<=0) {
                     etMax.requestFocus();
                     etMax.setError("you can't leave this field empty");
                 } else if (des.isEmpty()) {
                     etDescription.requestFocus();
                     etDescription.setError("you can't leave this field empty");
-                } else if (photo == null) {
+                } /*else if (photo == null) {
                     Toast.makeText(AddMealActivity.this, "you must upload a photo first", Toast.LENGTH_SHORT).show();
-                } else {
-                    FoodModel model = new FoodModel();
+                }*/ else {
+                    MealModel model = new MealModel();
                     model.setTitle(title);
                     model.setPrice(price);
                     model.setCategory(category);
                     model.setMin(min);
                     model.setMax(max);
-                    model.setId(foodId);
-                    model.setCookId(userId);
-                    model.setDescribtion(des);
-                    model.setCookToken(idToken);
+                    //TODO : set model id in view model ==> model.setId(getUserId);
+                    model.setDescription(des);
                     model.setPostTime(System.currentTimeMillis());
+                    viewModel.uploadMeal(getApplicationContext(),model);
 
-                    viewModel.uploadFoodDataWork(model, getBaseContext(), photo);
-                    finish();
+                    //viewModel.uploadFoodDataWork(model, getBaseContext(), photo);
+                    //finish();
 
 
                 }

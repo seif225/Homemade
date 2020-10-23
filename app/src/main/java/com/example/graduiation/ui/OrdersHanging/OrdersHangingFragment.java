@@ -17,9 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduiation.R;
-import com.example.graduiation.ui.AcceptedOrders.AcceptedOrdersViewModel;
 import com.example.graduiation.ui.Adapters.OrdersRecieivedRecyclerAdapter;
-import com.example.graduiation.ui.Data.OrderModel;
+import com.example.graduiation.ui.LegacyData.OrderModel;
 
 import java.util.ArrayList;
 

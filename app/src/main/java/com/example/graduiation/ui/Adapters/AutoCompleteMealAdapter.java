@@ -15,8 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.graduiation.R;
-import com.example.graduiation.ui.Data.FoodModel;
-import com.example.graduiation.ui.Data.FoodSearchModel;
+import com.example.graduiation.ui.LegacyData.FoodModel;
+import com.example.graduiation.ui.LegacyData.FoodSearchModel;
 import com.example.graduiation.ui.DataStructuresAndAlgos.FoodSort;
 import com.example.graduiation.ui.Meal.MealFragment;
 import com.google.firebase.database.DataSnapshot;

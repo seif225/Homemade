@@ -12,10 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduiation.R;
-import com.example.graduiation.ui.Data.FoodModel;
+import com.example.graduiation.ui.LegacyData.FoodModel;
 import com.example.graduiation.ui.Adapters.FoodItemRecyclerViewAdapter;
-import com.example.graduiation.ui.Data.UserParentModel;
-import com.google.gson.Gson;
+import com.example.graduiation.ui.LegacyData.UserParentModel;
 
 import java.util.ArrayList;
 

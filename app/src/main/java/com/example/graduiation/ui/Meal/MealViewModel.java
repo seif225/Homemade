@@ -1,13 +1,12 @@
 package com.example.graduiation.ui.Meal;
 
 import android.content.Context;
-import android.view.View;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.graduiation.ui.Data.FirebaseQueryHelperRepository;
-import com.example.graduiation.ui.Data.FoodModel;
+import com.example.graduiation.ui.LegacyData.FirebaseQueryHelperRepository;
+import com.example.graduiation.ui.LegacyData.FoodModel;
 
 import java.util.HashMap;
 

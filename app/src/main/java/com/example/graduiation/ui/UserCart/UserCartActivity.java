@@ -28,9 +28,8 @@ import androidx.work.WorkManager;
 
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Adapters.CartRecyclerViewAdapter;
-import com.example.graduiation.ui.Data.FoodModel;
-import com.example.graduiation.ui.Data.OrderModel;
-import com.example.graduiation.ui.DataStructuresAndAlgos.FoodSort;
+import com.example.graduiation.ui.LegacyData.FoodModel;
+import com.example.graduiation.ui.LegacyData.OrderModel;
 import com.example.graduiation.ui.PlacePickerActivity.PlacePickerActivity;
 import com.example.graduiation.ui.WorkManagers.UploadOrderWorker;
 import com.google.android.gms.maps.model.LatLng;
@@ -38,8 +37,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;

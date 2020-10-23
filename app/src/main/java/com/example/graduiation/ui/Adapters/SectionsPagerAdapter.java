@@ -7,12 +7,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.graduiation.ui.Data.FoodModel;
-import com.example.graduiation.ui.Data.UserParentModel;
+import com.example.graduiation.ui.LegacyData.FoodModel;
+import com.example.graduiation.ui.LegacyData.UserParentModel;
 import com.example.graduiation.ui.SellerProfileViewPager.PlaceholderFragment;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {

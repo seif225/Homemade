@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.graduiation.R;
-import com.example.graduiation.ui.Data.FoodModel;
+import com.example.graduiation.ui.LegacyData.FoodModel;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;

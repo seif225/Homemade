@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.graduiation.R;
-import com.example.graduiation.ui.Data.UserParentModel;
+import com.example.graduiation.ui.LegacyData.UserParentModel;
 import com.example.graduiation.ui.SubPayment.SubPaymentActivity;
 import com.example.graduiation.ui.addMeal.AddMealActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -50,7 +50,7 @@ public class ProfileFragment extends Fragment {
         addProfilePic = root.findViewById(R.id.add_profile_picture);
         subscribeBtn = root.findViewById(R.id.subscribe_btn);
         dueDateTv = root.findViewById(R.id.due_date_tv);
-        fab.setVisibility(View.INVISIBLE);
+        //fab.setVisibility(View.INVISIBLE);
 
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +101,7 @@ public class ProfileFragment extends Fragment {
                         }
                     });
                     if(userParentModel.getDueDate()!=0) {
-                        if(System.currentTimeMillis()<userParentModel.getDueDate()) {
+                        /*if(System.currentTimeMillis()<userParentModel.getDueDate()) {
                             Log.e(TAG, "onChanged: " + userParentModel.getDueDate());
                             Calendar c = Calendar.getInstance();
                             c.setTimeInMillis(userParentModel.getDueDate());
@@ -110,7 +110,7 @@ public class ProfileFragment extends Fragment {
                             dueDateTv.setText("Due Date : " + formatted);
                             subscribeBtn.setVisibility(View.INVISIBLE);
                             fab.setVisibility(View.VISIBLE);
-                        }
+                        }*/
 
                     }
 

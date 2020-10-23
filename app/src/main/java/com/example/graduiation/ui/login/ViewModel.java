@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.graduiation.R;
+import com.example.graduiation.ui.Data.DataRepo;
 import com.example.graduiation.ui.MyApplication;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -156,8 +157,11 @@ public class ViewModel extends AndroidViewModel {
                 SharedPreferences sharedPref = context.getSharedPreferences(
                        "userFile", Context.MODE_PRIVATE);
 
+
+
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("userToken", response.body().getTokens());
+                editor.putString("userId",id);
                 editor.apply();
                 Log.e(TAG, "onResponse: " + sharedPref.getString("userToken","empty :D ") );
 

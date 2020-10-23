@@ -1,12 +1,9 @@
 package com.example.graduiation.ui.SellerProfileViewPager;
 
-import android.os.Bundle;
-
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.graduiation.ui.Data.FoodModel;
+import com.example.graduiation.ui.LegacyData.FoodModel;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Adapters.CurrentOrdersRecyclerAddapter;
-import com.example.graduiation.ui.Data.OrderModel;
+import com.example.graduiation.ui.LegacyData.OrderModel;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;

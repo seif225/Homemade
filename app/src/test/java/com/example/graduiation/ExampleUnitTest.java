@@ -1,11 +1,6 @@
 package com.example.graduiation;
 
-import com.example.graduiation.ui.Data.FoodModel;
-import com.example.graduiation.ui.DataStructuresAndAlgos.FoodSort;
-
 import org.junit.Test;
-
-import java.util.List;
 
 import static org.junit.Assert.*;
 

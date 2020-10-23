@@ -1,12 +1,10 @@
 package com.example.graduiation.ui.DataStructuresAndAlgos;
 
-import com.example.graduiation.ui.Data.FoodModel;
-import com.example.graduiation.ui.Data.FoodSearchModel;
-import com.example.graduiation.ui.Data.UserParentModel;
+import com.example.graduiation.ui.LegacyData.FoodModel;
+import com.example.graduiation.ui.LegacyData.FoodSearchModel;
+import com.example.graduiation.ui.LegacyData.UserParentModel;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class FoodSort {

@@ -18,8 +18,8 @@ import androidx.work.WorkManager;
 
 import com.example.graduiation.R;
 import com.example.graduiation.ui.Animators.Fx;
-import com.example.graduiation.ui.Data.FoodModel;
-import com.example.graduiation.ui.Data.OrderModel;
+import com.example.graduiation.ui.LegacyData.FoodModel;
+import com.example.graduiation.ui.LegacyData.OrderModel;
 import com.example.graduiation.ui.WorkManagers.AddingActionsOnOrdersWorkManager;
 import com.google.gson.Gson;
 
